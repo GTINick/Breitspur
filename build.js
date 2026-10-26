@@ -178,6 +178,7 @@ const room = (c, i, { first = false, linked = true } = {}) => {
 
 const form = (id) => `<form class="inquiry" name="inquiry" method="POST" action="/inquire/thanks/" data-netlify="true" netlify-honeypot="company">
   <input type="hidden" name="form-name" value="inquiry">
+  <input type="hidden" name="subject" value="New Breitspur inquiry (%{submissionId})">
   <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
   <div class="field"><label for="${id}-name">Name</label><input id="${id}-name" name="name" type="text" autocomplete="name" required></div>
   <div class="field"><label for="${id}-email">Email</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div>
