@@ -1,0 +1,86 @@
+{
+  "status": "live",
+  "number": 1,
+  "slug": "breitspur-01",
+  "name": "Breitspur 01",
+  "subtitle": "The 2002 Turbo that never was",
+  "base": "1972 BMW 2002",
+  "room": "#2E2C29",
+  "counterfactual": "BMW built the 2002 Turbo.  They never built the mean one.",
+  "summary": "Round tails and kidneys untouched.  Everything else pushed one step past where the factory stopped.",
+  "story": [
+    "The 2002 Turbo was BMW at its most daring: flared arches, a front spoiler, and a reputation that outran the car.  Breitspur 01 starts where the Turbo stopped.",
+    "The flares are riveted on and surfaced to follow the original body lines, not fight them.  A raw aluminum splitter sits low at the front.  Multipiece mesh wheels fill the arches, and a cage ties the shell together.  The round taillights and the kidney grilles stay exactly as BMW drew them.",
+    "It also carries a few quiet tributes to a small, fast dog named Ruxin.  The pink tow strap is his."
+  ],
+  "specs": [
+    {
+      "label": "Base",
+      "value": "1972 BMW 2002"
+    },
+    {
+      "label": "Bodywork",
+      "value": "Riveted flares, aluminum splitter"
+    },
+    {
+      "label": "Wheels",
+      "value": "Multipiece mesh"
+    },
+    {
+      "label": "Cabin",
+      "value": "Cage, bucket seats"
+    },
+    {
+      "label": "Kept",
+      "value": "Round tails, kidneys"
+    }
+  ],
+  "profile": {
+    "image": "/assets/img/concepts/breitspur-01/profile.webp",
+    "small": "/assets/img/concepts/breitspur-01/profile-1200.webp",
+    "width": 1538,
+    "height": 510,
+    "alt": "Breitspur 01, a black 1972 BMW 2002 concept with riveted flares, mesh wheels and an aluminum splitter, in side profile"
+  },
+  "gallery": [
+    {
+      "image": "/assets/img/concepts/breitspur-01/detail.webp",
+      "small": "/assets/img/concepts/breitspur-01/detail-1000.webp",
+      "width": 1917,
+      "height": 1438,
+      "alt": "Front three quarter view showing the riveted front flare, mesh wheel and aluminum splitter",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-01/rear-34.webp",
+      "small": "/assets/img/concepts/breitspur-01/rear-34-1000.webp",
+      "width": 1820,
+      "height": 1365,
+      "alt": "Rear three quarter view with round taillights, twin exhausts and the pink tow strap"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-01/interior.webp",
+      "small": "/assets/img/concepts/breitspur-01/interior-1000.webp",
+      "width": 1880,
+      "height": 1410,
+      "alt": "Cabin through the open door: wood rim wheel, bucket seat and cage"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-01/low.webp",
+      "small": "/assets/img/concepts/breitspur-01/low-1000.webp",
+      "width": 2000,
+      "height": 1500,
+      "alt": "Low front view of the kidney grilles, round headlight and splitter",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-01/rear.webp",
+      "small": "/assets/img/concepts/breitspur-01/rear-1000.webp",
+      "width": 2000,
+      "height": 1500,
+      "alt": "The car parked in a dark garage under the studio lights",
+      "wide": true
+    }
+  ],
+  "note": "Breitspur 01 is a design concept, rendered rather than built."
+}

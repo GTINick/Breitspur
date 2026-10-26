@@ -1,0 +1,10 @@
+{
+  "status": "draft",
+  "slug": "example-wheel",
+  "name": "Example wheel",
+  "category": "Wheels",
+  "summary": "Template only.  Files starting with an underscore are never built.  Copy this file without the underscore to add a real product.",
+  "price": "",
+  "image": "",
+  "buyUrl": ""
+}

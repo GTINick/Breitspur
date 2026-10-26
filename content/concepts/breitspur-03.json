@@ -1,0 +1,19 @@
+{
+  "status": "draft",
+  "number": 3,
+  "slug": "breitspur-03",
+  "name": "Breitspur 03",
+  "subtitle": "The 1M CS that never was",
+  "base": "BMW 1M Coupe",
+  "room": "#5A3A2C",
+  "counterfactual": "BMW built the 1M.  They never built the CS.",
+  "summary": "A refined, quick road car rather than a track car: bigger round arches, carbon, and solid Inka orange.",
+  "story": [],
+  "specs": [
+    { "label": "Base", "value": "BMW 1M Coupe" },
+    { "label": "Color", "value": "Solid Inka style orange" }
+  ],
+  "profile": null,
+  "gallery": [],
+  "note": ""
+}

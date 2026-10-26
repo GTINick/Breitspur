@@ -1,0 +1,73 @@
+{
+  "name": "Breitspur",
+  "domain": "https://breitspur.com",
+  "tagline": "The versions that should have existed.",
+  "description": "Breitspur is a design studio for German cars.  Each concept pushes the factory's own design language one step further than the factory dared.",
+  "email": "",
+  "location": "Georgetown, Texas",
+  "social": {
+    "instagram": ""
+  },
+  "manifesto": {
+    "lead": "Every great car had a sharper version that never made it out of the design studio.  Breitspur draws those cars.",
+    "body": "We take the factory's own design language and push it one step further than they dared.  Truer stance, wider track, flares surfaced as if they came off the original line.  Designed by a trained car designer, one car at a time."
+  },
+  "founder": {
+    "quote": "Car companies build these raw, emotional things that never get to see the streets.  I want people to actually get to experience them.",
+    "name": "Nick DiLoreto",
+    "role": "Design director, Breitspur",
+    "bio": "Trained as a car designer.  Started at Volvo.  Now an industrial design leader for a major consumer hardware brand."
+  },
+  "services": [
+    {
+      "slug": "commission",
+      "title": "Commission a concept",
+      "body": "Send us your car.  We draw it back as the version that should have existed: proportions, stance, flares, wheels and color, finished as a gallery plate you can frame or build from.",
+      "details": ["Concept rendering of your car", "Side profile gallery plate", "Design notes on surfacing, wheels and color"],
+      "price": ""
+    },
+    {
+      "slug": "consulting",
+      "title": "Design consulting",
+      "body": "Surfacing, body kits, wheels and brand direction for shops and makers who want the forms right.  The highlights, radii and flares are where most aftermarket design falls apart.  That is where we spend our time.",
+      "details": ["Body kit and flare design review", "Wheel design", "Brand and launch direction"],
+      "price": ""
+    }
+  ],
+  "shop": {
+    "enabled": false,
+    "teaser": "Wheels, parts and apparel to follow."
+  },
+  "privacy": {
+    "updated": "October 25, 2026",
+    "intro": "Breitspur is a small, independent studio.  We collect as little as we can, we never sell it, and you can ask us to delete it at any time.",
+    "sections": [
+      {
+        "heading": "What we collect",
+        "body": [
+          "Inquiries: if you send the inquiry form, we keep your name, email address, your car and your message.  Netlify, our web host, receives and stores the form for us.",
+          "Server logs: like any web host, Netlify records basic request data such as IP address, browser type and the pages requested.  We use it only to keep the site running and secure.",
+          "We do not run analytics, ad trackers or user accounts, and we set no cookies of our own."
+        ]
+      },
+      {
+        "heading": "How we use it",
+        "body": [
+          "We use your details only to reply to your inquiry and, if we work together, to deliver the project.  We never sell, rent or trade them."
+        ]
+      },
+      {
+        "heading": "Your choices",
+        "body": [
+          "Wherever you live, you can ask what we hold about you, have it corrected, or have it deleted.  Write to us through the inquiry form and we will act within 30 days."
+        ]
+      },
+      {
+        "heading": "Changes",
+        "body": [
+          "If this policy changes, we will update the date at the top of this page."
+        ]
+      }
+    ]
+  }
+}

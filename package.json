@@ -1,0 +1,8 @@
+{
+  "name": "breitspur",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node build.js && npx --yes serve dist"
+  }
+}
