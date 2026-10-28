@@ -274,15 +274,14 @@ live.forEach((c, i) => {
   <dl class="specs">
     ${(c.specs || []).map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
   </dl>
+  ${c.note ? `<p class="concept-note">${esc(c.note)}</p>` : ""}
 </section>
 
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}
 </section>` : ""}
 
-${c.note ? `<p class="concept-note">${esc(c.note)}</p>` : ""}
-
-<section class="ask" aria-labelledby="ask">
+<section class="ask ask-cta" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">Your car, the version that should have existed.</h2>
   <div>
     <p class="body-lg muted">We draw commissioned concepts for private owners, shops and makers.</p>
@@ -364,10 +363,12 @@ write("privacy/index.html", page({
   path: "/privacy/",
   room: firstRoom,
   body: `<section class="paper prose">
+  <div class="prose-body">
   <h1 class="serif-xl">Privacy</h1>
   <p class="label">UPDATED ${esc(site.privacy.updated.toUpperCase())}</p>
   <p class="body-lg">${esc(site.privacy.intro)}</p>
   ${site.privacy.sections.map((s) => `<h2>${esc(s.heading)}</h2>${s.body.map((b) => `<p>${esc(b)}</p>`).join("")}`).join("")}
+  </div>
 </section>`,
 }));
 
