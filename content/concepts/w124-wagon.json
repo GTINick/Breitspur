@@ -1,0 +1,21 @@
+{
+  "status": "draft",
+  "number": 90,
+  "slug": "w124-wagon",
+  "name": "Breitspur 02",
+  "subtitle": "The W124 Evolution that never was",
+  "base": "Mercedes W124 Estate",
+  "room": "#4C5A53",
+  "counterfactual": "Mercedes built the 190E Evolution.  They never built one for the W124.  Least of all the wagon.",
+  "summary": "Box flares, a real wing and Evolution attitude on the most sensible car Mercedes ever made.",
+  "story": [],
+  "specs": [
+    {
+      "label": "Base",
+      "value": "Mercedes W124 Estate"
+    }
+  ],
+  "profile": null,
+  "gallery": [],
+  "note": ""
+}

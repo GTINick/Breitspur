@@ -1,18 +1,34 @@
 {
-  "status": "soon",
+  "status": "live",
   "number": 2,
   "slug": "breitspur-02",
   "name": "Breitspur 02",
-  "subtitle": "The W124 Evolution that never was",
-  "base": "Mercedes W124 Estate",
-  "room": "#4C5A53",
-  "counterfactual": "Mercedes built the 190E Evolution.  They never built one for the W124.  Least of all the wagon.",
-  "summary": "Box flares, a real wing and Evolution attitude on the most sensible car Mercedes ever made.",
-  "story": [],
-  "specs": [
-    { "label": "Base", "value": "Mercedes W124 Estate" }
+  "subtitle": "The R129 Black Series that never was",
+  "base": "Mercedes R129 SL",
+  "room": "#536058",
+  "counterfactual": "Mercedes built the SL65 Black Series.  They never built one for the R129.",
+  "summary": "Black Series rules applied to the most beautiful SL of the modern era.",
+  "story": [
+    "Black Series came too late for the R129.  By the time Mercedes started building them, the most beautiful SL of the modern era was already gone.  Breitspur 02 is the one it should have had.",
+    "The flares follow real Black Series rules.  They stay below the shoulder line, the rears run wider than the fronts, and the lines taper toward the nose.  A fixed roof carries an exposed carbon top over body colored sides.  The hood is vented, the splitter runs deeper with a thin carbon lip, and a small ducktail finishes the trunk.",
+    "Inside, it is still an SL you would drive for hours: carbon bucket seats, carbon door panels as the show piece, and a manual gearbox."
   ],
-  "profile": null,
+  "specs": [
+    { "label": "Base", "value": "Mercedes R129 SL" },
+    { "label": "Bodywork", "value": "Black Series flares, vented hood" },
+    { "label": "Roof", "value": "Fixed, exposed carbon top" },
+    { "label": "Aero", "value": "Deeper splitter, ducktail" },
+    { "label": "Cabin", "value": "Carbon buckets and door panels" },
+    { "label": "Gearbox", "value": "Manual" }
+  ],
+  "profile": {
+    "image": "/assets/img/concepts/breitspur-02/profile.webp",
+    "small": "/assets/img/concepts/breitspur-02/profile-1200.webp",
+    "width": 2280,
+    "height": 1050,
+    "shadow": false,
+    "alt": "Breitspur 02, a silver Mercedes R129 SL concept with widened flares, a carbon roof, vented hood and dark wheels, seen from above at three quarters"
+  },
   "gallery": [],
-  "note": ""
+  "note": "Breitspur 02 is a design concept, rendered rather than built."
 }
