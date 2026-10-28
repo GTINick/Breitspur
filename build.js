@@ -407,6 +407,27 @@ write("404.html", page({
 </section>`,
 }));
 
+// Cache busting: every asset link gets ?v=<content hash>, so browsers can cache files for a year
+// (see netlify.toml) and still pick up a changed image or stylesheet on the next visit.
+// Fonts are left alone because styles.css links them without a version and they never change.
+const crypto = require("crypto");
+const hashes = {};
+const version = (rel) => {
+  if (!(rel in hashes)) {
+    const f = path.join(ROOT, rel);
+    hashes[rel] = fs.existsSync(f) ? crypto.createHash("md5").update(fs.readFileSync(f)).digest("hex").slice(0, 10) : null;
+  }
+  return hashes[rel];
+};
+const walk = (d) => fs.readdirSync(d).flatMap((f) => { const a = path.join(d, f); return fs.statSync(a).isDirectory() ? walk(a) : [a]; });
+for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
+  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css)/g, (m) => {
+    const v = version(m.slice(1));
+    return v ? `${m}?v=${v}` : m;
+  });
+  fs.writeFileSync(file, html);
+}
+
 // SEO files
 const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/"] : [])];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
