@@ -289,6 +289,31 @@ const productCard = (p) => `<article class="product-card">
   </a>
 </article>`;
 
+// "Made for one car": what is tailored per order, beside an example build sheet.
+const bespoke = (p) => {
+  const b = site.shop.bespoke;
+  if (!b) return "";
+  const rows = (p && p.buildSheet) || b.sheet || [];
+  const art = p || products[0];
+  return `<section class="paper bespoke" aria-labelledby="bespoke">
+  <h2 class="label" id="bespoke">${esc(b.label)}</h2>
+  <div class="bespoke-body">
+    <p class="serif-lead">${esc(b.lead)}</p>
+    <p class="body-lg">${esc(b.body)}</p>
+    <div class="bespoke-grid">
+      <ol class="bespoke-items">${b.items.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
+      ${rows.length ? `<figure class="build-sheet" aria-label="Example build sheet">
+        <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>BUILD SHEET</span></div>
+        ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
+        <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+        <div class="sheet-sign"><span class="sheet-sig">${esc(site.founder.name)}</span><span>DESIGNED AND SIGNED</span></div>
+        <figcaption>Example.  Every sheet is written for one car.</figcaption>
+      </figure>` : ""}
+    </div>
+  </div>
+</section>`;
+};
+
 const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
 
 // One Netlify form for every product, so all interest lands in one list you can export as CSV.
@@ -304,6 +329,8 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   ${p.finishes && p.finishes.length ? `<div class="field"><label for="pi-finish">Finish</label><select id="pi-finish" name="finish">${options(p.finishes, "No preference")}</select></div>` : ""}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
   ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
+  ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
+  <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
   <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, a finish you want to see"></textarea></div>
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
   <p class="field-wide"><button class="btn btn-solid" type="submit">Register interest</button></p>
@@ -542,6 +569,8 @@ ${shopCats.map((k) => {
 </section>`;
 }).join("\n")}
 
+${bespoke()}
+
 ${steps.length ? `<section class="paper" aria-labelledby="how">
   <h2 class="label" id="how">HOW RELEASES WORK</h2>
   ${stepsBlock}
@@ -615,10 +644,12 @@ ${concept ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--
   </div>
 </section>` : ""}
 
+${p.category === "wheels" ? bespoke(p) : ""}
+
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Register interest.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not for sale yet.  Tell us your car and the size you want.  Your answers decide which fitments get made first, and the list hears about pricing and production slots before anyone else.</p>
+    <p class="body-lg muted">${esc(p.name)} is not for sale yet.  Tell us your car and the size you want.  Every set is machined to order for one car, so your answers decide which fitments we engineer first.  The list hears about pricing and build slots before anyone else.</p>
     ${stepsBlock}
   </div>
   ${interestForm(p)}
@@ -640,7 +671,7 @@ ${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
     body: `<section class="ask ask-page">
   <div>
     <h1 class="serif-xl">You are on the list.</h1>
-    <p class="body-lg muted">Thank you.  We read every one.  You will hear from us by email when there is real news: pricing, fitment and production slots.</p>
+    <p class="body-lg muted">Thank you.  We read every one.  You will hear from us by email when there is real news: pricing, fitment and build slots.</p>
     <p class="ask-links"><a class="btn btn-light" href="/shop/">Back to the shop</a><a class="text-link" href="/">The collection</a></p>
   </div>
 </section>`,

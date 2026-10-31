@@ -45,14 +45,14 @@
   "shop": {
     "enabled": true,
     "teaser": "Wheels, parts and apparel to follow.",
-    "intro": "Wheels and parts drawn by the studio and made in small runs.  Nothing here is on sale yet.  Register interest and you hear first: pricing, fitment and the first production slots.",
+    "intro": "Wheels and parts drawn by the studio.  Every wheel is CNC machined to order from forged aluminum, one set at a time, for one car.  Nothing is on sale yet.  Register interest and you hear first.",
     "categories": [
       {
         "slug": "wheels",
         "title": "Wheels",
         "single": "wheel",
         "status": "live",
-        "body": "Drawn for the cars in the collection.  Made to fit the cars you actually drive."
+        "body": "Drawn for the cars in the collection.  Machined to order for the car you drive."
       },
       {
         "slug": "carbon",
@@ -78,17 +78,86 @@
     "process": [
       {
         "title": "Register interest",
-        "body": "Tell us your car, size and finish.  It takes a minute and commits you to nothing."
+        "body": "Tell us your car, size and finish.  It commits you to nothing, and the list hears first when build slots open."
       },
       {
-        "title": "Hear first",
-        "body": "The list sees progress, prototypes and final pricing before anyone else."
+        "title": "Fitment",
+        "body": "We confirm your measurements, brakes and stance with you before a single blank is cut."
       },
       {
-        "title": "First production slots",
-        "body": "Each run is small.  Orders open to the list first, in the order people signed up."
+        "title": "Machined for your car",
+        "body": "Your set is CNC machined from forged blanks, finished, numbered and shipped.  One set at a time."
       }
-    ]
+    ],
+    "bespoke": {
+      "label": "MADE FOR ONE CAR",
+      "lead": "Every set is machined for one car.  Yours.",
+      "body": "There is no warehouse and no catalog size.  Each wheel starts as a forged 6061-T6 aluminum blank and is CNC machined to order, one set at a time, to the exact fitment of the car it is going on.",
+      "items": [
+        {
+          "title": "Width and offset",
+          "body": "Set to your arches, your tires and the stance you want, not the nearest size on a shelf."
+        },
+        {
+          "title": "Bolt pattern and center bore",
+          "body": "Machined to your hub, so the wheel centers on the car without adapters or rings."
+        },
+        {
+          "title": "Brake clearance",
+          "body": "Checked against your calipers before cutting, big brake kits included."
+        },
+        {
+          "title": "Finish",
+          "body": "From the studio palette, or matched to your car."
+        },
+        {
+          "title": "Numbered",
+          "body": "Every set carries its own serial number, machined into the wheel."
+        },
+        {
+          "title": "Build sheet",
+          "body": "Your set ships with its build sheet: your car, your specification and a drawing signed by the designer."
+        }
+      ],
+      "sheet": [
+        [
+          "Car",
+          "1972 BMW 2002"
+        ],
+        [
+          "Wheel",
+          "Netz, three piece"
+        ],
+        [
+          "Size",
+          "15 x 8 in front, 15 x 9 in rear"
+        ],
+        [
+          "Offset",
+          "ET 10 front, ET 5 rear"
+        ],
+        [
+          "Bolt pattern",
+          "4x100"
+        ],
+        [
+          "Center bore",
+          "57.1 mm"
+        ],
+        [
+          "Material",
+          "Forged 6061-T6 aluminum"
+        ],
+        [
+          "Finish",
+          "Silver center, polished lip"
+        ],
+        [
+          "Set",
+          "No. 001"
+        ]
+      ]
+    }
   },
   "privacy": {
     "updated": "October 31, 2026",
