@@ -267,3 +267,4 @@ a:hover { opacity: 0.8; }
 }
 main > .shop-cat:last-child { padding-bottom: 112px; }
 @media (max-width: 860px) { main > .shop-cat:last-child { padding-bottom: 72px; } }
+.seen-on-text > div { grid-column: 1 / -1; }

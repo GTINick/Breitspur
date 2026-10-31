@@ -544,7 +544,8 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
   for (const p of products) {
     const k = catOf(p);
     const concept = p.seenOn ? concepts.find((c) => c.slug === p.seenOn) : null;
-    const seenImg = concept ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
+    // "seenOnImage": false hides the concept photo, for when the concept car wears a stand in wheel.
+    const seenImg = concept && p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
     const pRoom = p.room || shopRoom;
     const cta = p.availability === "interest"
       ? `<a class="btn btn-solid" href="#interest">Register interest</a>`
@@ -586,10 +587,10 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
 </section>
 
-${concept && seenImg ? `<section class="seen-on" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
-  <figure>
+${concept ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
+  ${seenImg ? `<figure>
     <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
-  </figure>
+  </figure>` : ""}
   <div>
     <h2 class="label" id="seen">AS DRAWN ON</h2>
     <p class="seen-name">${esc(concept.name)}</p>

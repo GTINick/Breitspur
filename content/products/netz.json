@@ -13,23 +13,55 @@
   "price": "",
   "buyUrl": "",
   "construction": "Three piece forged",
-  "sizes": ["15 in", "16 in", "17 in", "18 in"],
-  "finishes": ["Silver center, polished lip", "Gold center, polished lip", "Black center, polished lip"],
+  "sizes": [
+    "15 in",
+    "16 in",
+    "17 in",
+    "18 in"
+  ],
+  "finishes": [
+    "Silver center, polished lip",
+    "Gold center, polished lip",
+    "Black center, polished lip"
+  ],
   "story": [
     "Netz is German for net.  It is the wheel Breitspur 01 wears, and the first wheel from the studio.",
     "Mesh is the most honest wheel there is.  Every spoke carries load and you can see all of it.  Netz keeps the fine weave and the deep lip, then redraws the center so the mesh reads cleanly from across a room.",
     "It starts at 15 inches on purpose.  The cars that wore mesh first, from the 2002 to the E30, deserve a wheel that fits them without spacers or excuses."
   ],
   "specs": [
-    { "label": "Construction", "value": "Three piece, forged center" },
-    { "label": "Diameters", "value": "15, 16, 17, 18 in" },
-    { "label": "Lip", "value": "Deep, polished" },
-    { "label": "Bolt patterns", "value": "4x100, 5x112, 5x120" },
-    { "label": "Hardware", "value": "Exposed assembly bolts" },
-    { "label": "Widths and offsets", "value": "Built to order per car" }
+    {
+      "label": "Construction",
+      "value": "Three piece, forged center"
+    },
+    {
+      "label": "Diameters",
+      "value": "15, 16, 17, 18 in"
+    },
+    {
+      "label": "Lip",
+      "value": "Deep, polished"
+    },
+    {
+      "label": "Bolt patterns",
+      "value": "4x100, 5x112, 5x120"
+    },
+    {
+      "label": "Hardware",
+      "value": "Exposed assembly bolts"
+    },
+    {
+      "label": "Widths and offsets",
+      "value": "Built to order per car"
+    }
   ],
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
   "seenOn": "breitspur-01",
-  "drawing": { "style": "mesh", "spokes": 18, "bolts": 4 },
+  "seenOnImage": false,
+  "drawing": {
+    "style": "mesh",
+    "spokes": 18,
+    "bolts": 4
+  },
   "image": null
 }
