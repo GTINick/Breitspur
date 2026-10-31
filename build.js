@@ -417,7 +417,7 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
   <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, stance"></textarea></div>
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
-  <p class="field-wide"><button class="btn btn-solid" type="submit">Register interest</button></p>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Inquire</button></p>
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
 </form>`;
 
@@ -520,7 +520,7 @@ ${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concep
     <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
     <p class="seen-name">${esc(p.name)}${badge(p, "badge-inline")}</p>
     <p class="muted">${esc(p.tagline)}  ${esc(AVAIL[p.availability])}.</p>
-    <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Register interest" : `View ${esc(p.name)}`}</a></p>
+    <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Inquire" : `View ${esc(p.name)}`}</a></p>
   </div>
 </section>`).join("")}
 
@@ -677,7 +677,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     const seenImg = concept && p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
     const pRoom = p.room || shopRoom;
     const cta = p.availability === "interest"
-      ? `<a class="btn btn-solid" href="#interest">Register interest</a>`
+      ? `<a class="btn btn-solid" href="#interest">Inquire</a>`
       : `<a class="btn btn-solid" href="${esc(p.buyUrl)}">${p.availability === "preorder" ? "Pre-order" : "Buy"}${p.price ? `, ${esc(p.price)}` : ""}</a>`;
     write(`shop/${p.category}/${p.slug}/index.html`, page({
       title: `${p.name}: ${p.tagline} | ${site.name}`,
