@@ -68,7 +68,33 @@ for (const c of concepts) {
     }
   }
 }
-const products = site.shop.enabled ? loadDir("content/products", ["status", "slug", "name"]).filter((p) => p.status === "live") : [];
+// Products: status "live" shows in the shop, "soon" and "draft" stay hidden.
+// availability decides the call to action: "interest" shows the register interest form,
+// "preorder" and "available" show a button to buyUrl.
+const shopCats = (site.shop.categories || []).filter((k) => k.status !== "draft");
+const products = site.shop.enabled
+  ? loadDir("content/products", ["status", "number", "slug", "name", "category", "availability", "tagline"])
+      .filter((p) => p.status === "live")
+      .sort((a, b) => a.number - b.number)
+  : [];
+for (const p of products) {
+  dashCheck(p._file, p);
+  if (!shopCats.some((k) => k.slug === p.category)) errors.push(`${p._file}: category "${p.category}" is not in site.json shop.categories`);
+  if (!["interest", "preorder", "available"].includes(p.availability)) errors.push(`${p._file}: availability must be interest, preorder or available`);
+  if (p.availability !== "interest" && !p.buyUrl) errors.push(`${p._file}: ${p.availability} products need a buyUrl`);
+  if (!p.image && !p.drawing) errors.push(`${p._file}: needs an image or a drawing`);
+  if (p.configurator) {
+    const cfg = p.configurator;
+    if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
+    for (const c of cfg.centers || []) if (!c.name || !/^#[0-9a-f]{6}$/i.test(c.hex || "")) errors.push(`${p._file}: center colors need a name and a hex like #B8975A`);
+    for (const l of cfg.lips || []) if (!["Polished", "Matched"].includes(l)) errors.push(`${p._file}: lips can be Polished or Matched`);
+  }
+  for (const g of [p.image, ...(p.gallery || [])].filter(Boolean)) {
+    if (!g.alt) errors.push(`${p._file}: every image needs alt text`);
+    if (!fs.existsSync(path.join(ROOT, g.image))) errors.push(`${p._file}: missing file ${g.image}`);
+  }
+  if (p.seenOn && !concepts.some((c) => c.slug === p.seenOn && c.status === "live")) errors.push(`${p._file}: seenOn "${p.seenOn}" is not a live concept`);
+}
 dashCheck("site.json", site);
 
 if (errors.length) {
@@ -96,7 +122,7 @@ const nav = [
   ["/inquire/", "Inquire", "inquire"],
 ];
 
-const page = ({ title, description, path: p, room = "#2E2C29", active = "", body, image = "/assets/img/og.jpg", noindex = false }) => `<!doctype html>
+const page = ({ title, description, path: p, room = "#2E2C29", active = "", body, image = "/assets/img/og.jpg", noindex = false, scripts = [] }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -139,6 +165,7 @@ ${body}
   </ul>
   ${site.shop.enabled ? "" : `<p class="foot-soon">${esc(site.shop.teaser.toUpperCase())}</p>`}
 </footer>
+${scripts.map((src) => `<script src="${src}" defer></script>`).join("\n")}
 </body>
 </html>
 `;
@@ -214,6 +241,195 @@ const index = () => `<section class="index" aria-labelledby="collection">
   </ol>
 </section>`;
 
+// ---------- shop components ----------
+const catOf = (p) => shopCats.find((k) => k.slug === p.category);
+const productHref = (p) => `/shop/${p.category}/${p.slug}/`;
+const AVAIL = { interest: "Registering interest", preorder: "Pre-order open", available: "Available" };
+
+// A line drawing that stands in for a wheel until the render exists.  "drawing": { "style": "mesh" | "split" | "spoke", "spokes": 5, "bolts": 5 }
+const pt = (r, deg) => { const a = ((deg - 90) * Math.PI) / 180; return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`; };
+const wheelDrawing = (d = {}, label = "") => {
+  const style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const lines = [];
+  if (style === "mesh") {
+    for (let i = 0; i < n; i++) {
+      const a = (360 / n) * i;
+      lines.push(`<path d="M${pt(21, a)} Q${pt(52, a + 14)} ${pt(78, a + 34)}"/>`, `<path d="M${pt(21, a)} Q${pt(52, a - 14)} ${pt(78, a - 34)}"/>`);
+    }
+    for (let i = 0; i < 36; i++) lines.push(`<circle class="fill" cx="${pt(84, i * 10).split(",")[0]}" cy="${pt(84, i * 10).split(",")[1]}" r="0.9"/>`);
+  } else {
+    const pairs = style === "split" ? [-5, 5] : [0];
+    for (let i = 0; i < n; i++) {
+      for (const o of pairs) {
+        const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
+        lines.push(`<polygon points="${pt(22, a - w1 * 2)} ${pt(78, a - w2 + o * 0.6)} ${pt(78, a + w2 + o * 0.6)} ${pt(22, a + w1 * 2)}"/>`);
+      }
+    }
+  }
+  for (let i = 0; i < bolts; i++) {
+    const [x, y] = pt(13, (360 / bolts) * i).split(",");
+    lines.push(`<circle cx="${x}" cy="${y}" r="2"/>`);
+  }
+  return `<svg class="wheel-drawing" viewBox="-100 -100 200 200" role="img" aria-label="${esc(label)}"><g fill="none" stroke="currentColor">
+    <circle r="97"/><circle r="91"/><circle r="80"/><circle r="21"/><circle r="8"/>
+    ${lines.join("")}
+  </g></svg>`;
+};
+
+const wheelArt = (p, { eager = false, big = false } = {}) => p.image
+  ? `<img src="${p.image.small || p.image.image}" srcset="${p.image.small ? `${p.image.small} 1000w, ` : ""}${p.image.image} ${p.image.width}w" sizes="${big ? "(min-width: 860px) 560px, 80vw" : "(min-width: 860px) 30vw, 80vw"}" width="${p.image.width}" height="${p.image.height}" alt="${esc(p.image.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
+  : wheelDrawing(p.drawing, `${p.name}, design drawing.  Final renders to follow.`);
+
+const productCard = (p) => `<article class="product-card">
+  <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
+    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Drawing.  Renders to follow.</span>'}</div>
+    <div class="product-info">
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
+      <h3 class="product-name">${esc(p.name)}</h3>
+      <p class="product-tag">${esc(p.tagline)}</p>
+      <ul class="product-facts">
+        ${p.construction ? `<li>${esc(p.construction.toUpperCase())}</li>` : ""}
+        ${p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
+        <li class="product-state">${esc(AVAIL[p.availability].toUpperCase())}</li>
+      </ul>
+    </div>
+  </a>
+</article>`;
+
+// "Made for one car": what is tailored per order, beside an example build sheet.
+const bespoke = (p) => {
+  const b = site.shop.bespoke;
+  if (!b) return "";
+  const rows = (p && p.buildSheet) || b.sheet || [];
+  const art = p || products[0];
+  return `<section class="paper bespoke" aria-labelledby="bespoke">
+  <h2 class="label" id="bespoke">${esc(b.label)}</h2>
+  <div class="bespoke-body">
+    <p class="serif-lead">${esc(b.lead)}</p>
+    <p class="body-lg">${esc(b.body)}</p>
+    <div class="bespoke-grid">
+      <ol class="bespoke-items">${b.items.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
+      ${rows.length ? `<figure class="build-sheet" aria-label="Example build sheet">
+        <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>BUILD SHEET</span></div>
+        ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
+        <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+        <figcaption>Example.  Every sheet is written for one car.</figcaption>
+      </figure>` : ""}
+    </div>
+  </div>
+</section>`;
+};
+
+// Shaded, filled wheel for the configurator.  Colors come from CSS variables, so the page script can repaint it.
+const wheelRender = (p) => {
+  const d = p.drawing || {}, style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const multi = style === "mesh";
+  const lipIn = multi ? 86 : 90, id = `wr-${p.slug}`;
+  const parts = [];
+  if (multi) {
+    for (let i = 0; i < n; i++) {
+      const a = (360 / n) * i;
+      for (const t of [14, -14]) parts.push(`M${pt(21, a)} Q${pt(52, a + t)} ${pt(80, a + t * 2.4)}`);
+    }
+  }
+  const spokes = multi
+    ? `<path class="wr-edge" d="${parts.join(" ")}" stroke-width="4.6"/><path class="wr-mesh" d="${parts.join(" ")}" stroke-width="3.2"/>`
+    : (() => {
+        const out = [], pairs = style === "split" ? [-5, 5] : [0];
+        for (let i = 0; i < n; i++) for (const o of pairs) {
+          const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
+          out.push(`<polygon class="wr-spoke" points="${pt(20, a - w1 * 2)} ${pt(lipIn - 1, a - w2 + o * 0.6)} ${pt(lipIn - 1, a + w2 + o * 0.6)} ${pt(20, a + w1 * 2)}"/>`);
+        }
+        return out.join("");
+      })();
+  const rivets = multi ? Array.from({ length: 40 }, (_, i) => { const [x, y] = pt(lipIn + 1.6, i * 9).split(","); return `<circle class="wr-rivet" cx="${x}" cy="${y}" r="1.05"/>`; }).join("") : "";
+  const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(13, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
+  const cfg = p.configurator, def = (cfg && cfg.default) || {};
+  const c0 = cfg ? (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).hex : "#9a9a98";
+  const lip0 = def.lip === "Matched" ? c0 : `url(#${id}-polish)`;
+  return `<svg class="wheel-render" viewBox="-100 -100 200 200" style="--center: ${c0}; --lip: ${lip0}" role="img" aria-label="${esc(p.name)} preview">
+  <defs>
+    <linearGradient id="${id}-polish" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4F3EF"/><stop offset="0.28" stop-color="#9C9B97"/><stop offset="0.5" stop-color="#E9E8E3"/><stop offset="0.72" stop-color="#7E7D79"/><stop offset="1" stop-color="#D9D8D3"/>
+    </linearGradient>
+    <radialGradient id="${id}-sheen" cx="0.34" cy="0.28" r="0.75">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.55" stop-color="#fff" stop-opacity="0.03"/><stop offset="1" stop-color="#000" stop-opacity="0.18"/>
+    </radialGradient>
+  </defs>
+  <circle r="${lipIn}" class="wr-barrel"/>
+  ${multi ? `<circle r="${(80 + lipIn) / 2}" class="wr-ring" stroke-width="${lipIn - 80}"/>` : ""}
+  ${spokes}
+  <circle r="21" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
+  <circle r="${(lipIn + 97) / 2}" class="wr-lip" stroke-width="${97 - lipIn}"/>
+  ${rivets}
+  <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
+  <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
+</svg>`;
+};
+
+// Center color and lip choices, shown in the product hero beside the live preview.
+const cfgControls = (p) => {
+  const cfg = p.configurator;
+  if (!cfg || !cfg.centers || !cfg.centers.length) return "";
+  const def = cfg.default || {};
+  const c0 = def.center || cfg.centers[0].name, l0 = def.lip || (cfg.lips || [])[0];
+  return `<div class="cfg-panel">
+      <fieldset class="cfg-group">
+        <legend>Center <span data-center-name>${esc(c0)}</span></legend>
+        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+      </fieldset>
+      ${cfg.lips && cfg.lips.length ? `<fieldset class="cfg-group">
+        <legend>Lip <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span></legend>
+        <div class="segments">${cfg.lips.map((l) => `<label class="segment"><input type="radio" name="cfg-lip" value="${esc(l)}"${l === l0 ? " checked" : ""}><span>${esc(l === "Matched" ? "Color matched" : l)}</span></label>`).join("")}</div>
+      </fieldset>` : ""}
+    </div>`;
+};
+
+const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
+
+// One Netlify form for every product, so all interest lands in one list you can export as CSV.
+const interestForm = (p) => `<form class="inquiry" name="product-interest" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+  <input type="hidden" name="form-name" value="product-interest">
+  <input type="hidden" name="subject" value="Interest: ${esc(p.name)} (%{submissionId})">
+  <input type="hidden" name="product" value="${esc(p.name)}">
+  <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+  <div class="field"><label for="pi-name">Name</label><input id="pi-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
+  <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Size</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
+  ${(() => {
+    // Every product posts the same fields (center, lip), so the Netlify list stays one clean table.
+    const cfg = p.configurator;
+    const centers = cfg ? cfg.centers.map((c) => c.name) : p.finishes || [];
+    const def = cfg && cfg.default ? cfg.default : {};
+    const sel = (list, pick, extra) => [...list, extra].map((o) => `<option${o === pick ? " selected" : ""}>${esc(o)}</option>`).join("");
+    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(centers, def.center, "No preference")}</select></div>` : '<input type="hidden" name="center" value="">'}
+  ${cfg && cfg.lips && cfg.lips.length ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : '<input type="hidden" name="lip" value="">'}`;
+  })()}
+  ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
+  ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
+  ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
+  <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
+  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, stance"></textarea></div>
+  <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Register interest</button></p>
+  <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+</form>`;
+
+const notifyForm = () => `<form class="inquiry" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+  <input type="hidden" name="form-name" value="shop-updates">
+  <input type="hidden" name="subject" value="Shop updates signup (%{submissionId})">
+  <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+  <div class="field"><label for="su-name">Name</label><input id="su-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="su-email">Email</label><input id="su-email" name="email" type="email" autocomplete="email" required></div>
+  <div class="field field-wide"><label for="su-car">Your car</label><input id="su-car" name="car" type="text" placeholder="Year, make, model"></div>
+  <fieldset class="field-wide checks"><legend>Interested in</legend>
+    ${(site.shop.categories || []).filter((k) => k.status !== "draft").map((k) => `<label class="check"><input type="checkbox" name="interests[]" value="${esc(k.title)}"> ${esc(k.title)}</label>`).join("")}
+  </fieldset>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Keep me posted</button></p>
+  <p class="form-fine field-wide">Only shop news, a few times a year.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+</form>`;
+
 // ---------- pages ----------
 copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
 const firstRoom = concepts[0] ? concepts[0].room : "#2E2C29";
@@ -251,7 +467,23 @@ ${index()}
 <section class="ask" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">Tell us the car.</h2>
   ${form("home")}
-</section>`,
+</section>${(() => {
+  const wheels = products.filter((p) => p.category === "wheels");
+  if (!wheels.length) return "";
+  const k = shopCats.find((c) => c.slug === "wheels");
+  return `
+
+<section class="shop-cat home-shop" aria-labelledby="home-wheels">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="home-wheels">${esc(k.title)}</h2>
+    <div>
+      <p class="body-lg muted">${esc(k.body || "")}  Not on sale yet.  Register interest and you hear first.</p>
+      <p><a class="btn btn-light" href="/shop/">Visit the shop</a></p>
+    </div>
+  </div>
+  <div class="product-grid">${wheels.slice(0, 3).map(productCard).join("")}</div>
+</section>`;
+})()}`,
 }));
 
 // Concept pages
@@ -276,6 +508,16 @@ live.forEach((c, i) => {
   </dl>
   ${c.note ? `<p class="concept-note">${esc(c.note)}</p>` : ""}
 </section>
+
+${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concept-product" aria-label="${esc(p.name)}">
+  <div class="concept-product-art">${wheelArt(p)}</div>
+  <div>
+    <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
+    <p class="seen-name">${esc(p.name)}</p>
+    <p class="muted">${esc(p.tagline)}  ${esc(AVAIL[p.availability])}.</p>
+    <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Register interest" : `View ${esc(p.name)}`}</a></p>
+  </div>
+</section>`).join("")}
 
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}
@@ -374,22 +616,145 @@ write("privacy/index.html", page({
 
 // Shop (built only when enabled)
 if (site.shop.enabled) {
+  const shopRoom = "#2E2C29";
+  const steps = site.shop.process || [];
+  const stepsBlock = steps.length ? `<ol class="steps">${steps.map((s, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>` : "";
+
+  // Shop index: one band per category.  Live categories list their products, "soon" categories show as in development.
   write("shop/index.html", page({
     title: `Shop | ${site.name}`,
-    description: "Wheels, parts and apparel from Breitspur.",
+    description: site.shop.intro || "Wheels and parts from Breitspur.",
     path: "/shop/",
-    room: firstRoom,
+    room: shopRoom,
     active: "shop",
-    body: `<section class="room room-first page-hero"><h1 class="room-name">The<br>shop</h1></section>
-<section class="paper shop">
-  ${products.length ? products.map((p) => `<article class="product">
-    ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">` : ""}
-    <p class="label">${esc((p.category || "").toUpperCase())}</p>
-    <h2>${esc(p.name)}</h2>
-    <p>${esc(p.summary || "")}</p>
-    ${p.price ? `<p class="price">${esc(p.price)}</p>` : ""}
-    ${p.buyUrl ? `<a class="btn btn-solid" href="${esc(p.buyUrl)}">Buy</a>` : ""}
-  </article>`).join("") : `<p class="body-lg">${esc(site.shop.teaser)}</p>`}
+    body: `<section class="room room-first page-hero" style="--room: ${shopRoom}">
+  <h1 class="room-name">The<br>shop</h1>
+  <p class="room-lede">${esc(site.shop.intro || "")}</p>
+</section>
+
+${shopCats.map((k) => {
+  const items = products.filter((p) => p.category === k.slug);
+  if (k.status === "live" && items.length) return `<section class="shop-cat" id="${k.slug}" aria-labelledby="cat-${k.slug}">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="cat-${k.slug}">${esc(k.title)}</h2>
+    <p class="body-lg muted">${esc(k.body || "")}</p>
+  </div>
+  <div class="product-grid">${items.map(productCard).join("")}</div>
+</section>`;
+  return `<section class="shop-cat shop-cat-soon" id="${k.slug}" aria-labelledby="cat-${k.slug}">
+  <h2 class="shop-soon-title" id="cat-${k.slug}">${esc(k.title)}</h2>
+  <p class="muted">${esc(k.body || "")}</p>
+  <p class="label shop-soon-state">IN DEVELOPMENT</p>
+</section>`;
+}).join("\n")}
+
+${bespoke()}
+
+${steps.length ? `<section class="paper" aria-labelledby="how">
+  <h2 class="label" id="how">HOW RELEASES WORK</h2>
+  ${stepsBlock}
+</section>` : ""}
+
+<section class="ask" aria-labelledby="ask">
+  <div>
+    <h2 class="serif-xl" id="ask">Hear first.</h2>
+    <p class="body-lg muted">Not sure which piece yet?  Leave your email and your car.  We will write when something fits.</p>
+  </div>
+  ${notifyForm()}
+</section>`,
+  }));
+
+  // Product pages
+  for (const p of products) {
+    const k = catOf(p);
+    const concept = p.seenOn ? concepts.find((c) => c.slug === p.seenOn) : null;
+    // "seenOnImage": false hides the concept photo, for when the concept car wears a stand in wheel.
+    const seenImg = concept && p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
+    const pRoom = p.room || shopRoom;
+    const cta = p.availability === "interest"
+      ? `<a class="btn btn-solid" href="#interest">Register interest</a>`
+      : `<a class="btn btn-solid" href="${esc(p.buyUrl)}">${p.availability === "preorder" ? "Pre-order" : "Buy"}${p.price ? `, ${esc(p.price)}` : ""}</a>`;
+    write(`shop/${p.category}/${p.slug}/index.html`, page({
+      title: `${p.name}: ${p.tagline} | ${site.name}`,
+      description: `${p.tagline}  ${p.lede || ""}`.trim(),
+      path: productHref(p),
+      room: pRoom,
+      active: "shop",
+      image: p.image ? p.image.image : "/assets/img/og.jpg",
+      scripts: p.configurator ? ["/assets/configurator.js"] : [],
+      body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
+  <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
+  <div class="product-hero-grid">
+    <div class="product-hero-art">${p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
+    <div class="product-hero-text">
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}</p>
+      <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
+      <p class="room-lede">${esc(p.tagline)}</p>
+      ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
+      ${cfgControls(p)}
+      <p class="product-cta">${cta}</p>
+      <ul class="labels product-labels">
+        <li>${esc(AVAIL[p.availability].toUpperCase())}</li>
+        ${p.stage ? `<li>${esc(p.stage.toUpperCase())}</li>` : ""}
+        ${p.price && p.availability === "interest" ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="paper concept-story" aria-labelledby="about">
+  <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
+  <div class="story-body">
+    ${(p.story || []).map((t, i) => `<p class="${i === 0 ? "serif-lead" : "body-lg"}">${esc(t)}</p>`).join("")}
+  </div>
+  ${p.specs && p.specs.length ? `<dl class="specs">
+    ${p.specs.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
+  </dl>` : ""}
+  ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
+</section>
+
+${concept ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
+  ${seenImg ? `<figure>
+    <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
+  </figure>` : ""}
+  <div>
+    <h2 class="label" id="seen">AS DRAWN ON</h2>
+    <p class="seen-name">${esc(concept.name)}</p>
+    <p class="muted">${esc(concept.subtitle)}</p>
+    <p><a class="text-link" href="/concepts/${concept.slug}/">View the concept</a></p>
+  </div>
+</section>` : ""}
+
+${p.category === "wheels" ? bespoke(p) : ""}
+
+${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
+  <div>
+    <h2 class="serif-xl" id="ask">Register interest.</h2>
+    <p class="body-lg muted">${esc(p.name)} is not for sale yet.  Tell us your car and the size you want.  Every set is machined to order for one car, so your answers decide which fitments we engineer first.  The list hears about pricing and build slots before anyone else.</p>
+    ${stepsBlock}
+  </div>
+  ${interestForm(p)}
+</section>` : ""}
+
+${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
+  <div class="shop-cat-head"><h2 class="label" id="more">MORE FROM THE SHOP</h2></div>
+  <div class="product-grid">${products.filter((o) => o !== p).slice(0, 3).map(productCard).join("")}</div>
+</section>` : ""}`,
+    }));
+  }
+
+  write("shop/thanks/index.html", page({
+    title: `You are on the list | ${site.name}`,
+    description: "Your interest is registered.",
+    path: "/shop/thanks/",
+    room: shopRoom,
+    noindex: true,
+    body: `<section class="ask ask-page">
+  <div>
+    <h1 class="serif-xl">You are on the list.</h1>
+    <p class="body-lg muted">Thank you.  We read every one.  You will hear from us by email when there is real news: pricing, fitment and build slots.</p>
+    <p class="ask-links"><a class="btn btn-light" href="/shop/">Back to the shop</a><a class="text-link" href="/">The collection</a></p>
+  </div>
 </section>`,
   }));
 }
@@ -422,7 +787,7 @@ const version = (rel) => {
 };
 const walk = (d) => fs.readdirSync(d).flatMap((f) => { const a = path.join(d, f); return fs.statSync(a).isDirectory() ? walk(a) : [a]; });
 for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
-  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css)/g, (m) => {
+  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css|js)/g, (m) => {
     const v = version(m.slice(1));
     return v ? `${m}?v=${v}` : m;
   });
@@ -430,7 +795,7 @@ for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
 }
 
 // SEO files
-const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/"] : [])];
+const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/", ...products.map(productHref)] : [])];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((p) => `  <url><loc>${url(p)}</loc></url>`).join("\n")}
@@ -445,4 +810,4 @@ const redirects = [
 ];
 write("_redirects", redirects.join("\n") + "\n");
 
-console.log(`Built ${pages.length} pages: ${live.length} live concept(s), ${concepts.length - live.length} unveiling soon${crest ? ", crest in header" : ", no crest yet (add assets/brand/crest.svg)"}.`);
+console.log(`Built ${pages.length} pages: ${live.length} live concept(s), ${concepts.length - live.length} unveiling soon${site.shop.enabled ? `, shop on with ${products.length} product(s)` : ", shop off"}${crest ? ", crest in header" : ", no crest yet (add assets/brand/crest.svg)"}.`);

@@ -1,0 +1,126 @@
+{
+  "status": "live",
+  "number": 2,
+  "slug": "gabel",
+  "code": "W02",
+  "name": "Gabel",
+  "category": "wheels",
+  "room": "#536058",
+  "tagline": "The split five spoke from Breitspur 02.",
+  "lede": "A forged monoblock with five forked spokes, drawn for big modern brakes and Black Series stance.",
+  "availability": "interest",
+  "stage": "In design",
+  "price": "",
+  "buyUrl": "",
+  "construction": "Forged monoblock",
+  "sizes": [
+    "18 in",
+    "19 in",
+    "20 in"
+  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Satin graphite",
+        "hex": "#45474A"
+      },
+      {
+        "name": "Gloss black",
+        "hex": "#141414"
+      },
+      {
+        "name": "Silver",
+        "hex": "#BFC1BF"
+      },
+      {
+        "name": "Bronze",
+        "hex": "#6E5638"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Satin graphite",
+      "lip": "Matched"
+    }
+  },
+  "story": [
+    "Gabel is German for fork.  It is the wheel Breitspur 02 wears: five spokes, each split in two as it reaches the rim.",
+    "Splitting the spoke lets it stay thin at the face and still carry load, so the wheel looks light and leaves room for large calipers.  The spokes run to the very edge of the rim to make the wheel look as big as it is.",
+    "It is drawn for the cars that came after the mesh era: the R129, the E46 and anything that wants to sit like a Black Series."
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Forged 6061-T6 monoblock"
+    },
+    {
+      "label": "Diameters",
+      "value": "18, 19, 20 in"
+    },
+    {
+      "label": "Spokes",
+      "value": "Five, split"
+    },
+    {
+      "label": "Bolt patterns",
+      "value": "5x112, 5x120"
+    },
+    {
+      "label": "Brake clearance",
+      "value": "Big brake kits in mind"
+    },
+    {
+      "label": "Made",
+      "value": "CNC machined to order for your car"
+    }
+  ],
+  "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
+  "seenOn": "breitspur-02",
+  "drawing": {
+    "style": "split",
+    "spokes": 5,
+    "bolts": 5
+  },
+  "image": null,
+  "buildSheet": [
+    [
+      "Car",
+      "1995 Mercedes SL 500 (R129)"
+    ],
+    [
+      "Wheel",
+      "Gabel, forged monoblock"
+    ],
+    [
+      "Size",
+      "19 x 9.5 in front, 19 x 10.5 in rear"
+    ],
+    [
+      "Offset",
+      "ET 30 front, ET 25 rear"
+    ],
+    [
+      "Bolt pattern",
+      "5x112"
+    ],
+    [
+      "Center bore",
+      "66.6 mm"
+    ],
+    [
+      "Material",
+      "Forged 6061-T6 aluminum"
+    ],
+    [
+      "Finish",
+      "Satin graphite"
+    ],
+    [
+      "Set",
+      "No. 001"
+    ]
+  ]
+}
