@@ -245,6 +245,9 @@ const index = () => `<section class="index" aria-labelledby="collection">
 const catOf = (p) => shopCats.find((k) => k.slug === p.category);
 const productHref = (p) => `/shop/${p.category}/${p.slug}/`;
 const AVAIL = { interest: "Registering interest", preorder: "Pre-order open", available: "Available" };
+// "Coming soon" badge on anything not yet for sale.  A product can set its own "badge" text, or "badge": "" to hide it.
+const badgeText = (p) => (p.badge !== undefined ? p.badge : p.availability === "interest" ? "Coming soon" : "");
+const badge = (p, cls = "") => (badgeText(p) ? `<span class="badge${cls ? " " + cls : ""}">${esc(badgeText(p))}</span>` : "");
 
 // A line drawing that stands in for a wheel until the render exists.  "drawing": { "style": "mesh" | "split" | "spoke", "spokes": 5, "bolts": 5 }
 const pt = (r, deg) => { const a = ((deg - 90) * Math.PI) / 180; return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`; };
@@ -281,7 +284,7 @@ const wheelArt = (p, { eager = false, big = false } = {}) => p.image
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
-    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Drawing.  Renders to follow.</span>'}</div>
+    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Drawing.  Renders to follow.</span>'}</div>
     <div class="product-info">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
       <h3 class="product-name">${esc(p.name)}</h3>
@@ -515,7 +518,7 @@ ${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concep
   <div class="concept-product-art">${wheelArt(p)}</div>
   <div>
     <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
-    <p class="seen-name">${esc(p.name)}</p>
+    <p class="seen-name">${esc(p.name)}${badge(p, "badge-inline")}</p>
     <p class="muted">${esc(p.tagline)}  ${esc(AVAIL[p.availability])}.</p>
     <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Register interest" : `View ${esc(p.name)}`}</a></p>
   </div>
@@ -689,7 +692,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
   <div class="product-hero-grid">
     <div class="product-hero-art">${p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
     <div class="product-hero-text">
-      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}</p>
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}

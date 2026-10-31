@@ -338,3 +338,7 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .cfg-fixed [data-lip-name] { letter-spacing: 0.14em; color: var(--cream); }
 .cfg-note { clear: both; margin: 14px 0 0; font-size: 14px; color: var(--cream-dim); }
 .cfg-note a { color: var(--cream); text-underline-offset: 4px; }
+.badge { display: inline-block; padding: 7px 12px 6px; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.22em; line-height: 1; text-transform: uppercase; color: var(--ink); background: var(--cream); vertical-align: middle; }
+.badge-tile { position: absolute; top: 16px; left: 16px; z-index: 2; }
+.badge-inline { margin-left: 16px; position: relative; top: -1px; }
+.seen-name .badge-inline { font-size: 10px; top: -6px; }
