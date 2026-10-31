@@ -91,6 +91,7 @@ for (const p of products) {
     const cfg = p.configurator;
     if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
     for (const c of cfg.centers || []) if (!c.name || !/^#[0-9a-f]{6}$/i.test(c.hex || "")) errors.push(`${p._file}: center colors need a name and a hex like #B8975A`);
+    for (const c of cfg.centers || []) if (c.sheen && !["gloss", "metallic", "satin"].includes(c.sheen)) errors.push(`${p._file}: center sheen can be gloss, metallic or satin`);
     for (const l of cfg.lips || []) if (!["Polished", "Matched"].includes(l)) errors.push(`${p._file}: lips can be Polished or Matched`);
     if (cfg.renders) {
       if (!cfg.renders.path || !(cfg.renders.views || []).length) errors.push(`${p._file}: configurator renders need a path and views`);
@@ -410,7 +411,7 @@ const cfgControls = (p) => {
   return `<div class="cfg-panel">
       <fieldset class="cfg-group">
         <legend>Center <span data-center-name>${esc(c0)}</span></legend>
-        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}" data-finish="${esc(c.finish || "")}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}" data-finish="${esc(c.finish || "")}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"${c.sheen ? ` data-sheen="${esc(c.sheen)}"` : ""}></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
         ${cfg.custom ? `<p class="cfg-note">Want another color?  <a href="#interest" data-pick-custom>Ask for a custom color</a></p>` : ""}
         ${cfg.centers.some((c) => c.finish) ? `<p class="cfg-note" data-center-note>${esc((cfg.centers.find((c) => c.name === c0) || {}).finish || "")}</p>` : ""}
       </fieldset>
