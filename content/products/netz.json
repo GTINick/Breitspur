@@ -22,28 +22,23 @@
   "configurator": {
     "centers": [
       {
-        "name": "Avus Silver",
-        "finish": "Bright silver, clear coated",
+        "name": "Bright Silver",
         "hex": "#CED1D5"
       },
       {
-        "name": "Eifel Smoke",
-        "finish": "Smoke silver, darker tinted metallic",
+        "name": "Smoke Silver",
         "hex": "#8B8E92"
       },
       {
-        "name": "Solitude Gold",
-        "finish": "Gold",
+        "name": "Gold",
         "hex": "#B8975A"
       },
       {
-        "name": "Norisring Black",
-        "finish": "Gloss black",
+        "name": "Gloss Black",
         "hex": "#101113"
       },
       {
-        "name": "Hockenheim Black",
-        "finish": "Satin black",
+        "name": "Satin Black",
         "hex": "#2B2C2E"
       }
     ],
@@ -51,7 +46,7 @@
       "Polished"
     ],
     "default": {
-      "center": "Avus Silver",
+      "center": "Bright Silver",
       "lip": "Polished"
     }
   },
@@ -126,7 +121,7 @@
     ],
     [
       "Finish",
-      "Avus Silver center, polished lip"
+      "Bright Silver center, polished lip"
     ],
     [
       "Set",
