@@ -54,11 +54,12 @@
       }
     ],
     "lips": [
+      "Polished",
       "Matched"
     ],
     "default": {
       "center": "Bright Silver",
-      "lip": "Matched"
+      "lip": "Polished"
     },
     "renders": {
       "path": "/assets/img/products/gabel",
@@ -133,11 +134,11 @@
     "bolts": 5
   },
   "image": {
-    "image": "/assets/img/products/gabel/bright-silver-matched/front.webp",
-    "small": "/assets/img/products/gabel/bright-silver-matched/front-800.webp",
+    "image": "/assets/img/products/gabel/bright-silver-polished/front.webp",
+    "small": "/assets/img/products/gabel/bright-silver-polished/front-800.webp",
     "width": 1600,
     "height": 1600,
-    "alt": "Gabel five spoke wheel in Bright Silver, front view"
+    "alt": "Gabel five spoke wheel in Bright Silver with a polished lip, front view"
   },
   "buildSheet": [
     [
