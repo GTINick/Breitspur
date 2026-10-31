@@ -6,13 +6,13 @@
   "name": "Gabel",
   "category": "wheels",
   "room": "#536058",
-  "tagline": "The split five spoke from Breitspur 02.",
-  "lede": "A forged monoblock with five forked spokes, drawn for big modern brakes and Black Series stance.",
+  "tagline": "The five spoke from Breitspur 02.",
+  "lede": "A three piece wheel with five solid spokes and hidden hardware, drawn for the R129 and a Black Series stance.",
   "availability": "interest",
   "stage": "In design",
   "price": "",
   "buyUrl": "",
-  "construction": "Forged monoblock",
+  "construction": "Three piece forged",
   "sizes": [
     "18 in",
     "19 in",
@@ -83,14 +83,14 @@
     }
   },
   "story": [
-    "Gabel is German for fork.  It is the wheel Breitspur 02 wears: five spokes, each split in two as it reaches the rim.",
-    "Splitting the spoke lets it stay thin at the face and still carry load, so the wheel looks light and leaves room for large calipers.  The spokes run to the very edge of the rim to make the wheel look as big as it is.",
-    "It is drawn for the cars that came after the mesh era: the R129, the E46 and anything that wants to sit like a Black Series."
+    "Gabel is the wheel Breitspur 02 wears: five solid spokes, a flat face and a deep lip, drawn for the R129 SL.",
+    "The center is machined from a forged 7075-T6 blank and bolts to a spun lip and barrel from behind, so the hardware is hidden and the face stays clean from the hub to the rim.  The spokes run almost to the edge of the rim, and every window is chamfered front and back so the wheel reads light from any angle.",
+    "The lug face is set into the center, with the lion crest on the cap and the name cut into one spoke.  Choose the center color and a polished or color matched lip.  Every set is machined to the fitment of the car it goes on."
   ],
   "specs": [
     {
       "label": "Construction",
-      "value": "Forged 7075-T6 monoblock"
+      "value": "Three piece, forged 7075-T6 center"
     },
     {
       "label": "Diameters",
@@ -98,7 +98,15 @@
     },
     {
       "label": "Spokes",
-      "value": "Five, split"
+      "value": "Five, solid"
+    },
+    {
+      "label": "Assembly",
+      "value": "Hidden hardware, clean face"
+    },
+    {
+      "label": "Lip",
+      "value": "Polished or color matched"
     },
     {
       "label": "Bolt patterns",
@@ -106,7 +114,7 @@
     },
     {
       "label": "Brake clearance",
-      "value": "Big brake kits in mind"
+      "value": "Checked against your calipers"
     },
     {
       "label": "Made",
@@ -116,7 +124,7 @@
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
   "seenOn": "breitspur-02",
   "drawing": {
-    "style": "split",
+    "style": "spoke",
     "spokes": 5,
     "bolts": 5
   },
@@ -134,7 +142,7 @@
     ],
     [
       "Wheel",
-      "Gabel, forged monoblock"
+      "Gabel, three piece"
     ],
     [
       "Size",
@@ -142,7 +150,7 @@
     ],
     [
       "Offset",
-      "ET 30 front, ET 25 rear"
+      "ET 22 front, ET 10 rear"
     ],
     [
       "Bolt pattern",
@@ -154,11 +162,11 @@
     ],
     [
       "Material",
-      "Forged 7075-T6 aluminum"
+      "Forged 7075-T6 aluminum center"
     ],
     [
       "Finish",
-      "Satin graphite"
+      "Bright Silver center, polished lip"
     ],
     [
       "Set",

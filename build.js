@@ -376,20 +376,30 @@ const wheelRender = (p) => {
 </svg>`;
 };
 
-// Rendered configurator: a large view of the wheel in the chosen center color
-// and lip, with thumbnails for the other angles.  assets/configurator.js swaps
-// the images when the choice changes.
-const wheelPhoto = (p) => {
+// Rendered configurator: the front view of the wheel, cut out on the room
+// color, in the chosen center color and lip.  The other angles, shot in the
+// studio, sit in wheelGallery below the hero.  assets/configurator.js swaps
+// every image when the choice changes.
+const cfgStart = (p) => {
   const cfg = p.configurator, def = cfg.default || {};
-  const c0 = (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).name;
-  const l0 = def.lip || (cfg.lips || ["Matched"])[0];
-  const v0 = cfg.renders.views[0];
-  const alt = (v) => `${p.name} in ${c0} with a ${l0 === "Matched" ? "color matched" : l0.toLowerCase()} lip, ${v.label.toLowerCase()} view`;
-  return `<div class="wheel-photo" data-renders="${esc(cfg.renders.path)}" data-name="${esc(p.name)}">
-  <div class="wheel-photo-frame"><img class="wheel-photo-main" src="${renderSrc(cfg, c0, l0, v0.key, "-800")}" srcset="${renderSrc(cfg, c0, l0, v0.key, "-800")} 800w, ${renderSrc(cfg, c0, l0, v0.key)} 1600w" sizes="(min-width: 860px) 560px, 90vw" width="1600" height="1600" alt="${esc(alt(v0))}" data-view="${esc(v0.key)}" fetchpriority="high" decoding="async"></div>
-  <div class="wheel-views" role="group" aria-label="Angles">${cfg.renders.views.map((v, i) => `<button type="button" class="wheel-view" data-view="${esc(v.key)}" data-label="${esc(v.label)}" aria-pressed="${i === 0}"><img src="${renderSrc(cfg, c0, l0, v.key, "-240")}" width="240" height="240" alt="" loading="lazy" decoding="async"><span class="sr">${esc(v.label)} view</span></button>`).join("")}</div>
-</div>`;
+  return {
+    c0: (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).name,
+    l0: def.lip || (cfg.lips || ["Matched"])[0],
+  };
 };
+const renderAlt = (p, center, lip, label) => `${p.name} in ${center} with a ${lip === "Matched" ? "color matched" : lip.toLowerCase()} lip, ${label.toLowerCase()} view`;
+const renderImg = (p, view, sizes, extra) => {
+  const cfg = p.configurator, { c0, l0 } = cfgStart(p);
+  return `<img class="${extra.cls}" src="${renderSrc(cfg, c0, l0, view.key, "-800")}" srcset="${renderSrc(cfg, c0, l0, view.key, "-800")} 800w, ${renderSrc(cfg, c0, l0, view.key)} 1600w" sizes="${sizes}" width="1600" height="1600" alt="${esc(renderAlt(p, c0, l0, view.label))}" data-view="${esc(view.key)}" data-label="${esc(view.label)}"${extra.eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+};
+const wheelPhoto = (p) => `<div class="wheel-photo" data-renders="${esc(p.configurator.renders.path)}" data-name="${esc(p.name)}">
+  ${renderImg(p, p.configurator.renders.views[0], "(min-width: 860px) 560px, 90vw", { cls: "wheel-photo-main", eager: true })}
+</div>`;
+const wheelGallery = (p, room) => `<section class="wheel-gallery" style="--room: ${esc(room)}" aria-label="${esc(p.name)} from every angle">
+  <div class="wheel-gallery-grid">
+    ${p.configurator.renders.views.slice(1).map((v) => `<figure>${renderImg(p, v, "(min-width: 860px) 46vw, 92vw", { cls: "wheel-angle" })}</figure>`).join("\n    ")}
+  </div>
+</section>`;
 
 // Center color and lip choices, shown in the product hero beside the live preview.
 const cfgControls = (p) => {
@@ -730,7 +740,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     </div>
   </div>
 </section>
-
+${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 <section class="paper concept-story" aria-labelledby="about">
   <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
   <div class="story-body">

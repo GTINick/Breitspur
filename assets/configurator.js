@@ -4,7 +4,6 @@
   if (!root) return;
   var svg = root.querySelector(".wheel-render");
   var photo = root.querySelector(".wheel-photo");
-  var view = photo ? photo.querySelector(".wheel-photo-main").getAttribute("data-view") : null;
   var form = document.querySelector('form[name="product-interest"]');
   var polish = "url(#" + root.getAttribute("data-polish") + ")";
   var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); };
@@ -36,38 +35,26 @@
       var q = new URLSearchParams(location.search);
       q.set("center", slug(c.value));
       if (l) q.set("lip", slug(l.value));
-      if (photo) q.set("view", view);
       history.replaceState(null, "", location.pathname + "?" + q.toString() + location.hash);
     } catch (e) {}
   }
 
-  // Rendered wheel: every image lives at <renders>/<center>-<lip>/<view>[-800|-240].webp
+  // Rendered wheel: every image lives at <renders>/<center>-<lip>/<view>[-800].webp.
+  // The front view in the hero and every angle in the gallery below follow the choice.
   function showPhoto(center, lip) {
     var base = photo.getAttribute("data-renders") + "/" + slug(center) + "-" + slug(lip) + "/";
-    var main = photo.querySelector(".wheel-photo-main");
-    var buttons = photo.querySelectorAll(".wheel-view");
-    var label = view;
-    for (var i = 0; i < buttons.length; i++) {
-      var b = buttons[i], k = b.getAttribute("data-view");
-      b.querySelector("img").src = base + k + "-240.webp";
-      b.setAttribute("aria-pressed", k === view ? "true" : "false");
-      if (k === view) label = b.getAttribute("data-label");
+    var imgs = [photo.querySelector(".wheel-photo-main")].concat([].slice.call(document.querySelectorAll(".wheel-angle")));
+    var lipText = lip === "Matched" ? "color matched" : lip.toLowerCase();
+    for (var i = 0; i < imgs.length; i++) {
+      var im = imgs[i], v = im.getAttribute("data-view");
+      im.src = base + v + "-800.webp";
+      im.srcset = base + v + "-800.webp 800w, " + base + v + ".webp 1600w";
+      im.alt = photo.getAttribute("data-name") + " in " + center + " with a " + lipText + " lip, " + im.getAttribute("data-label").toLowerCase() + " view";
     }
-    main.src = base + view + "-800.webp";
-    main.srcset = base + view + "-800.webp 800w, " + base + view + ".webp 1600w";
-    main.setAttribute("data-view", view);
-    main.alt = photo.getAttribute("data-name") + " in " + center + " with a " + (lip === "Matched" ? "color matched" : lip.toLowerCase()) + " lip, " + String(label).toLowerCase() + " view";
   }
-  if (photo) photo.addEventListener("click", function (e) {
-    var b = e.target.closest(".wheel-view");
-    if (!b) return;
-    view = b.getAttribute("data-view");
-    apply(true);
-  });
 
   try {
     var q = new URLSearchParams(location.search);
-    if (photo && q.get("view") && photo.querySelector('.wheel-view[data-view="' + q.get("view") + '"]')) view = q.get("view");
     if (q.get("center")) pick("cfg-center", q.get("center"));
     if (q.get("lip")) pick("cfg-lip", q.get("lip"));
   } catch (e) {}
