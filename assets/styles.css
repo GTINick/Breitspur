@@ -314,6 +314,14 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .wheel-render .wr-lip { fill: none; stroke: var(--lip); }
 .wheel-render .wr-line { fill: none; stroke: rgba(0, 0, 0, 0.45); stroke-width: 0.6; }
 .wheel-render * { transition: fill 0.35s ease, stroke 0.35s ease; }
+.wheel-photo { width: 100%; max-width: 600px; margin: 0 auto; }
+.wheel-photo-frame { aspect-ratio: 1; }
+.wheel-photo-main { display: block; width: 100%; height: auto; }
+.wheel-views { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+.wheel-view { padding: 0; border: 0; background: none; cursor: pointer; border-radius: 4px; overflow: hidden; outline: 1px solid rgba(237, 231, 218, 0.18); outline-offset: 3px; transition: outline-color 0.2s ease; }
+.wheel-view img { display: block; width: 64px; height: 64px; }
+.wheel-view[aria-pressed="true"] { outline-color: var(--cream); }
+.wheel-view:focus-visible { outline: 2px solid var(--cream); }
 .cfg-group { border: 0; margin: 28px 0 0; padding: 20px 0 0; border-top: 1px solid rgba(237, 231, 218, 0.22); }
 .cfg-group legend { float: left; width: 100%; padding: 0; margin-bottom: 16px; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); }
 .cfg-group legend span { float: right; letter-spacing: 0.14em; color: var(--cream); }

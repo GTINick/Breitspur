@@ -21,29 +21,65 @@
   "configurator": {
     "centers": [
       {
-        "name": "Satin graphite",
-        "hex": "#45474A"
+        "name": "Bright Silver",
+        "hex": "#C9CBCD"
       },
       {
-        "name": "Gloss black",
-        "hex": "#141414"
+        "name": "Smoke Silver",
+        "hex": "#7E8084"
       },
       {
-        "name": "Silver",
-        "hex": "#BFC1BF"
+        "name": "Gold",
+        "hex": "#B5A78A"
       },
       {
         "name": "Bronze",
-        "hex": "#6E5638"
+        "hex": "#7A6550"
+      },
+      {
+        "name": "White",
+        "hex": "#EDEDEA"
+      },
+      {
+        "name": "Gloss Black",
+        "hex": "#111214"
+      },
+      {
+        "name": "Satin Black",
+        "hex": "#2A2B2D"
       }
     ],
     "lips": [
-      "Polished",
       "Matched"
     ],
     "default": {
-      "center": "Satin graphite",
+      "center": "Bright Silver",
       "lip": "Matched"
+    },
+    "renders": {
+      "path": "/assets/img/products/gabel",
+      "views": [
+        {
+          "key": "front",
+          "label": "Front"
+        },
+        {
+          "key": "hero",
+          "label": "Three quarter"
+        },
+        {
+          "key": "tilt",
+          "label": "Low"
+        },
+        {
+          "key": "side",
+          "label": "Side"
+        },
+        {
+          "key": "detail",
+          "label": "Detail"
+        }
+      ]
     }
   },
   "story": [
@@ -84,7 +120,13 @@
     "spokes": 5,
     "bolts": 5
   },
-  "image": null,
+  "image": {
+    "image": "/assets/img/products/gabel/bright-silver-matched/front.webp",
+    "small": "/assets/img/products/gabel/bright-silver-matched/front-800.webp",
+    "width": 1600,
+    "height": 1600,
+    "alt": "Gabel five spoke wheel in Bright Silver, front view"
+  },
   "buildSheet": [
     [
       "Car",

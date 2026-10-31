@@ -16,6 +16,10 @@ const errors = [];
 const esc = (s = "") =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const two = (n) => String(n).padStart(2, "0");
+// Same slug as assets/configurator.js, so build and browser agree on image paths.
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+// Rendered configurator image: <path>/<center>-<lip>/<view>[-800|-240].webp
+const renderSrc = (cfg, center, lip, view, size = "") => `${cfg.renders.path}/${slugify(center)}-${slugify(lip)}/${view}${size}.webp`;
 const write = (rel, body) => {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -88,6 +92,14 @@ for (const p of products) {
     if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
     for (const c of cfg.centers || []) if (!c.name || !/^#[0-9a-f]{6}$/i.test(c.hex || "")) errors.push(`${p._file}: center colors need a name and a hex like #B8975A`);
     for (const l of cfg.lips || []) if (!["Polished", "Matched"].includes(l)) errors.push(`${p._file}: lips can be Polished or Matched`);
+    if (cfg.renders) {
+      if (!cfg.renders.path || !(cfg.renders.views || []).length) errors.push(`${p._file}: configurator renders need a path and views`);
+      for (const c of cfg.centers || []) for (const l of cfg.lips || ["Matched"]) for (const v of cfg.renders.views || [])
+        for (const size of ["", "-800", "-240"]) {
+          const f = renderSrc(cfg, c.name, l, v.key, size);
+          if (!fs.existsSync(path.join(ROOT, f))) errors.push(`${p._file}: missing render ${f}`);
+        }
+    }
   }
   for (const g of [p.image, ...(p.gallery || [])].filter(Boolean)) {
     if (!g.alt) errors.push(`${p._file}: every image needs alt text`);
@@ -362,6 +374,21 @@ const wheelRender = (p) => {
   <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
   <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
 </svg>`;
+};
+
+// Rendered configurator: a large view of the wheel in the chosen center color
+// and lip, with thumbnails for the other angles.  assets/configurator.js swaps
+// the images when the choice changes.
+const wheelPhoto = (p) => {
+  const cfg = p.configurator, def = cfg.default || {};
+  const c0 = (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).name;
+  const l0 = def.lip || (cfg.lips || ["Matched"])[0];
+  const v0 = cfg.renders.views[0];
+  const alt = (v) => `${p.name} in ${c0} with a ${l0 === "Matched" ? "color matched" : l0.toLowerCase()} lip, ${v.label.toLowerCase()} view`;
+  return `<div class="wheel-photo" data-renders="${esc(cfg.renders.path)}" data-name="${esc(p.name)}">
+  <div class="wheel-photo-frame"><img class="wheel-photo-main" src="${renderSrc(cfg, c0, l0, v0.key, "-800")}" srcset="${renderSrc(cfg, c0, l0, v0.key, "-800")} 800w, ${renderSrc(cfg, c0, l0, v0.key)} 1600w" sizes="(min-width: 860px) 560px, 90vw" width="1600" height="1600" alt="${esc(alt(v0))}" data-view="${esc(v0.key)}" fetchpriority="high" decoding="async"></div>
+  <div class="wheel-views" role="group" aria-label="Angles">${cfg.renders.views.map((v, i) => `<button type="button" class="wheel-view" data-view="${esc(v.key)}" data-label="${esc(v.label)}" aria-pressed="${i === 0}"><img src="${renderSrc(cfg, c0, l0, v.key, "-240")}" width="240" height="240" alt="" loading="lazy" decoding="async"><span class="sr">${esc(v.label)} view</span></button>`).join("")}</div>
+</div>`;
 };
 
 // Center color and lip choices, shown in the product hero beside the live preview.
@@ -687,7 +714,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
-    <div class="product-hero-art">${p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
+    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
