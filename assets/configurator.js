@@ -1,8 +1,9 @@
-// Wheel configurator.  Repaints the preview, keeps the interest form in step, and keeps the choice in the URL so it can be shared.
+// Wheel configurator.  Repaints the preview (SVG drawing or rendered photos), keeps the interest form in step, and keeps the choice in the URL so it can be shared.
 (function () {
   var root = document.querySelector("[data-config]");
   if (!root) return;
   var svg = root.querySelector(".wheel-render");
+  var photo = root.querySelector(".wheel-photo");
   var form = document.querySelector('form[name="product-interest"]');
   var polish = "url(#" + root.getAttribute("data-polish") + ")";
   var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); };
@@ -17,8 +18,11 @@
     var c = picked("cfg-center"), l = picked("cfg-lip");
     if (!c) return;
     var hex = c.getAttribute("data-hex");
-    svg.style.setProperty("--center", hex);
-    svg.style.setProperty("--lip", !l || l.value === "Matched" ? hex : polish);
+    if (svg) {
+      svg.style.setProperty("--center", hex);
+      svg.style.setProperty("--lip", !l || l.value === "Matched" ? hex : polish);
+    }
+    if (photo) showPhoto(c.value, l ? l.value : "Matched");
     root.querySelector("[data-center-name]").textContent = c.value;
     var note = root.querySelector("[data-center-note]");
     if (note) note.textContent = c.getAttribute("data-finish") || "";
@@ -33,6 +37,20 @@
       if (l) q.set("lip", slug(l.value));
       history.replaceState(null, "", location.pathname + "?" + q.toString() + location.hash);
     } catch (e) {}
+  }
+
+  // Rendered wheel: every image lives at <renders>/<center>-<lip>/<view>[-800].webp.
+  // The front view in the hero and every angle in the gallery below follow the choice.
+  function showPhoto(center, lip) {
+    var base = photo.getAttribute("data-renders") + "/" + slug(center) + "-" + slug(lip) + "/";
+    var imgs = [photo.querySelector(".wheel-photo-main")].concat([].slice.call(document.querySelectorAll(".wheel-angle")));
+    var lipText = lip === "Matched" ? "color matched" : lip.toLowerCase();
+    for (var i = 0; i < imgs.length; i++) {
+      var im = imgs[i], v = im.getAttribute("data-view");
+      im.src = base + v + "-800.webp";
+      im.srcset = base + v + "-800.webp 800w, " + base + v + ".webp 1600w";
+      im.alt = photo.getAttribute("data-name") + " in " + center + " with a " + lipText + " lip, " + im.getAttribute("data-label").toLowerCase() + " view";
+    }
   }
 
   try {
