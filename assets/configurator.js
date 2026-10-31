@@ -4,7 +4,6 @@
   if (!root) return;
   var svg = root.querySelector(".wheel-render");
   var form = document.querySelector('form[name="product-interest"]');
-  var name = root.getAttribute("data-name");
   var polish = "url(#" + root.getAttribute("data-polish") + ")";
   var slug = function (s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); };
   var picked = function (n) { return root.querySelector('input[name="' + n + '"]:checked'); };
@@ -22,7 +21,6 @@
     svg.style.setProperty("--lip", !l || l.value === "Matched" ? hex : polish);
     root.querySelector("[data-center-name]").textContent = c.value;
     if (l) root.querySelector("[data-lip-name]").textContent = l.value === "Matched" ? "Color matched" : l.value;
-    root.querySelector("[data-summary]").textContent = name + ", " + c.value + " center" + (l ? ", " + (l.value === "Matched" ? "color matched" : l.value.toLowerCase()) + " lip" : "");
     if (form && !fromForm) {
       if (form.center && form.center.tagName === "SELECT") form.center.value = c.value;
       if (l && form.lip && form.lip.tagName === "SELECT") form.lip.value = l.value;

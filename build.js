@@ -313,7 +313,6 @@ const bespoke = (p) => {
         <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>BUILD SHEET</span></div>
         ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
         <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-        <div class="sheet-sign"><span class="sheet-sig">${esc(site.founder.name)}</span><span>DESIGNED AND SIGNED</span></div>
         <figcaption>Example.  Every sheet is written for one car.</figcaption>
       </figure>` : ""}
     </div>
@@ -368,28 +367,22 @@ const wheelRender = (p) => {
 </svg>`;
 };
 
-const configurator = (p) => {
+// Center color and lip choices, shown in the product hero beside the live preview.
+const cfgControls = (p) => {
   const cfg = p.configurator;
   if (!cfg || !cfg.centers || !cfg.centers.length) return "";
   const def = cfg.default || {};
   const c0 = def.center || cfg.centers[0].name, l0 = def.lip || (cfg.lips || [])[0];
-  return `<section class="configurator" id="configure" style="--room: ${esc(p.room || "#2E2C29")}" aria-labelledby="cfg-title" data-config data-name="${esc(p.name)}" data-polish="wr-${p.slug}-polish">
-  <div class="cfg-stage">${wheelRender(p)}</div>
-  <div class="cfg-panel">
-    <h2 class="label" id="cfg-title">CONFIGURE</h2>
-    <p class="cfg-summary" data-summary aria-live="polite">${esc(p.name)}, ${esc(c0)} center${l0 ? `, ${esc(l0.toLowerCase())} lip` : ""}</p>
-    <fieldset class="cfg-group">
-      <legend>Center <span data-center-name>${esc(c0)}</span></legend>
-      <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
-    </fieldset>
-    ${cfg.lips && cfg.lips.length ? `<fieldset class="cfg-group">
-      <legend>Lip <span data-lip-name>${esc(l0)}</span></legend>
-      <div class="segments">${cfg.lips.map((l) => `<label class="segment"><input type="radio" name="cfg-lip" value="${esc(l)}"${l === l0 ? " checked" : ""}><span>${esc(l === "Matched" ? "Color matched" : l)}</span></label>`).join("")}</div>
-    </fieldset>` : ""}
-    <p class="cfg-cta"><a class="btn btn-solid" href="#interest">Register interest in this spec</a></p>
-    <p class="form-fine">Colors on screen are a guide.  Width, offset and fitment are set for your car after you register.</p>
-  </div>
-</section>`;
+  return `<div class="cfg-panel">
+      <fieldset class="cfg-group">
+        <legend>Center <span data-center-name>${esc(c0)}</span></legend>
+        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+      </fieldset>
+      ${cfg.lips && cfg.lips.length ? `<fieldset class="cfg-group">
+        <legend>Lip <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span></legend>
+        <div class="segments">${cfg.lips.map((l) => `<label class="segment"><input type="radio" name="cfg-lip" value="${esc(l)}"${l === l0 ? " checked" : ""}><span>${esc(l === "Matched" ? "Color matched" : l)}</span></label>`).join("")}</div>
+      </fieldset>` : ""}
+    </div>`;
 };
 
 const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
@@ -417,7 +410,7 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
   <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
-  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, a finish you want to see"></textarea></div>
+  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, stance"></textarea></div>
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
   <p class="field-wide"><button class="btn btn-solid" type="submit">Register interest</button></p>
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
@@ -689,26 +682,25 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       active: "shop",
       image: p.image ? p.image.image : "/assets/img/og.jpg",
       scripts: p.configurator ? ["/assets/configurator.js"] : [],
-      body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name">
+      body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
-    <div class="product-hero-art">${wheelArt(p, { eager: true, big: true })}${p.image ? "" : '<p class="product-tile-note">Design drawing.  Final renders to follow.</p>'}</div>
+    <div class="product-hero-art">${p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
       <p class="room-lede">${esc(p.tagline)}</p>
-      ${p.lede ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
+      ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
+      ${cfgControls(p)}
+      <p class="product-cta">${cta}</p>
       <ul class="labels product-labels">
         <li>${esc(AVAIL[p.availability].toUpperCase())}</li>
         ${p.stage ? `<li>${esc(p.stage.toUpperCase())}</li>` : ""}
         ${p.price && p.availability === "interest" ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
       </ul>
-      <p class="product-cta">${cta}${p.configurator ? `<a class="text-link" href="#configure">Configure yours</a>` : ""}</p>
     </div>
   </div>
 </section>
-
-${configurator(p)}
 
 <section class="paper concept-story" aria-labelledby="about">
   <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
