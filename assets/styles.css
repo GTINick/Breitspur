@@ -268,3 +268,8 @@ a:hover { opacity: 0.8; }
 main > .shop-cat:last-child { padding-bottom: 112px; }
 @media (max-width: 860px) { main > .shop-cat:last-child { padding-bottom: 72px; } }
 .seen-on-text > div { grid-column: 1 / -1; }
+.home-shop { border-top: 1px solid var(--rule-dark); }
+.home-shop .shop-cat-head > div { grid-column: span 6; }
+.home-shop .shop-cat-head .body-lg { margin: 0; }
+.home-shop .shop-cat-head .btn { margin-top: 24px; }
+@media (max-width: 860px) { .home-shop .shop-cat-head > div { grid-column: 1 / -1; } }

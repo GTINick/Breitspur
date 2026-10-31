@@ -361,7 +361,23 @@ ${index()}
 <section class="ask" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">Tell us the car.</h2>
   ${form("home")}
-</section>`,
+</section>${(() => {
+  const wheels = products.filter((p) => p.category === "wheels");
+  if (!wheels.length) return "";
+  const k = shopCats.find((c) => c.slug === "wheels");
+  return `
+
+<section class="shop-cat home-shop" aria-labelledby="home-wheels">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="home-wheels">${esc(k.title)}</h2>
+    <div>
+      <p class="body-lg muted">${esc(k.body || "")}  Not on sale yet.  Register interest and you hear first.</p>
+      <p><a class="btn btn-light" href="/shop/">Visit the shop</a></p>
+    </div>
+  </div>
+  <div class="product-grid">${wheels.slice(0, 3).map(productCard).join("")}</div>
+</section>`;
+})()}`,
 }));
 
 // Concept pages
