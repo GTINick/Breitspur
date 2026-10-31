@@ -20,6 +20,8 @@
     svg.style.setProperty("--center", hex);
     svg.style.setProperty("--lip", !l || l.value === "Matched" ? hex : polish);
     root.querySelector("[data-center-name]").textContent = c.value;
+    var note = root.querySelector("[data-center-note]");
+    if (note) note.textContent = c.getAttribute("data-finish") || "";
     if (l) root.querySelector("[data-lip-name]").textContent = l.value === "Matched" ? "Color matched" : l.value;
     if (form && !fromForm) {
       if (form.center && form.center.tagName === "SELECT") form.center.value = c.value;

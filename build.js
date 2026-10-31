@@ -376,7 +376,8 @@ const cfgControls = (p) => {
   return `<div class="cfg-panel">
       <fieldset class="cfg-group">
         <legend>Center <span data-center-name>${esc(c0)}</span></legend>
-        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+        <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}" data-finish="${esc(c.finish || "")}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+        ${cfg.centers.some((c) => c.finish) ? `<p class="cfg-note" data-center-note>${esc((cfg.centers.find((c) => c.name === c0) || {}).finish || "")}</p>` : ""}
       </fieldset>
       ${cfg.lips && cfg.lips.length === 1 ? `<p class="cfg-group cfg-fixed"><span class="cfg-fixed-label">Lip</span> <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span><input type="radio" name="cfg-lip" value="${esc(l0)}" checked hidden></p>` : ""}
       ${cfg.lips && cfg.lips.length > 1 ? `<fieldset class="cfg-group">

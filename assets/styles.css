@@ -337,3 +337,4 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .product-hero .product-cta { margin-top: 32px; }
 .cfg-fixed { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); }
 .cfg-fixed [data-lip-name] { letter-spacing: 0.14em; color: var(--cream); }
+.cfg-note { clear: both; margin: 14px 0 0; font-size: 14px; color: var(--cream-dim); }
