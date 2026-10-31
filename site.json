@@ -92,7 +92,7 @@
     "bespoke": {
       "label": "MADE FOR ONE CAR",
       "lead": "Every set is machined for one car.  Yours.",
-      "body": "There is no warehouse and no catalog size.  Each wheel starts as a forged 6061-T6 aluminum blank and is CNC machined to order, one set at a time, to the exact fitment of the car it is going on.",
+      "body": "There is no warehouse and no catalog size.  Each wheel center starts as a forged 7075-T6 aluminum blank and is CNC machined to order, one set at a time, to the exact fitment of the car it is going on.",
       "items": [
         {
           "title": "Width and offset",
@@ -146,7 +146,7 @@
         ],
         [
           "Material",
-          "Forged 6061-T6 aluminum"
+          "Forged 7075-T6 aluminum center"
         ],
         [
           "Finish",

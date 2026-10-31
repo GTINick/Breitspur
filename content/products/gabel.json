@@ -54,7 +54,7 @@
   "specs": [
     {
       "label": "Construction",
-      "value": "Forged 6061-T6 monoblock"
+      "value": "Forged 7075-T6 monoblock"
     },
     {
       "label": "Diameters",
@@ -112,7 +112,7 @@
     ],
     [
       "Material",
-      "Forged 6061-T6 aluminum"
+      "Forged 7075-T6 aluminum"
     ],
     [
       "Finish",

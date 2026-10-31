@@ -59,7 +59,7 @@
   "specs": [
     {
       "label": "Construction",
-      "value": "Three piece, forged 6061-T6 center"
+      "value": "Three piece, forged 7075-T6 center"
     },
     {
       "label": "Diameters",
@@ -118,7 +118,7 @@
     ],
     [
       "Material",
-      "Forged 6061-T6 aluminum"
+      "Forged 7075-T6 aluminum center"
     ],
     [
       "Finish",
