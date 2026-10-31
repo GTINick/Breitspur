@@ -256,7 +256,6 @@ const wheelDrawing = (d = {}, label = "") => {
       const a = (360 / n) * i;
       lines.push(`<path d="M${pt(21, a)} Q${pt(52, a + 14)} ${pt(78, a + 34)}"/>`, `<path d="M${pt(21, a)} Q${pt(52, a - 14)} ${pt(78, a - 34)}"/>`);
     }
-    for (let i = 0; i < 36; i++) lines.push(`<circle class="fill" cx="${pt(84, i * 10).split(",")[0]}" cy="${pt(84, i * 10).split(",")[1]}" r="0.9"/>`);
   } else {
     const pairs = style === "split" ? [-5, 5] : [0];
     for (let i = 0; i < n; i++) {
@@ -342,7 +341,6 @@ const wheelRender = (p) => {
         }
         return out.join("");
       })();
-  const rivets = multi ? Array.from({ length: 40 }, (_, i) => { const [x, y] = pt(lipIn + 1.6, i * 9).split(","); return `<circle class="wr-rivet" cx="${x}" cy="${y}" r="1.05"/>`; }).join("") : "";
   const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(13, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
   const cfg = p.configurator, def = (cfg && cfg.default) || {};
   const c0 = cfg ? (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).hex : "#9a9a98";
@@ -361,7 +359,6 @@ const wheelRender = (p) => {
   ${spokes}
   <circle r="21" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
   <circle r="${(lipIn + 97) / 2}" class="wr-lip" stroke-width="${97 - lipIn}"/>
-  ${rivets}
   <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
   <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
 </svg>`;
@@ -377,6 +374,7 @@ const cfgControls = (p) => {
       <fieldset class="cfg-group">
         <legend>Center <span data-center-name>${esc(c0)}</span></legend>
         <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}" data-finish="${esc(c.finish || "")}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+        ${cfg.custom ? `<p class="cfg-note">Want another color?  <a href="#interest" data-pick-custom>Ask for a custom color</a></p>` : ""}
         ${cfg.centers.some((c) => c.finish) ? `<p class="cfg-note" data-center-note>${esc((cfg.centers.find((c) => c.name === c0) || {}).finish || "")}</p>` : ""}
       </fieldset>
       ${cfg.lips && cfg.lips.length === 1 ? `<p class="cfg-group cfg-fixed"><span class="cfg-fixed-label">Lip</span> <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span><input type="radio" name="cfg-lip" value="${esc(l0)}" checked hidden></p>` : ""}
@@ -405,7 +403,8 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
     const centers = cfg ? cfg.centers.map((c) => c.name) : p.finishes || [];
     const def = cfg && cfg.default ? cfg.default : {};
     const sel = (list, pick, extra) => [...list, extra].map((o) => `<option${o === pick ? " selected" : ""}>${esc(o)}</option>`).join("");
-    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(centers, def.center, "No preference")}</select></div>` : '<input type="hidden" name="center" value="">'}
+    const list = cfg && cfg.custom ? [...centers, "Custom color"] : centers;
+    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(list, def.center, "No preference")}</select></div>${cfg && cfg.custom ? `<div class="field field-wide" data-custom-field hidden><label for="pi-custom">Your custom color</label><input id="pi-custom" name="custom-color" type="text" placeholder="Paint code, or describe it"></div>` : ""}` : '<input type="hidden" name="center" value="">'}
   ${cfg && cfg.lips && cfg.lips.length === 1 ? `<input type="hidden" name="lip" value="${esc(cfg.lips[0])}">` : ""}
   ${cfg && cfg.lips && cfg.lips.length > 1 ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : cfg && cfg.lips && cfg.lips.length === 1 ? "" : '<input type="hidden" name="lip" value="">'}`;
   })()}

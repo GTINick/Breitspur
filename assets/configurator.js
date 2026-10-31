@@ -41,6 +41,13 @@
     if (q.get("lip")) pick("cfg-lip", q.get("lip"));
   } catch (e) {}
 
+  // Custom color: show the free text field when chosen, and let the panel link pick it.
+  var customField = form && form.querySelector("[data-custom-field]");
+  function syncCustom() { if (customField && form.center) customField.hidden = form.center.value !== "Custom color"; }
+  var customLink = root.querySelector("[data-pick-custom]");
+  if (customLink && form && form.center) customLink.addEventListener("click", function () { form.center.value = "Custom color"; syncCustom(); setTimeout(function () { var i = form.querySelector("#pi-custom"); if (i) i.focus({ preventScroll: true }); }, 400); });
+  if (form) form.addEventListener("change", syncCustom);
+
   root.addEventListener("change", function () { apply(false); });
   if (form) form.addEventListener("change", function (e) {
     var t = e.target;

@@ -312,7 +312,6 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .wheel-render .wr-cap { fill: var(--center); stroke: rgba(0, 0, 0, 0.45); stroke-width: 0.8; }
 .wheel-render .wr-bolt { fill: #1A1A19; stroke: rgba(255, 255, 255, 0.35); stroke-width: 0.5; }
 .wheel-render .wr-lip { fill: none; stroke: var(--lip); }
-.wheel-render .wr-rivet { fill: #D6D5D0; stroke: rgba(0, 0, 0, 0.5); stroke-width: 0.3; }
 .wheel-render .wr-line { fill: none; stroke: rgba(0, 0, 0, 0.45); stroke-width: 0.6; }
 .wheel-render * { transition: fill 0.35s ease, stroke 0.35s ease; }
 .cfg-group { border: 0; margin: 28px 0 0; padding: 20px 0 0; border-top: 1px solid rgba(237, 231, 218, 0.22); }
@@ -338,3 +337,4 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .cfg-fixed { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); }
 .cfg-fixed [data-lip-name] { letter-spacing: 0.14em; color: var(--cream); }
 .cfg-note { clear: both; margin: 14px 0 0; font-size: 14px; color: var(--cream-dim); }
+.cfg-note a { color: var(--cream); text-underline-offset: 4px; }

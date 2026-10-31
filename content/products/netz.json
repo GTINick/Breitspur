@@ -48,7 +48,8 @@
     "default": {
       "center": "Bright Silver",
       "lip": "Polished"
-    }
+    },
+    "custom": true
   },
   "story": [
     "Netz is German for net.  It is the wheel Breitspur 01 wears, and the first wheel from the studio.",
@@ -73,8 +74,8 @@
       "value": "4x100, 5x112, 5x120"
     },
     {
-      "label": "Hardware",
-      "value": "Exposed assembly bolts"
+      "label": "Assembly",
+      "value": "Hidden hardware, clean lip"
     },
     {
       "label": "Made",
