@@ -22,43 +22,35 @@
     "centers": [
       {
         "name": "Bright Silver",
-        "hex": "#C9CBCD",
-        "sheen": "metallic"
+        "hex": "#C9CBCD"
       },
       {
         "name": "Smoke Silver",
-        "hex": "#7E8084",
-        "sheen": "metallic"
+        "hex": "#7E8084"
       },
       {
         "name": "Gunmetal",
-        "hex": "#45484D",
-        "sheen": "metallic"
+        "hex": "#45484D"
       },
       {
         "name": "Gold",
-        "hex": "#B5A78A",
-        "sheen": "metallic"
+        "hex": "#B5A78A"
       },
       {
         "name": "Bronze",
-        "hex": "#7A6550",
-        "sheen": "metallic"
+        "hex": "#7A6550"
       },
       {
         "name": "White",
-        "hex": "#EDEDEA",
-        "sheen": "gloss"
+        "hex": "#EDEDEA"
       },
       {
         "name": "Gloss Black",
-        "hex": "#111214",
-        "sheen": "gloss"
+        "hex": "#111214"
       },
       {
         "name": "Satin Black",
-        "hex": "#2A2B2D",
-        "sheen": "satin"
+        "hex": "#2A2B2D"
       }
     ],
     "lips": [
