@@ -378,7 +378,8 @@ const cfgControls = (p) => {
         <legend>Center <span data-center-name>${esc(c0)}</span></legend>
         <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
       </fieldset>
-      ${cfg.lips && cfg.lips.length ? `<fieldset class="cfg-group">
+      ${cfg.lips && cfg.lips.length === 1 ? `<p class="cfg-group cfg-fixed"><span class="cfg-fixed-label">Lip</span> <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span><input type="radio" name="cfg-lip" value="${esc(l0)}" checked hidden></p>` : ""}
+      ${cfg.lips && cfg.lips.length > 1 ? `<fieldset class="cfg-group">
         <legend>Lip <span data-lip-name>${esc(l0 === "Matched" ? "Color matched" : l0)}</span></legend>
         <div class="segments">${cfg.lips.map((l) => `<label class="segment"><input type="radio" name="cfg-lip" value="${esc(l)}"${l === l0 ? " checked" : ""}><span>${esc(l === "Matched" ? "Color matched" : l)}</span></label>`).join("")}</div>
       </fieldset>` : ""}
@@ -404,7 +405,8 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
     const def = cfg && cfg.default ? cfg.default : {};
     const sel = (list, pick, extra) => [...list, extra].map((o) => `<option${o === pick ? " selected" : ""}>${esc(o)}</option>`).join("");
     return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(centers, def.center, "No preference")}</select></div>` : '<input type="hidden" name="center" value="">'}
-  ${cfg && cfg.lips && cfg.lips.length ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : '<input type="hidden" name="lip" value="">'}`;
+  ${cfg && cfg.lips && cfg.lips.length === 1 ? `<input type="hidden" name="lip" value="${esc(cfg.lips[0])}">` : ""}
+  ${cfg && cfg.lips && cfg.lips.length > 1 ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : cfg && cfg.lips && cfg.lips.length === 1 ? "" : '<input type="hidden" name="lip" value="">'}`;
   })()}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
   ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}

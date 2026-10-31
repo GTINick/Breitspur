@@ -22,28 +22,27 @@
   "configurator": {
     "centers": [
       {
-        "name": "Silver",
-        "hex": "#C3C4C1"
+        "name": "Satin Gray",
+        "hex": "#76797E"
       },
       {
-        "name": "Gold",
-        "hex": "#B8975A"
+        "name": "Bright Silver",
+        "hex": "#CED1D5"
       },
       {
-        "name": "Gloss black",
-        "hex": "#161616"
+        "name": "Dull Bronze",
+        "hex": "#70563A"
       },
       {
-        "name": "Graphite",
-        "hex": "#4A4C4E"
+        "name": "Black",
+        "hex": "#1E1F21"
       }
     ],
     "lips": [
-      "Polished",
-      "Matched"
+      "Polished"
     ],
     "default": {
-      "center": "Silver",
+      "center": "Bright Silver",
       "lip": "Polished"
     }
   },
@@ -63,7 +62,7 @@
     },
     {
       "label": "Lip",
-      "value": "Deep, polished or color matched"
+      "value": "Deep, always polished"
     },
     {
       "label": "Bolt patterns",
@@ -118,7 +117,7 @@
     ],
     [
       "Finish",
-      "Silver center, polished lip"
+      "Bright Silver center, polished lip"
     ],
     [
       "Set",
