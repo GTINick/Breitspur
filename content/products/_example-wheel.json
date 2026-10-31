@@ -13,12 +13,46 @@
   "price": "",
   "buyUrl": "",
   "construction": "Forged monoblock",
-  "sizes": ["18 in", "19 in"],
-  "finishes": ["Satin black", "Silver"],
-  "story": ["The first paragraph prints large.", "Every paragraph after it prints as body text."],
-  "specs": [{ "label": "Construction", "value": "Forged monoblock" }],
+  "sizes": [
+    "18 in",
+    "19 in"
+  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Satin black",
+        "hex": "#1C1C1C"
+      },
+      {
+        "name": "Silver",
+        "hex": "#C3C4C1"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Satin black",
+      "lip": "Matched"
+    }
+  },
+  "story": [
+    "The first paragraph prints large.",
+    "Every paragraph after it prints as body text."
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Forged monoblock"
+    }
+  ],
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
   "seenOn": "",
-  "drawing": { "style": "spoke", "spokes": 5, "bolts": 5 },
+  "drawing": {
+    "style": "spoke",
+    "spokes": 5,
+    "bolts": 5
+  },
   "image": null
 }

@@ -83,6 +83,12 @@ for (const p of products) {
   if (!["interest", "preorder", "available"].includes(p.availability)) errors.push(`${p._file}: availability must be interest, preorder or available`);
   if (p.availability !== "interest" && !p.buyUrl) errors.push(`${p._file}: ${p.availability} products need a buyUrl`);
   if (!p.image && !p.drawing) errors.push(`${p._file}: needs an image or a drawing`);
+  if (p.configurator) {
+    const cfg = p.configurator;
+    if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
+    for (const c of cfg.centers || []) if (!c.name || !/^#[0-9a-f]{6}$/i.test(c.hex || "")) errors.push(`${p._file}: center colors need a name and a hex like #B8975A`);
+    for (const l of cfg.lips || []) if (!["Polished", "Matched"].includes(l)) errors.push(`${p._file}: lips can be Polished or Matched`);
+  }
   for (const g of [p.image, ...(p.gallery || [])].filter(Boolean)) {
     if (!g.alt) errors.push(`${p._file}: every image needs alt text`);
     if (!fs.existsSync(path.join(ROOT, g.image))) errors.push(`${p._file}: missing file ${g.image}`);
@@ -116,7 +122,7 @@ const nav = [
   ["/inquire/", "Inquire", "inquire"],
 ];
 
-const page = ({ title, description, path: p, room = "#2E2C29", active = "", body, image = "/assets/img/og.jpg", noindex = false }) => `<!doctype html>
+const page = ({ title, description, path: p, room = "#2E2C29", active = "", body, image = "/assets/img/og.jpg", noindex = false, scripts = [] }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -159,6 +165,7 @@ ${body}
   </ul>
   ${site.shop.enabled ? "" : `<p class="foot-soon">${esc(site.shop.teaser.toUpperCase())}</p>`}
 </footer>
+${scripts.map((src) => `<script src="${src}" defer></script>`).join("\n")}
 </body>
 </html>
 `;
@@ -314,6 +321,77 @@ const bespoke = (p) => {
 </section>`;
 };
 
+// Shaded, filled wheel for the configurator.  Colors come from CSS variables, so the page script can repaint it.
+const wheelRender = (p) => {
+  const d = p.drawing || {}, style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const multi = style === "mesh";
+  const lipIn = multi ? 86 : 90, id = `wr-${p.slug}`;
+  const parts = [];
+  if (multi) {
+    for (let i = 0; i < n; i++) {
+      const a = (360 / n) * i;
+      for (const t of [14, -14]) parts.push(`M${pt(21, a)} Q${pt(52, a + t)} ${pt(80, a + t * 2.4)}`);
+    }
+  }
+  const spokes = multi
+    ? `<path class="wr-edge" d="${parts.join(" ")}" stroke-width="4.6"/><path class="wr-mesh" d="${parts.join(" ")}" stroke-width="3.2"/>`
+    : (() => {
+        const out = [], pairs = style === "split" ? [-5, 5] : [0];
+        for (let i = 0; i < n; i++) for (const o of pairs) {
+          const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
+          out.push(`<polygon class="wr-spoke" points="${pt(20, a - w1 * 2)} ${pt(lipIn - 1, a - w2 + o * 0.6)} ${pt(lipIn - 1, a + w2 + o * 0.6)} ${pt(20, a + w1 * 2)}"/>`);
+        }
+        return out.join("");
+      })();
+  const rivets = multi ? Array.from({ length: 40 }, (_, i) => { const [x, y] = pt(lipIn + 1.6, i * 9).split(","); return `<circle class="wr-rivet" cx="${x}" cy="${y}" r="1.05"/>`; }).join("") : "";
+  const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(13, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
+  const cfg = p.configurator, def = (cfg && cfg.default) || {};
+  const c0 = cfg ? (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).hex : "#9a9a98";
+  const lip0 = def.lip === "Matched" ? c0 : `url(#${id}-polish)`;
+  return `<svg class="wheel-render" viewBox="-100 -100 200 200" style="--center: ${c0}; --lip: ${lip0}" role="img" aria-label="${esc(p.name)} preview">
+  <defs>
+    <linearGradient id="${id}-polish" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4F3EF"/><stop offset="0.28" stop-color="#9C9B97"/><stop offset="0.5" stop-color="#E9E8E3"/><stop offset="0.72" stop-color="#7E7D79"/><stop offset="1" stop-color="#D9D8D3"/>
+    </linearGradient>
+    <radialGradient id="${id}-sheen" cx="0.34" cy="0.28" r="0.75">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.55" stop-color="#fff" stop-opacity="0.03"/><stop offset="1" stop-color="#000" stop-opacity="0.18"/>
+    </radialGradient>
+  </defs>
+  <circle r="${lipIn}" class="wr-barrel"/>
+  ${multi ? `<circle r="${(80 + lipIn) / 2}" class="wr-ring" stroke-width="${lipIn - 80}"/>` : ""}
+  ${spokes}
+  <circle r="21" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
+  <circle r="${(lipIn + 97) / 2}" class="wr-lip" stroke-width="${97 - lipIn}"/>
+  ${rivets}
+  <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
+  <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
+</svg>`;
+};
+
+const configurator = (p) => {
+  const cfg = p.configurator;
+  if (!cfg || !cfg.centers || !cfg.centers.length) return "";
+  const def = cfg.default || {};
+  const c0 = def.center || cfg.centers[0].name, l0 = def.lip || (cfg.lips || [])[0];
+  return `<section class="configurator" id="configure" style="--room: ${esc(p.room || "#2E2C29")}" aria-labelledby="cfg-title" data-config data-name="${esc(p.name)}" data-polish="wr-${p.slug}-polish">
+  <div class="cfg-stage">${wheelRender(p)}</div>
+  <div class="cfg-panel">
+    <h2 class="label" id="cfg-title">CONFIGURE</h2>
+    <p class="cfg-summary" data-summary aria-live="polite">${esc(p.name)}, ${esc(c0)} center${l0 ? `, ${esc(l0.toLowerCase())} lip` : ""}</p>
+    <fieldset class="cfg-group">
+      <legend>Center <span data-center-name>${esc(c0)}</span></legend>
+      <div class="swatches">${cfg.centers.map((c) => `<label class="swatch" title="${esc(c.name)}"><input type="radio" name="cfg-center" value="${esc(c.name)}" data-hex="${esc(c.hex)}"${c.name === c0 ? " checked" : ""}><span style="--swatch: ${esc(c.hex)}"></span><span class="sr">${esc(c.name)}</span></label>`).join("")}</div>
+    </fieldset>
+    ${cfg.lips && cfg.lips.length ? `<fieldset class="cfg-group">
+      <legend>Lip <span data-lip-name>${esc(l0)}</span></legend>
+      <div class="segments">${cfg.lips.map((l) => `<label class="segment"><input type="radio" name="cfg-lip" value="${esc(l)}"${l === l0 ? " checked" : ""}><span>${esc(l === "Matched" ? "Color matched" : l)}</span></label>`).join("")}</div>
+    </fieldset>` : ""}
+    <p class="cfg-cta"><a class="btn btn-solid" href="#interest">Register interest in this spec</a></p>
+    <p class="form-fine">Colors on screen are a guide.  Width, offset and fitment are set for your car after you register.</p>
+  </div>
+</section>`;
+};
+
 const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
 
 // One Netlify form for every product, so all interest lands in one list you can export as CSV.
@@ -326,7 +404,15 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
   <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
   ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Size</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
-  ${p.finishes && p.finishes.length ? `<div class="field"><label for="pi-finish">Finish</label><select id="pi-finish" name="finish">${options(p.finishes, "No preference")}</select></div>` : ""}
+  ${(() => {
+    // Every product posts the same fields (center, lip), so the Netlify list stays one clean table.
+    const cfg = p.configurator;
+    const centers = cfg ? cfg.centers.map((c) => c.name) : p.finishes || [];
+    const def = cfg && cfg.default ? cfg.default : {};
+    const sel = (list, pick, extra) => [...list, extra].map((o) => `<option${o === pick ? " selected" : ""}>${esc(o)}</option>`).join("");
+    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(centers, def.center, "No preference")}</select></div>` : '<input type="hidden" name="center" value="">'}
+  ${cfg && cfg.lips && cfg.lips.length ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : '<input type="hidden" name="lip" value="">'}`;
+  })()}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
   ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
@@ -602,6 +688,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       room: pRoom,
       active: "shop",
       image: p.image ? p.image.image : "/assets/img/og.jpg",
+      scripts: p.configurator ? ["/assets/configurator.js"] : [],
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name">
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
@@ -616,10 +703,12 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
         ${p.stage ? `<li>${esc(p.stage.toUpperCase())}</li>` : ""}
         ${p.price && p.availability === "interest" ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
       </ul>
-      <p class="product-cta">${cta}</p>
+      <p class="product-cta">${cta}${p.configurator ? `<a class="text-link" href="#configure">Configure yours</a>` : ""}</p>
     </div>
   </div>
 </section>
+
+${configurator(p)}
 
 <section class="paper concept-story" aria-labelledby="about">
   <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
@@ -706,7 +795,7 @@ const version = (rel) => {
 };
 const walk = (d) => fs.readdirSync(d).flatMap((f) => { const a = path.join(d, f); return fs.statSync(a).isDirectory() ? walk(a) : [a]; });
 for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
-  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css)/g, (m) => {
+  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css|js)/g, (m) => {
     const v = version(m.slice(1));
     return v ? `${m}?v=${v}` : m;
   });

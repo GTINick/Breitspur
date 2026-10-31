@@ -19,11 +19,42 @@
     "17 in",
     "18 in"
   ],
-  "finishes": [
-    "Silver center, polished lip",
-    "Gold center, polished lip",
-    "Black center, polished lip"
-  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Silver",
+        "hex": "#C3C4C1"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B8975A"
+      },
+      {
+        "name": "Gloss black",
+        "hex": "#161616"
+      },
+      {
+        "name": "Graphite",
+        "hex": "#4A4C4E"
+      },
+      {
+        "name": "Bronze",
+        "hex": "#6E5638"
+      },
+      {
+        "name": "White",
+        "hex": "#E9E7E1"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Silver",
+      "lip": "Polished"
+    }
+  },
   "story": [
     "Netz is German for net.  It is the wheel Breitspur 01 wears, and the first wheel from the studio.",
     "Mesh is the most honest wheel there is.  Every spoke carries load and you can see all of it.  Netz keeps the fine weave and the deep lip, then redraws the center so the mesh reads cleanly from across a room.",
@@ -40,7 +71,7 @@
     },
     {
       "label": "Lip",
-      "value": "Deep, polished"
+      "value": "Deep, polished or color matched"
     },
     {
       "label": "Bolt patterns",

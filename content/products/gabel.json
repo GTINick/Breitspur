@@ -18,11 +18,42 @@
     "19 in",
     "20 in"
   ],
-  "finishes": [
-    "Satin graphite",
-    "Gloss black",
-    "Silver"
-  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Satin graphite",
+        "hex": "#45474A"
+      },
+      {
+        "name": "Gloss black",
+        "hex": "#141414"
+      },
+      {
+        "name": "Silver",
+        "hex": "#BFC1BF"
+      },
+      {
+        "name": "Bronze",
+        "hex": "#6E5638"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B8975A"
+      },
+      {
+        "name": "White",
+        "hex": "#E9E7E1"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Satin graphite",
+      "lip": "Matched"
+    }
+  },
   "story": [
     "Gabel is German for fork.  It is the wheel Breitspur 02 wears: five spokes, each split in two as it reaches the rim.",
     "Splitting the spoke lets it stay thin at the face and still carry load, so the wheel looks light and leaves room for large calipers.  The spokes run to the very edge of the rim to make the wheel look as big as it is.",
