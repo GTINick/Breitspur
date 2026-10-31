@@ -68,7 +68,27 @@ for (const c of concepts) {
     }
   }
 }
-const products = site.shop.enabled ? loadDir("content/products", ["status", "slug", "name"]).filter((p) => p.status === "live") : [];
+// Products: status "live" shows in the shop, "soon" and "draft" stay hidden.
+// availability decides the call to action: "interest" shows the register interest form,
+// "preorder" and "available" show a button to buyUrl.
+const shopCats = (site.shop.categories || []).filter((k) => k.status !== "draft");
+const products = site.shop.enabled
+  ? loadDir("content/products", ["status", "number", "slug", "name", "category", "availability", "tagline"])
+      .filter((p) => p.status === "live")
+      .sort((a, b) => a.number - b.number)
+  : [];
+for (const p of products) {
+  dashCheck(p._file, p);
+  if (!shopCats.some((k) => k.slug === p.category)) errors.push(`${p._file}: category "${p.category}" is not in site.json shop.categories`);
+  if (!["interest", "preorder", "available"].includes(p.availability)) errors.push(`${p._file}: availability must be interest, preorder or available`);
+  if (p.availability !== "interest" && !p.buyUrl) errors.push(`${p._file}: ${p.availability} products need a buyUrl`);
+  if (!p.image && !p.drawing) errors.push(`${p._file}: needs an image or a drawing`);
+  for (const g of [p.image, ...(p.gallery || [])].filter(Boolean)) {
+    if (!g.alt) errors.push(`${p._file}: every image needs alt text`);
+    if (!fs.existsSync(path.join(ROOT, g.image))) errors.push(`${p._file}: missing file ${g.image}`);
+  }
+  if (p.seenOn && !concepts.some((c) => c.slug === p.seenOn && c.status === "live")) errors.push(`${p._file}: seenOn "${p.seenOn}" is not a live concept`);
+}
 dashCheck("site.json", site);
 
 if (errors.length) {
@@ -214,6 +234,96 @@ const index = () => `<section class="index" aria-labelledby="collection">
   </ol>
 </section>`;
 
+// ---------- shop components ----------
+const catOf = (p) => shopCats.find((k) => k.slug === p.category);
+const productHref = (p) => `/shop/${p.category}/${p.slug}/`;
+const AVAIL = { interest: "Registering interest", preorder: "Pre-order open", available: "Available" };
+
+// A line drawing that stands in for a wheel until the render exists.  "drawing": { "style": "mesh" | "split" | "spoke", "spokes": 5, "bolts": 5 }
+const pt = (r, deg) => { const a = ((deg - 90) * Math.PI) / 180; return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`; };
+const wheelDrawing = (d = {}, label = "") => {
+  const style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const lines = [];
+  if (style === "mesh") {
+    for (let i = 0; i < n; i++) {
+      const a = (360 / n) * i;
+      lines.push(`<path d="M${pt(21, a)} Q${pt(52, a + 14)} ${pt(78, a + 34)}"/>`, `<path d="M${pt(21, a)} Q${pt(52, a - 14)} ${pt(78, a - 34)}"/>`);
+    }
+    for (let i = 0; i < 36; i++) lines.push(`<circle class="fill" cx="${pt(84, i * 10).split(",")[0]}" cy="${pt(84, i * 10).split(",")[1]}" r="0.9"/>`);
+  } else {
+    const pairs = style === "split" ? [-5, 5] : [0];
+    for (let i = 0; i < n; i++) {
+      for (const o of pairs) {
+        const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
+        lines.push(`<polygon points="${pt(22, a - w1 * 2)} ${pt(78, a - w2 + o * 0.6)} ${pt(78, a + w2 + o * 0.6)} ${pt(22, a + w1 * 2)}"/>`);
+      }
+    }
+  }
+  for (let i = 0; i < bolts; i++) {
+    const [x, y] = pt(13, (360 / bolts) * i).split(",");
+    lines.push(`<circle cx="${x}" cy="${y}" r="2"/>`);
+  }
+  return `<svg class="wheel-drawing" viewBox="-100 -100 200 200" role="img" aria-label="${esc(label)}"><g fill="none" stroke="currentColor">
+    <circle r="97"/><circle r="91"/><circle r="80"/><circle r="21"/><circle r="8"/>
+    ${lines.join("")}
+  </g></svg>`;
+};
+
+const wheelArt = (p, { eager = false, big = false } = {}) => p.image
+  ? `<img src="${p.image.small || p.image.image}" srcset="${p.image.small ? `${p.image.small} 1000w, ` : ""}${p.image.image} ${p.image.width}w" sizes="${big ? "(min-width: 860px) 560px, 80vw" : "(min-width: 860px) 30vw, 80vw"}" width="${p.image.width}" height="${p.image.height}" alt="${esc(p.image.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
+  : wheelDrawing(p.drawing, `${p.name}, design drawing.  Final renders to follow.`);
+
+const productCard = (p) => `<article class="product-card">
+  <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
+    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Drawing.  Renders to follow.</span>'}</div>
+    <div class="product-info">
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
+      <h3 class="product-name">${esc(p.name)}</h3>
+      <p class="product-tag">${esc(p.tagline)}</p>
+      <ul class="product-facts">
+        ${p.construction ? `<li>${esc(p.construction.toUpperCase())}</li>` : ""}
+        ${p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
+        <li class="product-state">${esc(AVAIL[p.availability].toUpperCase())}</li>
+      </ul>
+    </div>
+  </a>
+</article>`;
+
+const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
+
+// One Netlify form for every product, so all interest lands in one list you can export as CSV.
+const interestForm = (p) => `<form class="inquiry" name="product-interest" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+  <input type="hidden" name="form-name" value="product-interest">
+  <input type="hidden" name="subject" value="Interest: ${esc(p.name)} (%{submissionId})">
+  <input type="hidden" name="product" value="${esc(p.name)}">
+  <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+  <div class="field"><label for="pi-name">Name</label><input id="pi-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
+  <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Size</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
+  ${p.finishes && p.finishes.length ? `<div class="field"><label for="pi-finish">Finish</label><select id="pi-finish" name="finish">${options(p.finishes, "No preference")}</select></div>` : ""}
+  ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
+  ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
+  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, a finish you want to see"></textarea></div>
+  <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Register interest</button></p>
+  <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+</form>`;
+
+const notifyForm = () => `<form class="inquiry" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+  <input type="hidden" name="form-name" value="shop-updates">
+  <input type="hidden" name="subject" value="Shop updates signup (%{submissionId})">
+  <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+  <div class="field"><label for="su-name">Name</label><input id="su-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="su-email">Email</label><input id="su-email" name="email" type="email" autocomplete="email" required></div>
+  <div class="field field-wide"><label for="su-car">Your car</label><input id="su-car" name="car" type="text" placeholder="Year, make, model"></div>
+  <fieldset class="field-wide checks"><legend>Interested in</legend>
+    ${(site.shop.categories || []).filter((k) => k.status !== "draft").map((k) => `<label class="check"><input type="checkbox" name="interests[]" value="${esc(k.title)}"> ${esc(k.title)}</label>`).join("")}
+  </fieldset>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Keep me posted</button></p>
+  <p class="form-fine field-wide">Only shop news, a few times a year.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+</form>`;
+
 // ---------- pages ----------
 copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
 const firstRoom = concepts[0] ? concepts[0].room : "#2E2C29";
@@ -276,6 +386,16 @@ live.forEach((c, i) => {
   </dl>
   ${c.note ? `<p class="concept-note">${esc(c.note)}</p>` : ""}
 </section>
+
+${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concept-product" aria-label="${esc(p.name)}">
+  <div class="concept-product-art">${wheelArt(p)}</div>
+  <div>
+    <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
+    <p class="seen-name">${esc(p.name)}</p>
+    <p class="muted">${esc(p.tagline)}  ${esc(AVAIL[p.availability])}.</p>
+    <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Register interest" : `View ${esc(p.name)}`}</a></p>
+  </div>
+</section>`).join("")}
 
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}
@@ -374,22 +494,138 @@ write("privacy/index.html", page({
 
 // Shop (built only when enabled)
 if (site.shop.enabled) {
+  const shopRoom = "#2E2C29";
+  const steps = site.shop.process || [];
+  const stepsBlock = steps.length ? `<ol class="steps">${steps.map((s, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>` : "";
+
+  // Shop index: one band per category.  Live categories list their products, "soon" categories show as in development.
   write("shop/index.html", page({
     title: `Shop | ${site.name}`,
-    description: "Wheels, parts and apparel from Breitspur.",
+    description: site.shop.intro || "Wheels and parts from Breitspur.",
     path: "/shop/",
-    room: firstRoom,
+    room: shopRoom,
     active: "shop",
-    body: `<section class="room room-first page-hero"><h1 class="room-name">The<br>shop</h1></section>
-<section class="paper shop">
-  ${products.length ? products.map((p) => `<article class="product">
-    ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">` : ""}
-    <p class="label">${esc((p.category || "").toUpperCase())}</p>
-    <h2>${esc(p.name)}</h2>
-    <p>${esc(p.summary || "")}</p>
-    ${p.price ? `<p class="price">${esc(p.price)}</p>` : ""}
-    ${p.buyUrl ? `<a class="btn btn-solid" href="${esc(p.buyUrl)}">Buy</a>` : ""}
-  </article>`).join("") : `<p class="body-lg">${esc(site.shop.teaser)}</p>`}
+    body: `<section class="room room-first page-hero" style="--room: ${shopRoom}">
+  <h1 class="room-name">The<br>shop</h1>
+  <p class="room-lede">${esc(site.shop.intro || "")}</p>
+</section>
+
+${shopCats.map((k) => {
+  const items = products.filter((p) => p.category === k.slug);
+  if (k.status === "live" && items.length) return `<section class="shop-cat" id="${k.slug}" aria-labelledby="cat-${k.slug}">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="cat-${k.slug}">${esc(k.title)}</h2>
+    <p class="body-lg muted">${esc(k.body || "")}</p>
+  </div>
+  <div class="product-grid">${items.map(productCard).join("")}</div>
+</section>`;
+  return `<section class="shop-cat shop-cat-soon" id="${k.slug}" aria-labelledby="cat-${k.slug}">
+  <h2 class="shop-soon-title" id="cat-${k.slug}">${esc(k.title)}</h2>
+  <p class="muted">${esc(k.body || "")}</p>
+  <p class="label shop-soon-state">IN DEVELOPMENT</p>
+</section>`;
+}).join("\n")}
+
+${steps.length ? `<section class="paper" aria-labelledby="how">
+  <h2 class="label" id="how">HOW RELEASES WORK</h2>
+  ${stepsBlock}
+</section>` : ""}
+
+<section class="ask" aria-labelledby="ask">
+  <div>
+    <h2 class="serif-xl" id="ask">Hear first.</h2>
+    <p class="body-lg muted">Not sure which piece yet?  Leave your email and your car.  We will write when something fits.</p>
+  </div>
+  ${notifyForm()}
+</section>`,
+  }));
+
+  // Product pages
+  for (const p of products) {
+    const k = catOf(p);
+    const concept = p.seenOn ? concepts.find((c) => c.slug === p.seenOn) : null;
+    const seenImg = concept ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
+    const pRoom = p.room || shopRoom;
+    const cta = p.availability === "interest"
+      ? `<a class="btn btn-solid" href="#interest">Register interest</a>`
+      : `<a class="btn btn-solid" href="${esc(p.buyUrl)}">${p.availability === "preorder" ? "Pre-order" : "Buy"}${p.price ? `, ${esc(p.price)}` : ""}</a>`;
+    write(`shop/${p.category}/${p.slug}/index.html`, page({
+      title: `${p.name}: ${p.tagline} | ${site.name}`,
+      description: `${p.tagline}  ${p.lede || ""}`.trim(),
+      path: productHref(p),
+      room: pRoom,
+      active: "shop",
+      image: p.image ? p.image.image : "/assets/img/og.jpg",
+      body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name">
+  <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
+  <div class="product-hero-grid">
+    <div class="product-hero-art">${wheelArt(p, { eager: true, big: true })}${p.image ? "" : '<p class="product-tile-note">Design drawing.  Final renders to follow.</p>'}</div>
+    <div class="product-hero-text">
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}</p>
+      <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
+      <p class="room-lede">${esc(p.tagline)}</p>
+      ${p.lede ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
+      <ul class="labels product-labels">
+        <li>${esc(AVAIL[p.availability].toUpperCase())}</li>
+        ${p.stage ? `<li>${esc(p.stage.toUpperCase())}</li>` : ""}
+        ${p.price && p.availability === "interest" ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
+      </ul>
+      <p class="product-cta">${cta}</p>
+    </div>
+  </div>
+</section>
+
+<section class="paper concept-story" aria-labelledby="about">
+  <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
+  <div class="story-body">
+    ${(p.story || []).map((t, i) => `<p class="${i === 0 ? "serif-lead" : "body-lg"}">${esc(t)}</p>`).join("")}
+  </div>
+  ${p.specs && p.specs.length ? `<dl class="specs">
+    ${p.specs.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
+  </dl>` : ""}
+  ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
+</section>
+
+${concept && seenImg ? `<section class="seen-on" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
+  <figure>
+    <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
+  </figure>
+  <div>
+    <h2 class="label" id="seen">AS DRAWN ON</h2>
+    <p class="seen-name">${esc(concept.name)}</p>
+    <p class="muted">${esc(concept.subtitle)}</p>
+    <p><a class="text-link" href="/concepts/${concept.slug}/">View the concept</a></p>
+  </div>
+</section>` : ""}
+
+${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
+  <div>
+    <h2 class="serif-xl" id="ask">Register interest.</h2>
+    <p class="body-lg muted">${esc(p.name)} is not for sale yet.  Tell us your car and the size you want.  Your answers decide which fitments get made first, and the list hears about pricing and production slots before anyone else.</p>
+    ${stepsBlock}
+  </div>
+  ${interestForm(p)}
+</section>` : ""}
+
+${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
+  <div class="shop-cat-head"><h2 class="label" id="more">MORE FROM THE SHOP</h2></div>
+  <div class="product-grid">${products.filter((o) => o !== p).slice(0, 3).map(productCard).join("")}</div>
+</section>` : ""}`,
+    }));
+  }
+
+  write("shop/thanks/index.html", page({
+    title: `You are on the list | ${site.name}`,
+    description: "Your interest is registered.",
+    path: "/shop/thanks/",
+    room: shopRoom,
+    noindex: true,
+    body: `<section class="ask ask-page">
+  <div>
+    <h1 class="serif-xl">You are on the list.</h1>
+    <p class="body-lg muted">Thank you.  We read every one.  You will hear from us by email when there is real news: pricing, fitment and production slots.</p>
+    <p class="ask-links"><a class="btn btn-light" href="/shop/">Back to the shop</a><a class="text-link" href="/">The collection</a></p>
+  </div>
 </section>`,
   }));
 }
@@ -430,7 +666,7 @@ for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
 }
 
 // SEO files
-const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/"] : [])];
+const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/", ...products.map(productHref)] : [])];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((p) => `  <url><loc>${url(p)}</loc></url>`).join("\n")}
@@ -445,4 +681,4 @@ const redirects = [
 ];
 write("_redirects", redirects.join("\n") + "\n");
 
-console.log(`Built ${pages.length} pages: ${live.length} live concept(s), ${concepts.length - live.length} unveiling soon${crest ? ", crest in header" : ", no crest yet (add assets/brand/crest.svg)"}.`);
+console.log(`Built ${pages.length} pages: ${live.length} live concept(s), ${concepts.length - live.length} unveiling soon${site.shop.enabled ? `, shop on with ${products.length} product(s)` : ", shop off"}${crest ? ", crest in header" : ", no crest yet (add assets/brand/crest.svg)"}.`);
