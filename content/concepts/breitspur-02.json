@@ -57,11 +57,47 @@
       "wide": true
     },
     {
+      "image": "/assets/img/concepts/breitspur-02/rear-34.webp",
+      "small": "/assets/img/concepts/breitspur-02/rear-34-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Rear three quarter view showing the ducktail, carbon diffuser, quad exhausts and wide rear arches"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-02/nose.webp",
+      "small": "/assets/img/concepts/breitspur-02/nose-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Front corner close up: carbon canards, carbon splitter lip, mesh intakes and a Gabel wheel"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-02/rolling.webp",
+      "small": "/assets/img/concepts/breitspur-02/rolling-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Breitspur 02 driving past the studio barn on a country road at golden hour",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-02/side.webp",
+      "small": "/assets/img/concepts/breitspur-02/side-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Side profile in front of the barn, showing the stance, the widened arches and the fixed roof"
+    },
+    {
       "image": "/assets/img/concepts/breitspur-02/wheel.webp",
       "small": "/assets/img/concepts/breitspur-02/wheel-1000.webp",
       "width": 2000,
       "height": 1116,
-      "alt": "Close up of the Gabel wheel in silver with a polished lip and the lion crest center cap, under the front flare",
+      "alt": "Close up of the Gabel wheel in silver with a polished lip and the lion crest center cap, under the front flare"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-02/sunset.webp",
+      "small": "/assets/img/concepts/breitspur-02/sunset-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Rear three quarter view at sunset beside the open garage, light flaring over the roof",
       "wide": true
     }
   ],
