@@ -10,36 +10,50 @@
   },
   "manifesto": {
     "lead": "Every great car had a sharper version that never made it out of the design studio.  Breitspur draws those cars.",
-    "body": "We start from the factory's own design language and take it one step further than the factory dared.  The goal is a car its original designers would recognize, and wish they had built."
+    "body": "Every great car had a sharper version that never made it out of the design studio.  We draw those cars, starting from the factory's own design language and taking it one step further than the factory dared."
   },
   "founder": {
-    "quote": "Car companies build these raw, emotional things that never get to see the streets.  I want people to actually get to experience them.",
+    "quote": "Stance is the first thing you feel about a car.  Get it wrong and nothing else you do matters.",
     "name": "Nick DiLoreto",
     "role": "Design director, Breitspur",
     "bio": "Nick DiLoreto trained as a car designer and started his career at Volvo.  He now leads industrial design for a major consumer hardware brand.  Breitspur is where he draws cars again."
   },
   "services": [
     {
-      "slug": "commission",
-      "title": "Commission a concept",
-      "body": "Send photos of your car and tell us what it should have been.  We draw it back as a finished concept: stance, flares, wheels and color, delivered as a gallery plate you can frame or hand to your builder.",
+      "slug": "concept",
+      "title": "Concept render",
+      "price": "From $1,500",
+      "time": "About two weeks",
+      "body": "Send photos of your car and tell us what it should have been.  We draw it back with the stance, wheels and color it deserves, as one finished hero render.",
       "details": [
-        "Finished concept renders",
-        "A side profile gallery plate",
-        "Notes for your builder on surfacing, wheels and color"
-      ],
-      "price": ""
+        "One finished hero render",
+        "Stance, wheels and color",
+        "Drawn from your own photos"
+      ]
     },
     {
-      "slug": "consulting",
-      "title": "Design consulting",
-      "body": "For shops and makers building kits, wheels or whole cars.  Most aftermarket parts fail in the details: a flare that fights the body line, a radius that catches the light wrong.  We review the surfaces, draw the fixes and help shape the brand around them.",
+      "slug": "commission",
+      "title": "Full commission",
+      "price": "From $4,000",
+      "time": "Four to six weeks",
+      "body": "The complete concept: every angle, a side profile gallery plate, and notes your builder can work from on surfacing, flares and wheels.",
       "details": [
-        "Body kit and flare design review",
-        "Wheel design",
-        "Brand and launch direction"
-      ],
-      "price": ""
+        "Renders from every angle",
+        "A side profile gallery plate",
+        "Builder notes on surfacing, flares and wheels"
+      ]
+    },
+    {
+      "slug": "cad",
+      "title": "Production CAD",
+      "price": "Quoted per project",
+      "time": "",
+      "body": "For owners, shops and makers who want parts, not pictures.  We model manufacturable surfaces for flares, splitters, ducktails and full kits, and review existing designs that fight the body line.",
+      "details": [
+        "Production surfaces for custom body parts",
+        "Design review for shops and makers",
+        "Wheel design"
+      ]
     }
   ],
   "shop": {
@@ -70,10 +84,10 @@
       }
     ],
     "budgets": [
-      "Under $2,000",
-      "$2,000 to $3,500",
-      "$3,500 to $5,000",
-      "$5,000 and up"
+      "Under $7,000",
+      "$7,000 to $9,000",
+      "$9,000 to $12,000",
+      "$12,000 and up"
     ],
     "process": [
       {
@@ -82,11 +96,11 @@
       },
       {
         "title": "Fitment",
-        "body": "We confirm your measurements, brakes and stance with you before a single blank is cut."
+        "body": "You send your measurements, brakes and stance goals, and we review them with you before anything is cut.  The final fitment call stays with you and your installer."
       },
       {
         "title": "Machined for your car",
-        "body": "Your set is machined, finished, numbered and shipped."
+        "body": "Your set is machined, finished and shipped."
       }
     ],
     "bespoke": {
@@ -104,19 +118,11 @@
         },
         {
           "title": "Brake clearance",
-          "body": "Checked against your calipers before cutting, including big brake kits."
+          "body": "Tell us your calipers and we review clearance with you.  The final call is yours and your installer's."
         },
         {
           "title": "Finish",
           "body": "A short list of center colors, and custom colors on request."
-        },
-        {
-          "title": "Numbered",
-          "body": "Every set carries its own serial number."
-        },
-        {
-          "title": "Build sheet",
-          "body": "Each set ships with a sheet recording your car, your specification and a drawing of your wheels."
         }
       ],
       "sheet": [
@@ -151,10 +157,6 @@
         [
           "Finish",
           "Bright Silver center, polished lip"
-        ],
-        [
-          "Set",
-          "No. 001"
         ]
       ]
     }
@@ -191,5 +193,12 @@
         ]
       }
     ]
-  }
+  },
+  "home": {
+    "intro": "Breitspur means wide track.  Every great car starts with how it sits on its wheels, so every concept here debuts a wheel and the parts to build it."
+  },
+  "story": [
+    "I was ten when I started counting down the days until I could drive.  My mother's father owned a body shop and spent his days bringing exotic cars back to life.  My father's father was an engineer who took everything apart to see how it worked.  My dad and I talked about cars constantly.",
+    "I trained as a car designer, started at Volvo, and still lead industrial design today.  Breitspur is where I draw cars again, and it starts with the thing that matters most: stance.  If a car doesn't sit right, nothing else matters."
+  ]
 }

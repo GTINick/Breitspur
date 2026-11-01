@@ -235,9 +235,9 @@ const form = (id) => `<form class="inquiry" name="inquiry" method="POST" action=
 const services = () => `<div class="services">
   ${site.services.map((s) => `<article class="service" id="${s.slug}">
     <h3>${esc(s.title)}</h3>
+    ${s.price || s.time ? `<p class="service-terms">${s.price ? `<span>${esc(s.price)}</span>` : ""}${s.time ? `<span>${esc(s.time)}</span>` : ""}</p>` : ""}
     <p>${esc(s.body)}</p>
     ${s.details && s.details.length ? `<ul class="ticks">${s.details.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>` : ""}
-    ${s.price ? `<p class="price">${esc(s.price)}</p>` : ""}
   </article>`).join("")}
 </div>`;
 
@@ -335,11 +335,11 @@ const bespoke = (p) => {
     <p class="body-lg">${esc(b.body)}</p>
     <div class="bespoke-grid">
       <ol class="bespoke-items">${b.items.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
-      ${rows.length ? `<figure class="build-sheet" aria-label="Example build sheet">
-        <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>BUILD SHEET</span></div>
+      ${rows.length ? `<figure class="build-sheet" aria-label="Example specification">
+        <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>SPECIFICATION</span></div>
         ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
         <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-        <figcaption>Example build sheet</figcaption>
+        <figcaption>Example specification</figcaption>
       </figure>` : ""}
     </div>
   </div>
@@ -499,7 +499,7 @@ write("index.html", page({
 <section class="paper manifesto" aria-labelledby="mission">
   <h2 class="label" id="mission">THE STUDIO</h2>
   <div class="manifesto-body">
-    <p class="serif-lead">${esc(site.manifesto.lead)}</p>
+    <p class="serif-lead">${esc((site.home && site.home.intro) || site.manifesto.lead)}</p>
     <p class="body-lg">${esc(site.manifesto.body)}</p>
     <figure class="founder">
       <blockquote><p>${esc(site.founder.quote)}</p></blockquote>
@@ -600,14 +600,13 @@ write("studio/index.html", page({
 </section>
 
 <section class="paper manifesto">
-  <h2 class="label">HOW WE WORK</h2>
-  <div class="manifesto-body">
-    <p class="serif-lead">${esc(site.manifesto.body)}</p>
+  <h2 class="label">THE STORY</h2>
+  <div class="manifesto-body story-first">
+    ${(site.story || []).map((t) => `<p class="body-lg">${esc(t)}</p>`).join("")}
     <figure class="founder">
       <blockquote><p>${esc(site.founder.quote)}</p></blockquote>
       <figcaption>${esc(site.founder.name)}, ${esc(site.founder.role)}</figcaption>
     </figure>
-    <p class="body-lg">${esc(site.founder.bio)}</p>
   </div>
 </section>
 

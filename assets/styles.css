@@ -427,3 +427,15 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
   .bespoke-items li p { padding-bottom: 0; }
 }
 @media (max-width: 860px) { .wheel-gallery { padding-bottom: 64px; } .wheel-gallery-grid { gap: 16px; } }
+
+/* Services: three tiers with terms under each title */
+.services { grid-template-columns: repeat(var(--svc, 3), minmax(0, 1fr)); grid-template-rows: auto auto auto auto; column-gap: 40px; }
+.service h3 { font-size: clamp(30px, 2.6vw, 40px); }
+.service-terms { margin: 16px 0 0 !important; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 12px !important; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink) !important; }
+.service-terms span + span { color: var(--paper-text); }
+.story-first .body-lg { margin: 0; }
+.story-first .body-lg + .body-lg { margin-top: 24px; }
+.story-first .body-lg:first-child { font-family: var(--serif); font-size: clamp(24px, 2.4vw, 34px); line-height: 1.3; color: var(--ink); max-width: 760px; }
+@media (max-width: 860px) {
+  .services { grid-template-columns: 1fr; grid-template-rows: none; }
+}
