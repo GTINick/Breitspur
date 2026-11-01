@@ -292,7 +292,7 @@ const wheelDrawing = (d = {}, label = "") => {
 
 const wheelArt = (p, { eager = false, big = false } = {}) => p.image
   ? `<img src="${p.image.small || p.image.image}" srcset="${p.image.small ? `${p.image.small} 1000w, ` : ""}${p.image.image} ${p.image.width}w" sizes="${big ? "(min-width: 860px) 560px, 80vw" : "(min-width: 860px) 30vw, 80vw"}" width="${p.image.width}" height="${p.image.height}" alt="${esc(p.image.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
-  : wheelDrawing(p.drawing, `${p.name}, design drawing.  Final renders to follow.`);
+  : wheelDrawing(p.drawing, `${p.name}, design sketch.  Renders to follow.`);
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
@@ -740,7 +740,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
-    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
+    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design sketch.  Renders to follow."}</p>`}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>

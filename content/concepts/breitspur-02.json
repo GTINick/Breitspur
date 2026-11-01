@@ -14,12 +14,30 @@
     "Inside, it is still an SL you would drive for hours: carbon bucket seats, carbon door panels as the show piece, and a manual gearbox."
   ],
   "specs": [
-    { "label": "Base", "value": "Mercedes R129 SL" },
-    { "label": "Bodywork", "value": "Black Series flares, vented hood" },
-    { "label": "Roof", "value": "Fixed, exposed carbon top" },
-    { "label": "Aero", "value": "Deeper splitter, ducktail" },
-    { "label": "Cabin", "value": "Carbon buckets and door panels" },
-    { "label": "Gearbox", "value": "Manual" }
+    {
+      "label": "Base",
+      "value": "Mercedes R129 SL"
+    },
+    {
+      "label": "Bodywork",
+      "value": "Black Series flares, vented hood"
+    },
+    {
+      "label": "Roof",
+      "value": "Fixed, exposed carbon top"
+    },
+    {
+      "label": "Aero",
+      "value": "Deeper splitter, ducktail"
+    },
+    {
+      "label": "Cabin",
+      "value": "Carbon buckets and door panels"
+    },
+    {
+      "label": "Gearbox",
+      "value": "Manual"
+    }
   ],
   "profile": {
     "image": "/assets/img/concepts/breitspur-02/profile.webp",
@@ -29,6 +47,23 @@
     "shadow": false,
     "alt": "Breitspur 02, a silver Mercedes R129 SL concept with widened flares, a carbon roof, vented hood and dark wheels, seen from above at three quarters"
   },
-  "gallery": [],
+  "gallery": [
+    {
+      "image": "/assets/img/concepts/breitspur-02/front-34.webp",
+      "small": "/assets/img/concepts/breitspur-02/front-34-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Breitspur 02 in silver at sunset, parked in front of a dark timber garage, with widened flares, a vented hood, a carbon splitter and Gabel wheels",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-02/wheel.webp",
+      "small": "/assets/img/concepts/breitspur-02/wheel-1000.webp",
+      "width": 2000,
+      "height": 1116,
+      "alt": "Close up of the Gabel wheel in silver with a polished lip and the lion crest center cap, under the front flare",
+      "wide": true
+    }
+  ],
   "note": "Breitspur 02 is a design concept, rendered rather than built."
 }
