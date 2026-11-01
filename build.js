@@ -789,7 +789,7 @@ ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}
     <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
   </figure>` : ""}
   <div>
-    <h2 class="label" id="seen">AS SEEN ON</h2>
+    <h2 class="label" id="seen">${p.seenRole === "alternate" ? "THE ALTERNATE FOR" : "AS SEEN ON"}</h2>
     <p class="seen-name">${esc(concept.name)}</p>
     <p class="muted">${esc(concept.subtitle)}</p>
     <p><a class="text-link" href="/concepts/${concept.slug}/">View the concept</a></p>
