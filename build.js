@@ -262,9 +262,11 @@ const badgeText = (p) => (p.badge !== undefined ? p.badge : p.availability === "
 const badge = (p, cls = "") => (badgeText(p) ? `<span class="badge${cls ? " " + cls : ""}">${esc(badgeText(p))}</span>` : "");
 
 // A line drawing that stands in for a wheel until the render exists.  "drawing": { "style": "mesh" | "split" | "spoke", "spokes": 5, "bolts": 5 }
+// Optional for spoke wheels: "hub" (center ring radius, default 22), "boltCircle" (default 13), "width": [half angle at hub, half angle at rim] in degrees.
 const pt = (r, deg) => { const a = ((deg - 90) * Math.PI) / 180; return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`; };
 const wheelDrawing = (d = {}, label = "") => {
   const style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const hub = d.hub || 22, bc = d.boltCircle || 13;
   const lines = [];
   if (style === "mesh") {
     for (let i = 0; i < n; i++) {
@@ -275,17 +277,17 @@ const wheelDrawing = (d = {}, label = "") => {
     const pairs = style === "split" ? [-5, 5] : [0];
     for (let i = 0; i < n; i++) {
       for (const o of pairs) {
-        const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
-        lines.push(`<polygon points="${pt(22, a - w1 * 2)} ${pt(78, a - w2 + o * 0.6)} ${pt(78, a + w2 + o * 0.6)} ${pt(22, a + w1 * 2)}"/>`);
+        const a = (360 / n) * i + o, w1 = d.width ? d.width[0] : (style === "split" ? 2.2 : 5) * 2, w2 = d.width ? d.width[1] : style === "split" ? 3.4 : 7;
+        lines.push(`<polygon points="${pt(hub, a - w1)} ${pt(78, a - w2 + o * 0.6)} ${pt(78, a + w2 + o * 0.6)} ${pt(hub, a + w1)}"/>`);
       }
     }
   }
   for (let i = 0; i < bolts; i++) {
-    const [x, y] = pt(13, (360 / bolts) * i).split(",");
+    const [x, y] = pt(bc, (360 / bolts) * i).split(",");
     lines.push(`<circle cx="${x}" cy="${y}" r="2"/>`);
   }
   return `<svg class="wheel-drawing" viewBox="-100 -100 200 200" role="img" aria-label="${esc(label)}"><g fill="none" stroke="currentColor">
-    <circle r="97"/><circle r="91"/><circle r="80"/><circle r="21"/><circle r="8"/>
+    <circle r="97"/><circle r="91"/><circle r="80"/><circle r="${hub - 1}"/><circle r="8"/>
     ${lines.join("")}
   </g></svg>`;
 };
@@ -349,6 +351,7 @@ const bespoke = (p) => {
 // Shaded, filled wheel for the configurator.  Colors come from CSS variables, so the page script can repaint it.
 const wheelRender = (p) => {
   const d = p.drawing || {}, style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
+  const hub = d.hub || 21, bc = d.boltCircle || 13;
   const multi = style === "mesh";
   const lipIn = multi ? 86 : 90, id = `wr-${p.slug}`;
   const parts = [];
@@ -363,12 +366,12 @@ const wheelRender = (p) => {
     : (() => {
         const out = [], pairs = style === "split" ? [-5, 5] : [0];
         for (let i = 0; i < n; i++) for (const o of pairs) {
-          const a = (360 / n) * i + o, w1 = style === "split" ? 2.2 : 5, w2 = style === "split" ? 3.4 : 7;
-          out.push(`<polygon class="wr-spoke" points="${pt(20, a - w1 * 2)} ${pt(lipIn - 1, a - w2 + o * 0.6)} ${pt(lipIn - 1, a + w2 + o * 0.6)} ${pt(20, a + w1 * 2)}"/>`);
+          const a = (360 / n) * i + o, w1 = d.width ? d.width[0] : (style === "split" ? 2.2 : 5) * 2, w2 = d.width ? d.width[1] : style === "split" ? 3.4 : 7;
+          out.push(`<polygon class="wr-spoke" points="${pt(hub - 1, a - w1)} ${pt(lipIn - 1, a - w2 + o * 0.6)} ${pt(lipIn - 1, a + w2 + o * 0.6)} ${pt(hub - 1, a + w1)}"/>`);
         }
         return out.join("");
       })();
-  const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(13, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
+  const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(bc, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
   const cfg = p.configurator, def = (cfg && cfg.default) || {};
   const c0 = cfg ? (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).hex : "#9a9a98";
   const lip0 = def.lip === "Matched" ? c0 : `url(#${id}-polish)`;
@@ -384,7 +387,7 @@ const wheelRender = (p) => {
   <circle r="${lipIn}" class="wr-barrel"/>
   ${multi ? `<circle r="${(80 + lipIn) / 2}" class="wr-ring" stroke-width="${lipIn - 80}"/>` : ""}
   ${spokes}
-  <circle r="21" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
+  <circle r="${hub}" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
   <circle r="${(lipIn + 97) / 2}" class="wr-lip" stroke-width="${97 - lipIn}"/>
   <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
   <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
@@ -566,15 +569,31 @@ live.forEach((c, i) => {
   ${c.note ? `<p class="concept-note">${esc(c.note)}</p>` : ""}
 </section>
 
-${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concept-product" aria-label="${esc(p.name)}">
+${(() => {
+  // Wheels for this car.  "seenRole": "alternate" marks a second wheel; the car is shown on the other one.
+  const ws = products.filter((p) => p.seenOn === c.slug).sort((a, b) => (a.seenRole === "alternate") - (b.seenRole === "alternate") || a.number - b.number);
+  if (!ws.length) return "";
+  const cta = (p) => `<a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Inquire" : `View ${esc(p.name)}`}</a>`;
+  if (ws.length === 1) { const p = ws[0]; return `<section class="concept-product" aria-label="${esc(p.name)}">
   <div class="concept-product-art">${wheelArt(p)}</div>
   <div>
     <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
     <p class="seen-name">${esc(p.name)}${badge(p, "badge-inline")}</p>
     <p class="muted">${esc(p.tagline)}</p>
-    <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Inquire" : `View ${esc(p.name)}`}</a></p>
+    <p>${cta(p)}</p>
   </div>
-</section>`).join("")}
+</section>`; }
+  return `<section class="concept-product concept-wheels" aria-labelledby="wheels-${c.slug}">
+  <h2 class="label concept-wheels-head" id="wheels-${c.slug}">WHEELS FOR ${esc(c.name.toUpperCase())}</h2>
+  ${ws.map((p) => `<article class="concept-wheel">
+    <a class="concept-wheel-art" href="${productHref(p)}" tabindex="-1" aria-hidden="true">${wheelArt(p)}</a>
+    <p class="label">${p.seenRole === "alternate" ? "ALTERNATE" : "AS SHOWN"}</p>
+    <p class="seen-name">${esc(p.name)}${badge(p, "badge-inline")}</p>
+    <p class="muted">${esc(p.tagline)}</p>
+    <p>${cta(p)}</p>
+  </article>`).join("")}
+</section>`;
+})()}
 
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}

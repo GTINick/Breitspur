@@ -474,3 +474,15 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 @media (min-width: 861px) {
   .plate { width: min(100%, calc(70vh * var(--ar, 2.4)), 2080px); max-width: none; margin: 72px auto 0; }
 }
+
+/* Concept page band when a car has more than one wheel: one heading, wheels side by side. */
+.concept-wheels { align-items: start; row-gap: 48px; }
+.concept-wheels-head { grid-column: 1 / -1; margin: 0; }
+.concept-wheel { grid-column: span 6; display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); column-gap: 32px; align-items: center; }
+.concept-wheel-art { grid-row: 1 / span 4; display: block; color: inherit; }
+.concept-wheel > p { grid-column: 2; margin-top: 0; margin-bottom: 0; }
+.concept-wheel .seen-name { margin: 12px 0 8px; font-size: clamp(36px, 3.4vw, 52px); }
+.concept-wheel .btn { margin-top: 20px; }
+@media (max-width: 860px) {
+  .concept-wheel { grid-column: 1 / -1; grid-template-columns: 120px minmax(0, 1fr); column-gap: 20px; }
+}
