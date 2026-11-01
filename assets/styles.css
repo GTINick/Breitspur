@@ -466,3 +466,8 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 @media (min-width: 861px) {
   #concepts .plate { width: 105.6%; max-width: 1488px; margin-left: calc((100% - min(105.6%, 1488px)) / 2); margin-right: 0; }
 }
+
+/* Room meta: the lede sits at the vertical center of the label stack on desktop. */
+@media (min-width: 861px) {
+  .room-meta { align-items: center; }
+}
