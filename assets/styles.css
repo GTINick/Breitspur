@@ -462,12 +462,15 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
   .home-signup > .signup-head, .home-signup > form { grid-column: 1 / -1 !important; }
 }
 
-/* Homepage cars scale with the window on desktop: near full width, capped by window height.  Centered from the middle of the room so it can grow into the padding in any browser. */
-@media (min-width: 861px) {
-  #concepts .plate { width: min(calc(100vw - 72px), 160vh); max-width: none; margin-left: 0; margin-right: 0; left: 50%; transform: translateX(-50%); }
-}
 
 /* Room meta: the lede sits at the vertical center of the label stack on desktop. */
 @media (min-width: 861px) {
   .room-meta { align-items: center; }
+}
+
+/* Car plates.  Every hero render is cropped tight to the car, so the box is the car.
+   Desktop: the car spans the text column, gutter to gutter, the same width in every room.
+   It never grows past 2080px, and never taller than 70% of the window. */
+@media (min-width: 861px) {
+  .plate { width: min(100%, calc(70vh * var(--ar, 2.4)), 2080px); max-width: none; margin: 72px auto 0; }
 }

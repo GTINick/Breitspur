@@ -188,8 +188,8 @@ const bigName = (c, tag = "h2") => {
   const [word, ...rest] = c.name.split(" ");
   return `<${tag} class="room-name">${esc(word)}<br>${esc(rest.join(" "))}</${tag}>`;
 };
-const plateImg = (img, eager) => `<figure class="plate">
-  <img src="${img.image}" srcset="${img.small} 1200w, ${img.image} ${img.width}w" sizes="(min-width: 861px) 100vw, 88vw" width="${img.width}" height="${img.height}" alt="${esc(img.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
+const plateImg = (img, eager) => `<figure class="plate" style="--ar: ${(img.width / img.height).toFixed(3)}">
+  <img src="${img.image}" srcset="${img.small} 1200w, ${img.image} ${img.width}w" sizes="(min-width: 861px) min(92vw, 2080px), 100vw" width="${img.width}" height="${img.height}" alt="${esc(img.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
   ${img.shadow === false ? "" : '<div class="plate-shadow" aria-hidden="true"></div>'}
 </figure>`;
 
