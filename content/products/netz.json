@@ -6,7 +6,7 @@
   "name": "Netz",
   "category": "wheels",
   "room": "#2E2C29",
-  "tagline": "The branching mesh wheel, drawn for Breitspur 01.",
+  "tagline": "The branching mesh wheel from Breitspur 01.",
   "lede": "A three piece mesh wheel with fifteen branching arms and a deep polished lip.",
   "availability": "interest",
   "stage": "In design",
@@ -52,7 +52,7 @@
     "custom": true
   },
   "story": [
-    "Netz is German for net.  It is the first wheel from the studio, drawn for Breitspur 01.",
+    "Netz is German for net.  It is the first wheel from the studio, designed for Breitspur 01.",
     "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip.  The assembly hardware is hidden, so nothing interrupts the weave.",
     "It starts at 15 inches because the cars that wore mesh first, from the 2002 to the E30, need a wheel that fits without spacers."
   ],

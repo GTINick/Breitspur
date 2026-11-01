@@ -129,8 +129,8 @@ const url = (p) => site.domain.replace(/\/$/, "") + p;
 // ---------- layout ----------
 const nav = [
   ["/#concepts", "Concepts", "concepts"],
-  ["/studio/", "Studio", "studio"],
   ...(site.shop.enabled ? [["/shop/", "Shop", "shop"]] : []),
+  ["/studio/", "Studio", "studio"],
   ["/inquire/", "Inquire", "inquire"],
 ];
 
@@ -208,7 +208,7 @@ const room = (c, i, { first = false, linked = true } = {}) => {
       </ul>
     </div>
   </div>
-  ${isLive && c.profile ? plateImg(c.profile, first) : `<div class="unveil" role="img" aria-label="${esc(c.name)} is being drawn">
+  ${isLive && c.profile ? plateImg(c.profile, first) : `<div class="unveil" role="img" aria-label="${esc(c.name)} is in the studio">
     <span class="unveil-word">Unveiling soon</span>
   </div>`}
   ${isLive && linked ? `<p class="room-cta"><a class="btn btn-light" href="${href}">View ${esc(c.name)}</a></p>` : ""}
@@ -296,7 +296,7 @@ const wheelArt = (p, { eager = false, big = false } = {}) => p.image
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
-    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Drawing.  Renders to follow.</span>'}</div>
+    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Design sketch.  Renders to follow.</span>'}</div>
     <div class="product-info">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
       <h3 class="product-name">${esc(p.name)}</h3>
@@ -470,18 +470,19 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
 </form>`;
 
-const notifyForm = () => `<form class="inquiry" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+const notifyForm = (id = "su") => `<form class="inquiry" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
   <input type="hidden" name="form-name" value="shop-updates">
   <input type="hidden" name="subject" value="Shop updates signup (%{submissionId})">
   <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
-  <div class="field"><label for="su-name">Name</label><input id="su-name" name="name" type="text" autocomplete="name" required></div>
-  <div class="field"><label for="su-email">Email</label><input id="su-email" name="email" type="email" autocomplete="email" required></div>
-  <div class="field field-wide"><label for="su-car">Your car</label><input id="su-car" name="car" type="text" placeholder="Year, make, model"></div>
+  <div class="field"><label for="${id}-name">Name</label><input id="${id}-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="${id}-email">Email</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div>
+  <div class="field field-wide"><label for="${id}-car">Your car</label><input id="${id}-car" name="car" type="text" placeholder="Year, make, model"></div>
   <fieldset class="field-wide checks"><legend>Interested in</legend>
     ${(site.shop.categories || []).filter((k) => k.status !== "draft").map((k) => `<label class="check"><input type="checkbox" name="interests[]" value="${esc(k.title)}"> ${esc(k.title)}</label>`).join("")}
+    <label class="check"><input type="checkbox" name="interests[]" value="New concepts"> New concepts</label>
   </fieldset>
   <p class="field-wide"><button class="btn btn-solid" type="submit">Keep me posted</button></p>
-  <p class="form-fine field-wide">Only shop news, a few times a year.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+  <p class="form-fine field-wide">A few emails a year, only about what you ticked.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
 </form>`;
 
 // ---------- pages ----------
@@ -496,6 +497,22 @@ write("index.html", page({
   room: firstRoom,
   body: `<div id="concepts">${concepts.map((c, i) => room(c, i, { first: i === 0 })).join("\n")}</div>
 
+${(() => {
+  const wheels = products.filter((p) => p.category === "wheels");
+  if (!wheels.length) return "";
+  const k = shopCats.find((c) => c.slug === "wheels");
+  return `<section class="shop-cat home-shop" aria-labelledby="home-wheels">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="home-wheels">The wheels from these cars.</h2>
+    <div class="shop-cat-intro">
+      <p class="body-lg muted">${esc(k.body || "")}</p>
+      <p><a class="btn btn-light" href="/shop/">Inquire about the wheels</a></p>
+    </div>
+  </div>
+  ${productRow(wheels.slice(0, 3), "#signup", "More wheels are in development.  Leave your car and hear first.")}
+</section>`;
+})()}
+
 <section class="paper manifesto" aria-labelledby="mission">
   <h2 class="label" id="mission">THE STUDIO</h2>
   <div class="manifesto-body">
@@ -505,38 +522,24 @@ write("index.html", page({
       <blockquote><p>${esc(site.founder.quote)}</p></blockquote>
       <figcaption>${esc(site.founder.name)}, ${esc(site.founder.role)}</figcaption>
     </figure>
+    <p class="manifesto-link"><a class="text-link" href="/studio/">The story behind the studio</a></p>
   </div>
 </section>
 
-${index()}
-${(() => {
-  const wheels = products.filter((p) => p.category === "wheels");
-  if (!wheels.length) return "";
-  const k = shopCats.find((c) => c.slug === "wheels");
-  return `
-<section class="shop-cat home-shop" aria-labelledby="home-wheels">
-  <div class="shop-cat-head">
-    <h2 class="serif-xl" id="home-wheels">${esc(k.title)}</h2>
-    <div class="shop-cat-intro">
-      <p class="body-lg muted">${esc(k.body || "")}</p>
-      <p><a class="text-link" href="/shop/">Visit the shop</a></p>
-    </div>
-  </div>
-  ${productRow(wheels.slice(0, 3), "/shop/#ask", "More wheels are being drawn.  Leave your car and hear first.")}
-</section>`;
-})()}
-
-<section class="paper studio-band" aria-labelledby="work">
-  <h2 class="label" id="work">WORK WITH THE STUDIO</h2>
+<section class="ask ask-cta home-pitch" aria-labelledby="pitch">
+  <h2 class="serif-xl" id="pitch">${esc(site.home.pitch.title)}</h2>
   <div>
-    ${services()}
-    <div class="bio"><p>${esc(site.founder.bio)}</p><a class="text-link" href="/studio/">About the studio</a></div>
+    <p class="body-lg muted">${esc(site.home.pitch.body)}</p>
+    <p class="ask-links"><a class="btn btn-light" href="/studio/#work">${esc(site.home.pitch.cta)}</a></p>
   </div>
 </section>
 
-<section class="ask" aria-labelledby="ask">
-  <h2 class="serif-xl" id="ask">Tell us the car.</h2>
-  ${form("home")}
+<section class="paper home-signup" id="signup" aria-labelledby="signup-title">
+  <div class="signup-head">
+    <h2 class="serif-xl" id="signup-title">${esc(site.home.signup.title)}</h2>
+    <p class="body-lg">${esc(site.home.signup.body)}</p>
+  </div>
+  ${notifyForm("hs")}
 </section>`,
 }));
 
@@ -580,7 +583,7 @@ ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.
 <section class="ask ask-cta" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">What should your car have been?</h2>
   <div>
-    <p class="body-lg muted">We draw commissioned concepts for private owners, shops and makers.</p>
+    <p class="body-lg muted">We define commissioned concepts for private owners, shops and makers.</p>
     <p class="ask-links"><a class="btn btn-light" href="/inquire/">Commission a concept</a>${live.length > 1 ? `<a class="text-link" href="/concepts/${next.slug}/">Next: ${esc(next.name)}</a>` : ""}</p>
   </div>
 </section>`,
@@ -690,7 +693,7 @@ ${shopCats.filter((k) => k.status === "live" && products.some((p) => p.category 
     <h2 class="serif-xl" id="cat-${k.slug}">${esc(k.title)}</h2>
     <div class="shop-cat-intro"><p class="body-lg muted">${esc(k.body || "")}</p></div>
   </div>
-  ${productRow(products.filter((p) => p.category === k.slug), "#ask", "More are being drawn.  Leave your car below and hear first.")}
+  ${productRow(products.filter((p) => p.category === k.slug), "#ask", "More are in development.  Leave your car below and hear first.")}
 </section>`).join("\n")}
 ${(() => {
   const later = shopCats.filter((k) => !(k.status === "live" && products.some((p) => p.category === k.slug)));
@@ -758,7 +761,7 @@ ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
     ${p.specs.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
   </dl>` : ""}
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
-  ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DRAWN FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
+  ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DESIGNED FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
 
 ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
@@ -766,7 +769,7 @@ ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}
     <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
   </figure>` : ""}
   <div>
-    <h2 class="label" id="seen">AS DRAWN ON</h2>
+    <h2 class="label" id="seen">AS SEEN ON</h2>
     <p class="seen-name">${esc(concept.name)}</p>
     <p class="muted">${esc(concept.subtitle)}</p>
     <p><a class="text-link" href="/concepts/${concept.slug}/">View the concept</a></p>

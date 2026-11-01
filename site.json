@@ -2,21 +2,21 @@
   "name": "Breitspur",
   "domain": "https://breitspurstudio.com",
   "tagline": "The versions that should have existed.",
-  "description": "Breitspur is a design studio for German cars.  We draw the versions the factories never built.",
+  "description": "Breitspur is a design studio for German cars.  We define the versions the factories never built.",
   "email": "",
   "location": "Georgetown, Texas",
   "social": {
     "instagram": ""
   },
   "manifesto": {
-    "lead": "Every great car had a sharper version that never made it out of the design studio.  Breitspur draws those cars.",
-    "body": "Every great car had a sharper version that never made it out of the design studio.  We draw those cars, starting from the factory's own design language and taking it one step further than the factory dared."
+    "lead": "Every great car had a sharper version that never left the design studio.  Breitspur defines those cars.",
+    "body": "Every concept starts from the factory's own design language and goes one step further than the factory dared, to the car it should have been."
   },
   "founder": {
     "quote": "Stance is the first thing you feel about a car.  Get it wrong and nothing else you do matters.",
     "name": "Nick DiLoreto",
     "role": "Design director, Breitspur",
-    "bio": "Nick DiLoreto trained as a car designer and started his career at Volvo.  He now leads industrial design for a major consumer hardware brand.  Breitspur is where he draws cars again."
+    "bio": "Nick DiLoreto trained as a car designer and started his career at Volvo.  He now leads industrial design for a major consumer hardware brand.  Breitspur is where he designs cars again."
   },
   "services": [
     {
@@ -24,11 +24,11 @@
       "title": "Concept render",
       "price": "From $1,500",
       "time": "About two weeks",
-      "body": "Send photos of your car and tell us what it should have been.  We draw it back with the stance, wheels and color it deserves, as one finished hero render.",
+      "body": "Send photos of your car and tell us about it.  We work out what it should have been, the stance, wheels and color, and deliver it as one finished hero render.",
       "details": [
         "One finished hero render",
         "Stance, wheels and color",
-        "Drawn from your own photos"
+        "Built from your own photos"
       ]
     },
     {
@@ -59,14 +59,14 @@
   "shop": {
     "enabled": true,
     "teaser": "Wheels, parts and apparel to follow.",
-    "intro": "Wheels and parts drawn by the studio.  Nothing is on sale yet.  Inquire about a piece and you hear about pricing and build slots first.",
+    "intro": "Wheels and parts designed by the studio.  Nothing is on sale yet.  Inquire about a piece and you hear about pricing and build slots first.",
     "categories": [
       {
         "slug": "wheels",
         "title": "Wheels",
         "single": "wheel",
         "status": "live",
-        "body": "Each wheel is drawn for a car in the collection, then machined to order for the car you drive."
+        "body": "Each wheel debuts on a car in the collection, then is machined to order for the car you drive."
       },
       {
         "slug": "carbon",
@@ -195,10 +195,19 @@
     ]
   },
   "home": {
-    "intro": "Breitspur means wide track.  Every great car starts with how it sits on its wheels, so every concept here debuts a wheel and the parts to build it."
+    "intro": "Breitspur means wide track.  Every great car starts with how it sits on its wheels, so every concept here debuts a wheel and the parts to build it.",
+    "pitch": {
+      "title": "What should your car have been?",
+      "body": "Send us your car and we work out the version it should have been: stance, wheels, flares and color.  Concepts for private owners, shops and makers.",
+      "cta": "Start with your car"
+    },
+    "signup": {
+      "title": "Hear first.",
+      "body": "Nothing is on sale yet.  Leave your email and your car, and you hear first when wheels open and new concepts debut."
+    }
   },
   "story": [
     "I was ten when I started counting down the days until I could drive.  My mother's father owned a body shop and spent his days bringing exotic cars back to life.  My father's father was an engineer who took everything apart to see how it worked.  My dad and I talked about cars constantly.",
-    "I trained as a car designer, started at Volvo, and still lead industrial design today.  Breitspur is where I draw cars again, and it starts with the thing that matters most: stance.  If a car doesn't sit right, nothing else matters."
+    "I trained as a car designer, started at Volvo, and still lead industrial design today.  Breitspur is where I design cars again, and it starts with the thing that matters most: stance.  If a car doesn't sit right, nothing else matters."
   ]
 }

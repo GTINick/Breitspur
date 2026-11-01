@@ -439,3 +439,25 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 @media (max-width: 860px) {
   .services { grid-template-columns: 1fr; grid-template-rows: none; }
 }
+
+/* Homepage flow: wheels, studio, pitch, signup */
+.manifesto-link { margin: 40px 0 0; }
+.manifesto-link a { color: var(--ink); }
+.home-shop .shop-cat-intro .btn { margin-top: 8px; }
+.home-pitch { border-top: 0; }
+.home-signup { align-items: start; }
+.home-signup > .signup-head { grid-column: span 5 !important; }
+.home-signup > form { grid-column: 7 / -1 !important; }
+.signup-head .body-lg { margin: 24px 0 0; }
+.home-signup .field label, .home-signup .checks legend { color: var(--paper-text); }
+.home-signup .field input, .home-signup .field textarea, .home-signup .field select { color: var(--ink); border-bottom-color: rgba(30, 29, 27, 0.45); }
+.home-signup .field input::placeholder { color: rgba(30, 29, 27, 0.45); }
+.home-signup .field input:focus { border-bottom-color: var(--ink); }
+.home-signup .check { color: var(--paper-text); }
+.home-signup .check input { accent-color: var(--ink); }
+.home-signup .btn-solid { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.home-signup .form-fine { color: var(--paper-text); }
+.home-signup .form-fine a { color: var(--ink); }
+@media (max-width: 860px) {
+  .home-signup > .signup-head, .home-signup > form { grid-column: 1 / -1 !important; }
+}
