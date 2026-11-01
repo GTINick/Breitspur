@@ -96,7 +96,6 @@
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
   "seenOn": "breitspur-02",
   "seenRole": "alternate",
-  "seenOnImage": false,
   "drawing": {
     "style": "spoke",
     "spokes": 12,
@@ -142,5 +141,12 @@
       "Finish",
       "Bright Silver center, polished lip"
     ]
-  ]
+  ],
+  "seenImage": {
+    "image": "/assets/img/products/kranz/on-breitspur-02.webp",
+    "small": "/assets/img/products/kranz/on-breitspur-02-1000.webp",
+    "width": 2284,
+    "height": 963,
+    "alt": "Breitspur 02, the silver R129 SL concept, on twelve spoke Kranz wheels, seen from above at three quarters"
+  }
 }

@@ -743,7 +743,8 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     const k = catOf(p);
     const concept = p.seenOn ? concepts.find((c) => c.slug === p.seenOn) : null;
     // "seenOnImage": false hides the concept photo, for when the concept car wears a stand in wheel.
-    const seenImg = concept && p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null;
+    // "seenImage" is the car wearing this wheel.  Without one, the concept's first gallery photo is used, unless "seenOnImage" is false.
+    const seenImg = concept ? p.seenImage || (p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null) : null;
     const pRoom = p.room || shopRoom;
     const cta = p.availability === "interest"
       ? `<a class="btn btn-solid" href="#interest">Inquire</a>`
