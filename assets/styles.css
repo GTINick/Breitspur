@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 /* Breitspur.  Gallery rooms: each car gets a tonal room, the page between them is paper. */
 
 @font-face { font-family: "Bodoni Moda"; src: url("/assets/fonts/bodoni-moda.woff2") format("woff2"); font-weight: 400 900; font-style: normal; font-display: swap; }
@@ -62,7 +63,7 @@ a:hover { opacity: 0.8; }
 .unveil-word { font-family: var(--serif); font-style: italic; font-size: clamp(28px, 4vw, 56px); color: var(--cream-dim); }
 .room-cta { margin: 48px 0 0; text-align: center; }
 .page-hero .room-cta { text-align: left; }
-.page-hero .room-lede { margin-top: 36px; }
+.page-hero .room-lede { margin-top: 64px; }
 
 /* Buttons */
 .btn { display: inline-block; padding: 16px 34px; font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; text-decoration: none; border: 1px solid currentColor; background: transparent; cursor: pointer; }
@@ -95,14 +96,16 @@ a:hover { opacity: 0.8; }
 .index-state { grid-column: span 3; text-align: right; font-size: 12px; letter-spacing: 0.18em; color: var(--cream-faint); }
 
 /* Services */
-.services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; }
+.services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto auto auto; column-gap: 56px; }
+.service { display: grid; grid-row: span 4; grid-template-rows: subgrid; align-content: start; }
 .service h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 3.6vw, 52px); line-height: 1; }
 .service p { margin: 20px 0 0; font-size: 17px; line-height: 1.65; color: var(--paper-text); }
 .ticks { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid rgba(30, 29, 27, 0.25); }
 .ticks li { padding: 12px 0; border-bottom: 1px solid rgba(30, 29, 27, 0.25); font-size: 14px; letter-spacing: 0.04em; }
 .price { font-weight: 600; }
-.bio { margin: 56px 0 0; padding-top: 28px; border-top: 1px solid var(--ink); font-size: 16px; line-height: 1.7; color: var(--paper-text); max-width: 760px; }
-.bio a { color: var(--ink); text-underline-offset: 4px; }
+.bio { margin: 64px 0 0; padding-top: 28px; border-top: 1px solid var(--ink); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px 48px; }
+.bio p { margin: 0; max-width: 620px; font-size: 16px; line-height: 1.7; color: var(--paper-text); }
+.bio a { color: var(--ink); white-space: nowrap; }
 
 /* Inquiry */
 .ask { padding: 112px var(--gutter); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: start; }
@@ -342,3 +345,77 @@ main > .shop-cat:last-child { padding-bottom: 112px; }
 .badge-tile { position: absolute; top: 16px; left: 16px; z-index: 2; }
 .badge-inline { margin-left: 16px; position: relative; top: -1px; }
 .seen-name .badge-inline { font-size: 10px; top: -6px; }
+
+/* ---------- Refinement pass ---------- */
+.nw { white-space: nowrap; }
+
+/* Category heads: heading and intro share a baseline */
+.shop-cat-head { align-items: baseline; }
+.shop-cat-head > .shop-cat-intro { grid-column: 7 / -1; }
+.shop-cat-intro .body-lg { margin: 0; }
+.shop-cat-intro p + p { margin-top: 16px; }
+
+/* Next slot in a short product row */
+.product-tile-next { background: transparent; border: 1px solid var(--rule-dark); }
+.next-mark { font-family: var(--serif); font-size: clamp(64px, 7vw, 112px); line-height: 1; color: var(--rule-dark); }
+.product-next .product-name { color: var(--cream-dim); }
+.product-next .product-info { border-bottom: 0; }
+
+/* In development list */
+.shop-later { padding: 112px var(--gutter) 0; }
+.shop-later .label { color: var(--cream-faint); margin-bottom: 32px; }
+.shop-later ul { list-style: none; margin: 0; padding: 0; }
+.shop-later li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: baseline; padding: 28px 0; border-top: 1px solid var(--rule-dark); }
+.shop-later li:last-child { border-bottom: 1px solid var(--rule-dark); }
+.shop-later .shop-soon-title { grid-column: span 4; }
+.shop-later .muted { grid-column: 5 / -1; margin: 0; }
+main > .shop-later + .paper { margin-top: 112px; }
+
+/* Product hero */
+.product-title { margin-top: 28px; }
+.product-price { font-size: 13px; letter-spacing: 0.2em; color: var(--cream-dim); }
+.drawn-for { grid-column: 4 / -1 !important; margin: 20px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+.drawn-for .label { color: var(--paper-text); }
+.drawn-for a { color: var(--ink); }
+
+/* Dark sections that follow each other get a rule, so the gap reads as a break, not a void */
+.concept-product + .gallery, .concept-product + .ask, .gallery + .ask, .shop-cat + .ask, .home-shop + .paper { border-top: 1px solid var(--rule-dark); }
+.gallery + .ask { margin-top: 96px; }
+
+@media (max-width: 860px) {
+  .page-hero .room-lede { margin-top: 40px; }
+  .shop-cat-head > .shop-cat-intro { grid-column: 1 / -1; }
+  .services { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 56px; }
+  .service { grid-row: auto; grid-template-rows: none; }
+  .specs dd { font-size: 18px; }
+  .shop-later { padding-top: 72px; }
+  .shop-later li { grid-template-columns: 1fr; gap: 8px; }
+  .shop-later .shop-soon-title, .shop-later .muted { grid-column: 1; }
+  main > .shop-later + .paper { margin-top: 72px; }
+  .drawn-for { grid-column: 1 / -1 !important; }
+  .product-next { display: none; }
+  .bio a { white-space: normal; }
+}
+
+/* Consecutive cream sections get a hairline so they read as two sections */
+.paper + .paper { border-top: 1px solid rgba(30, 29, 27, 0.18); }
+
+/* Bespoke cards: number, title and text line up across each row even when a title wraps */
+.bespoke-items { row-gap: 0; }
+.bespoke-items li { display: grid; grid-row: span 3; grid-template-rows: subgrid; align-content: start; }
+.bespoke-items li p { padding-bottom: 36px; }
+
+/* Better rag on body text and headings */
+p, li, dd, blockquote { text-wrap: pretty; }
+h1, h2, h3, .serif-lead { text-wrap: balance; }
+.room-name, .product-title { text-wrap: nowrap; }
+
+/* Sections that hold a product grid end with the same space as every other section */
+.shop-cat { padding-bottom: 112px; }
+.shop-cat + .shop-later { padding-top: 0; }
+@media (max-width: 860px) {
+  .shop-cat { padding-bottom: 72px; }
+  .bespoke-items { row-gap: 32px; }
+  .bespoke-items li { grid-row: auto; grid-template-rows: none; }
+  .bespoke-items li p { padding-bottom: 0; }
+}

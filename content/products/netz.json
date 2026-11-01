@@ -6,8 +6,8 @@
   "name": "Netz",
   "category": "wheels",
   "room": "#2E2C29",
-  "tagline": "The multipiece mesh wheel from Breitspur 01.",
-  "lede": "A three piece mesh wheel with a deep polished lip, drawn for the cars that wore mesh when it mattered.",
+  "tagline": "The branching mesh wheel, drawn for Breitspur 01.",
+  "lede": "A three piece mesh wheel with fifteen branching arms and a deep polished lip.",
   "availability": "interest",
   "stage": "In design",
   "price": "",
@@ -52,14 +52,18 @@
     "custom": true
   },
   "story": [
-    "Netz is German for net.  It is the wheel Breitspur 01 wears, and the first wheel from the studio.",
-    "Mesh is the most honest wheel there is.  Every spoke carries load and you can see all of it.  Netz keeps the fine weave and the deep lip, then redraws the center so the mesh reads cleanly from across a room.",
-    "It starts at 15 inches on purpose.  The cars that wore mesh first, from the 2002 to the E30, deserve a wheel that fits them without spacers or excuses."
+    "Netz is German for net.  It is the first wheel from the studio, drawn for Breitspur 01.",
+    "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip.  The assembly hardware is hidden, so nothing interrupts the weave.",
+    "It starts at 15 inches because the cars that wore mesh first, from the 2002 to the E30, need a wheel that fits without spacers."
   ],
   "specs": [
     {
       "label": "Construction",
-      "value": "Three piece, forged 7075-T6 center"
+      "value": "Three piece"
+    },
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6"
     },
     {
       "label": "Diameters",
@@ -67,7 +71,7 @@
     },
     {
       "label": "Lip",
-      "value": "Deep, always polished"
+      "value": "Deep, polished"
     },
     {
       "label": "Bolt patterns",
@@ -75,11 +79,7 @@
     },
     {
       "label": "Assembly",
-      "value": "Hidden hardware, clean lip"
-    },
-    {
-      "label": "Made",
-      "value": "CNC machined to order for your car"
+      "value": "Hidden hardware"
     }
   ],
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
@@ -87,7 +87,7 @@
   "seenOnImage": false,
   "drawing": {
     "style": "mesh",
-    "spokes": 18,
+    "spokes": 15,
     "bolts": 4
   },
   "image": null,

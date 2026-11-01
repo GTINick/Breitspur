@@ -244,7 +244,7 @@ const index = () => `<section class="index" aria-labelledby="collection">
 // ---------- shop components ----------
 const catOf = (p) => shopCats.find((k) => k.slug === p.category);
 const productHref = (p) => `/shop/${p.category}/${p.slug}/`;
-const AVAIL = { interest: "Registering interest", preorder: "Pre-order open", available: "Available" };
+const AVAIL = { interest: "Taking inquiries", preorder: "Pre-order open", available: "Available" };
 // "Coming soon" badge on anything not yet for sale.  A product can set its own "badge" text, or "badge": "" to hide it.
 const badgeText = (p) => (p.badge !== undefined ? p.badge : p.availability === "interest" ? "Coming soon" : "");
 const badge = (p, cls = "") => (badgeText(p) ? `<span class="badge${cls ? " " + cls : ""}">${esc(badgeText(p))}</span>` : "");
@@ -292,11 +292,23 @@ const productCard = (p) => `<article class="product-card">
       <ul class="product-facts">
         ${p.construction ? `<li>${esc(p.construction.toUpperCase())}</li>` : ""}
         ${p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
-        <li class="product-state">${esc(AVAIL[p.availability].toUpperCase())}</li>
       </ul>
     </div>
   </a>
 </article>`;
+
+// Fills the last slot of a product row, so two wheels in a three column grid do not leave a hole.
+const nextCard = (href, linkText) => `<article class="product-card product-next">
+  <a href="${href}" class="product-link">
+    <div class="product-tile product-tile-next"><span class="next-mark" aria-hidden="true">W${two(products.length + 1)}</span></div>
+    <div class="product-info">
+      <p class="product-code">NEXT</p>
+      <h3 class="product-name">In the studio</h3>
+      <p class="product-tag">${esc(linkText)}</p>
+    </div>
+  </a>
+</article>`;
+const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 ? nextCard(href, linkText) : ""}</div>`;
 
 // "Made for one car": what is tailored per order, beside an example build sheet.
 const bespoke = (p) => {
@@ -315,7 +327,7 @@ const bespoke = (p) => {
         <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>BUILD SHEET</span></div>
         ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
         <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-        <figcaption>Example.  Every sheet is written for one car.</figcaption>
+        <figcaption>Example build sheet</figcaption>
       </figure>` : ""}
     </div>
   </div>
@@ -448,7 +460,7 @@ write("index.html", page({
   body: `<div id="concepts">${concepts.map((c, i) => room(c, i, { first: i === 0 })).join("\n")}</div>
 
 <section class="paper manifesto" aria-labelledby="mission">
-  <h2 class="label" id="mission">${esc(site.tagline.toUpperCase())}</h2>
+  <h2 class="label" id="mission">THE STUDIO</h2>
   <div class="manifesto-body">
     <p class="serif-lead">${esc(site.manifesto.lead)}</p>
     <p class="body-lg">${esc(site.manifesto.body)}</p>
@@ -460,35 +472,35 @@ write("index.html", page({
 </section>
 
 ${index()}
+${(() => {
+  const wheels = products.filter((p) => p.category === "wheels");
+  if (!wheels.length) return "";
+  const k = shopCats.find((c) => c.slug === "wheels");
+  return `
+<section class="shop-cat home-shop" aria-labelledby="home-wheels">
+  <div class="shop-cat-head">
+    <h2 class="serif-xl" id="home-wheels">${esc(k.title)}</h2>
+    <div class="shop-cat-intro">
+      <p class="body-lg muted">${esc(k.body || "")}</p>
+      <p><a class="text-link" href="/shop/">Visit the shop</a></p>
+    </div>
+  </div>
+  ${productRow(wheels.slice(0, 3), "/shop/#ask", "More wheels are being drawn.  Leave your car and hear first.")}
+</section>`;
+})()}
 
 <section class="paper studio-band" aria-labelledby="work">
   <h2 class="label" id="work">WORK WITH THE STUDIO</h2>
   <div>
     ${services()}
-    <p class="bio">${esc(site.founder.bio)}  <a href="/studio/">About the studio</a></p>
+    <div class="bio"><p>${esc(site.founder.bio)}</p><a class="text-link" href="/studio/">About the studio</a></div>
   </div>
 </section>
 
 <section class="ask" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">Tell us the car.</h2>
   ${form("home")}
-</section>${(() => {
-  const wheels = products.filter((p) => p.category === "wheels");
-  if (!wheels.length) return "";
-  const k = shopCats.find((c) => c.slug === "wheels");
-  return `
-
-<section class="shop-cat home-shop" aria-labelledby="home-wheels">
-  <div class="shop-cat-head">
-    <h2 class="serif-xl" id="home-wheels">${esc(k.title)}</h2>
-    <div>
-      <p class="body-lg muted">${esc(k.body || "")}  Not on sale yet.  Register interest and you hear first.</p>
-      <p><a class="btn btn-light" href="/shop/">Visit the shop</a></p>
-    </div>
-  </div>
-  <div class="product-grid">${wheels.slice(0, 3).map(productCard).join("")}</div>
-</section>`;
-})()}`,
+</section>`,
 }));
 
 // Concept pages
@@ -505,7 +517,7 @@ live.forEach((c, i) => {
 <section class="paper concept-story" aria-labelledby="story">
   <h2 class="label" id="story">THE STORY</h2>
   <div class="story-body">
-    <p class="serif-lead">${esc(c.counterfactual)}</p>
+    <p class="serif-lead">${esc(c.summary || c.counterfactual)}</p>
     ${(c.story || []).map((t) => `<p class="body-lg">${esc(t)}</p>`).join("")}
   </div>
   <dl class="specs">
@@ -519,7 +531,7 @@ ${products.filter((p) => p.seenOn === c.slug).map((p) => `<section class="concep
   <div>
     <p class="label">${esc(catOf(p).single ? `THE ${catOf(p).single.toUpperCase()}` : catOf(p).title.toUpperCase())}</p>
     <p class="seen-name">${esc(p.name)}${badge(p, "badge-inline")}</p>
-    <p class="muted">${esc(p.tagline)}  ${esc(AVAIL[p.availability])}.</p>
+    <p class="muted">${esc(p.tagline)}</p>
     <p><a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Inquire" : `View ${esc(p.name)}`}</a></p>
   </div>
 </section>`).join("")}
@@ -529,7 +541,7 @@ ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.
 </section>` : ""}
 
 <section class="ask ask-cta" aria-labelledby="ask">
-  <h2 class="serif-xl" id="ask">Your car, the version that should have existed.</h2>
+  <h2 class="serif-xl" id="ask">What should your car have been?</h2>
   <div>
     <p class="body-lg muted">We draw commissioned concepts for private owners, shops and makers.</p>
     <p class="ask-links"><a class="btn btn-light" href="/inquire/">Commission a concept</a>${live.length > 1 ? `<a class="text-link" href="/concepts/${next.slug}/">Next: ${esc(next.name)}</a>` : ""}</p>
@@ -637,21 +649,20 @@ if (site.shop.enabled) {
   <p class="room-lede">${esc(site.shop.intro || "")}</p>
 </section>
 
-${shopCats.map((k) => {
-  const items = products.filter((p) => p.category === k.slug);
-  if (k.status === "live" && items.length) return `<section class="shop-cat" id="${k.slug}" aria-labelledby="cat-${k.slug}">
+${shopCats.filter((k) => k.status === "live" && products.some((p) => p.category === k.slug)).map((k) => `<section class="shop-cat" id="${k.slug}" aria-labelledby="cat-${k.slug}">
   <div class="shop-cat-head">
     <h2 class="serif-xl" id="cat-${k.slug}">${esc(k.title)}</h2>
-    <p class="body-lg muted">${esc(k.body || "")}</p>
+    <div class="shop-cat-intro"><p class="body-lg muted">${esc(k.body || "")}</p></div>
   </div>
-  <div class="product-grid">${items.map(productCard).join("")}</div>
-</section>`;
-  return `<section class="shop-cat shop-cat-soon" id="${k.slug}" aria-labelledby="cat-${k.slug}">
-  <h2 class="shop-soon-title" id="cat-${k.slug}">${esc(k.title)}</h2>
-  <p class="muted">${esc(k.body || "")}</p>
-  <p class="label shop-soon-state">IN DEVELOPMENT</p>
-</section>`;
-}).join("\n")}
+  ${productRow(products.filter((p) => p.category === k.slug), "#ask", "More are being drawn.  Leave your car below and hear first.")}
+</section>`).join("\n")}
+${(() => {
+  const later = shopCats.filter((k) => !(k.status === "live" && products.some((p) => p.category === k.slug)));
+  return later.length ? `<section class="shop-later" aria-labelledby="later">
+  <h2 class="label" id="later">IN DEVELOPMENT</h2>
+  <ul>${later.map((k) => `<li id="${k.slug}"><h3 class="shop-soon-title">${esc(k.title)}</h3><p class="muted">${esc(k.body || "")}</p></li>`).join("")}</ul>
+</section>` : "";
+})()}
 
 ${bespoke()}
 
@@ -697,12 +708,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
-      <p class="product-cta">${cta}</p>
-      <ul class="labels product-labels">
-        <li>${esc(AVAIL[p.availability].toUpperCase())}</li>
-        ${p.stage ? `<li>${esc(p.stage.toUpperCase())}</li>` : ""}
-        ${p.price && p.availability === "interest" ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
-      </ul>
+      <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
     </div>
   </div>
 </section>
@@ -716,9 +722,10 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     ${p.specs.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
   </dl>` : ""}
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
+  ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DRAWN FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
 
-${concept ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
+${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
   ${seenImg ? `<figure>
     <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
   </figure>` : ""}
@@ -734,8 +741,8 @@ ${p.category === "wheels" ? bespoke(p) : ""}
 
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
-    <h2 class="serif-xl" id="ask">Register interest.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not for sale yet.  Tell us your car and the size you want.  Every set is machined to order for one car, so your answers decide which fitments we engineer first.  The list hears about pricing and build slots before anyone else.</p>
+    <h2 class="serif-xl" id="ask">Inquire.</h2>
+    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you want.  Your answers decide which fitments we engineer first, and you hear about pricing before anyone else.</p>
     ${stepsBlock}
   </div>
   ${interestForm(p)}
@@ -750,7 +757,7 @@ ${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
 
   write("shop/thanks/index.html", page({
     title: `You are on the list | ${site.name}`,
-    description: "Your interest is registered.",
+    description: "Your inquiry is in.",
     path: "/shop/thanks/",
     room: shopRoom,
     noindex: true,
@@ -796,6 +803,12 @@ for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
     const v = version(m.slice(1));
     return v ? `${m}?v=${v}` : m;
   });
+  fs.writeFileSync(file, html);
+}
+
+// Keep alloy designations like 7075-T6 on one line.
+for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
+  const html = fs.readFileSync(file, "utf8").replace(/>([^<]*)</g, (m, t) => ">" + t.replace(/\b(\d{4}-T\d)\b/g, '<span class="nw">$1</span>') + "<");
   fs.writeFileSync(file, html);
 }
 

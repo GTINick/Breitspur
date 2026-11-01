@@ -21,11 +21,11 @@
   "configurator": {
     "centers": [
       {
-        "name": "Satin graphite",
+        "name": "Satin Graphite",
         "hex": "#45474A"
       },
       {
-        "name": "Gloss black",
+        "name": "Gloss Black",
         "hex": "#141414"
       },
       {
@@ -42,7 +42,7 @@
       "Matched"
     ],
     "default": {
-      "center": "Satin graphite",
+      "center": "Satin Graphite",
       "lip": "Matched"
     }
   },
@@ -73,8 +73,8 @@
       "value": "Big brake kits in mind"
     },
     {
-      "label": "Made",
-      "value": "CNC machined to order for your car"
+      "label": "Lip",
+      "value": "Polished or color matched"
     }
   ],
   "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
@@ -116,7 +116,7 @@
     ],
     [
       "Finish",
-      "Satin graphite"
+      "Satin Graphite"
     ],
     [
       "Set",
