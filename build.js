@@ -16,6 +16,10 @@ const errors = [];
 const esc = (s = "") =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const two = (n) => String(n).padStart(2, "0");
+// Same slug as assets/configurator.js, so build and browser agree on image paths.
+const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+// Rendered configurator image: <path>/<center>-<lip>/<view>[-800|-240].webp
+const renderSrc = (cfg, center, lip, view, size = "") => `${cfg.renders.path}/${slugify(center)}-${slugify(lip)}/${view}${size}.webp`;
 const write = (rel, body) => {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -88,6 +92,14 @@ for (const p of products) {
     if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
     for (const c of cfg.centers || []) if (!c.name || !/^#[0-9a-f]{6}$/i.test(c.hex || "")) errors.push(`${p._file}: center colors need a name and a hex like #B8975A`);
     for (const l of cfg.lips || []) if (!["Polished", "Matched"].includes(l)) errors.push(`${p._file}: lips can be Polished or Matched`);
+    if (cfg.renders) {
+      if (!cfg.renders.path || !(cfg.renders.views || []).length) errors.push(`${p._file}: configurator renders need a path and views`);
+      for (const c of cfg.centers || []) for (const l of cfg.lips || ["Matched"]) for (const v of cfg.renders.views || [])
+        for (const size of ["", "-800", "-240"]) {
+          const f = renderSrc(cfg, c.name, l, v.key, size);
+          if (!fs.existsSync(path.join(ROOT, f))) errors.push(`${p._file}: missing render ${f}`);
+        }
+    }
   }
   for (const g of [p.image, ...(p.gallery || [])].filter(Boolean)) {
     if (!g.alt) errors.push(`${p._file}: every image needs alt text`);
@@ -378,6 +390,31 @@ const wheelRender = (p) => {
   <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
 </svg>`;
 };
+
+// Rendered configurator: the front view of the wheel, cut out on the room
+// color, in the chosen center color and lip.  The other angles, shot in the
+// studio, sit in wheelGallery below the hero.  assets/configurator.js swaps
+// every image when the choice changes.
+const cfgStart = (p) => {
+  const cfg = p.configurator, def = cfg.default || {};
+  return {
+    c0: (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).name,
+    l0: def.lip || (cfg.lips || ["Matched"])[0],
+  };
+};
+const renderAlt = (p, center, lip, label) => `${p.name} in ${center} with a ${lip === "Matched" ? "color matched" : lip.toLowerCase()} lip, ${label.toLowerCase()} view`;
+const renderImg = (p, view, sizes, extra) => {
+  const cfg = p.configurator, { c0, l0 } = cfgStart(p);
+  return `<img class="${extra.cls}" src="${renderSrc(cfg, c0, l0, view.key, "-800")}" srcset="${renderSrc(cfg, c0, l0, view.key, "-800")} 800w, ${renderSrc(cfg, c0, l0, view.key)} 1600w" sizes="${sizes}" width="1600" height="1600" alt="${esc(renderAlt(p, c0, l0, view.label))}" data-view="${esc(view.key)}" data-label="${esc(view.label)}"${extra.eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+};
+const wheelPhoto = (p) => `<div class="wheel-photo" data-renders="${esc(p.configurator.renders.path)}" data-name="${esc(p.name)}">
+  ${renderImg(p, p.configurator.renders.views[0], "(min-width: 860px) 560px, 90vw", { cls: "wheel-photo-main", eager: true })}
+</div>`;
+const wheelGallery = (p, room) => `<section class="wheel-gallery" style="--room: ${esc(room)}" aria-label="${esc(p.name)} from every angle">
+  <div class="wheel-gallery-grid">
+    ${p.configurator.renders.views.slice(1).map((v) => `<figure>${renderImg(p, v, "(min-width: 860px) 46vw, 92vw", { cls: "wheel-angle" })}</figure>`).join("\n    ")}
+  </div>
+</section>`;
 
 // Center color and lip choices, shown in the product hero beside the live preview.
 const cfgControls = (p) => {
@@ -701,7 +738,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
-    <div class="product-hero-art">${p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
+    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design drawing.  Final renders to follow."}</p>`}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
@@ -712,7 +749,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     </div>
   </div>
 </section>
-
+${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 <section class="paper concept-story" aria-labelledby="about">
   <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
   <div class="story-body">
