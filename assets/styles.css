@@ -462,9 +462,9 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
   .home-signup > .signup-head, .home-signup > form { grid-column: 1 / -1 !important; }
 }
 
-/* Homepage cars 20% larger on desktop.  Centered from the middle of the room so it can grow into the padding in any browser. */
+/* Homepage cars scale with the window on desktop: near full width, capped by window height.  Centered from the middle of the room so it can grow into the padding in any browser. */
 @media (min-width: 861px) {
-  #concepts .plate { width: 105.6%; max-width: 1488px; margin-left: 0; margin-right: 0; left: 50%; transform: translateX(-50%); }
+  #concepts .plate { width: min(calc(100vw - 72px), 160vh); max-width: none; margin-left: 0; margin-right: 0; left: 50%; transform: translateX(-50%); }
 }
 
 /* Room meta: the lede sits at the vertical center of the label stack on desktop. */
