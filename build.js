@@ -189,7 +189,7 @@ const bigName = (c, tag = "h2") => {
   return `<${tag} class="room-name">${esc(word)}<br>${esc(rest.join(" "))}</${tag}>`;
 };
 const plateImg = (img, eager) => `<figure class="plate">
-  <img src="${img.image}" srcset="${img.small} 1200w, ${img.image} ${img.width}w" sizes="(min-width: 1400px) 1240px, 88vw" width="${img.width}" height="${img.height}" alt="${esc(img.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
+  <img src="${img.image}" srcset="${img.small} 1200w, ${img.image} ${img.width}w" sizes="(min-width: 1400px) 1488px, (min-width: 861px) 106vw, 88vw" width="${img.width}" height="${img.height}" alt="${esc(img.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
   ${img.shadow === false ? "" : '<div class="plate-shadow" aria-hidden="true"></div>'}
 </figure>`;
 
