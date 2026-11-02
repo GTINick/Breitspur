@@ -467,7 +467,7 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   ${cfg && cfg.lips && cfg.lips.length > 1 ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : cfg && cfg.lips && cfg.lips.length === 1 ? "" : '<input type="hidden" name="lip" value="">'}`;
   })()}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
-  ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", set of four" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
+  ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", per wheel" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
   ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
   <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
   <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, stance"></textarea></div>
