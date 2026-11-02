@@ -486,3 +486,12 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 @media (max-width: 860px) {
   .concept-wheel { grid-column: 1 / -1; grid-template-columns: 120px minmax(0, 1fr); column-gap: 20px; }
 }
+
+/* Home one-liner under the masthead, contact placeholders, lead time, form hints */
+.home-oneliner { margin: 0; padding: 0 var(--gutter) 18px; background: var(--room); color: var(--cream-faint); font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; }
+.foot-soon-item { opacity: 0.7; }
+.product-lead { margin-top: 14px; }
+.opt { opacity: 0.6; font-weight: 400; }
+.commission-steps .steps { grid-column: span 9; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.product-engineering { padding-top: 0; }
+@media (max-width: 860px) { .commission-steps .steps { grid-template-columns: 1fr; } }

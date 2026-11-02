@@ -173,8 +173,8 @@ ${body}
   <p class="foot-tag">${esc(site.tagline)}</p>
   <ul class="foot-links">
     <li>${esc(site.location.toUpperCase())}</li>
-    ${site.social.instagram ? `<li><a href="${esc(site.social.instagram)}" rel="me">INSTAGRAM</a></li>` : ""}
-    ${site.email ? `<li><a href="mailto:${esc(site.email)}">${esc(site.email.toUpperCase())}</a></li>` : ""}
+    ${site.social.instagram ? `<li><a href="${esc(site.social.instagram)}" rel="me">INSTAGRAM</a></li>` : site.contactSoon ? `<li class="foot-soon-item">INSTAGRAM COMING SOON</li>` : ""}
+    ${site.email ? `<li><a href="mailto:${esc(site.email)}">${esc(site.email.toUpperCase())}</a></li>` : site.contactSoon ? `<li class="foot-soon-item">EMAIL COMING SOON</li>` : ""}
     <li><a href="/privacy/">PRIVACY</a></li>
   </ul>
   ${site.shop.enabled ? "" : `<p class="foot-soon">${esc(site.shop.teaser.toUpperCase())}</p>`}
@@ -308,6 +308,7 @@ const productCard = (p) => `<article class="product-card">
       <ul class="product-facts">
         ${p.construction ? `<li>${esc(p.construction.toUpperCase())}</li>` : ""}
         ${p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
+        ${p.price ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
       </ul>
     </div>
   </a>
@@ -479,9 +480,9 @@ const notifyForm = (id = "su") => `<form class="inquiry" name="shop-updates" met
   <input type="hidden" name="form-name" value="shop-updates">
   <input type="hidden" name="subject" value="Shop updates signup (%{submissionId})">
   <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
-  <div class="field"><label for="${id}-name">Name</label><input id="${id}-name" name="name" type="text" autocomplete="name" required></div>
+  <div class="field"><label for="${id}-name">Name <span class="opt">(optional)</span></label><input id="${id}-name" name="name" type="text" autocomplete="name"></div>
   <div class="field"><label for="${id}-email">Email</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div>
-  <div class="field field-wide"><label for="${id}-car">Your car</label><input id="${id}-car" name="car" type="text" placeholder="Year, make, model"></div>
+  <div class="field field-wide"><label for="${id}-car">Your car <span class="opt">(optional)</span></label><input id="${id}-car" name="car" type="text" placeholder="Year, make, model"></div>
   <fieldset class="field-wide checks"><legend>Interested in</legend>
     ${(site.shop.categories || []).filter((k) => k.status !== "draft").map((k) => `<label class="check"><input type="checkbox" name="interests[]" value="${esc(k.title)}"> ${esc(k.title)}</label>`).join("")}
     <label class="check"><input type="checkbox" name="interests[]" value="New concepts"> New concepts</label>
@@ -500,7 +501,7 @@ write("index.html", page({
   description: site.description,
   path: "/",
   room: firstRoom,
-  body: `<div id="concepts">${concepts.map((c, i) => room(c, i, { first: i === 0 })).join("\n")}</div>
+  body: `${site.home.oneLiner ? `<p class="home-oneliner">${esc(site.home.oneLiner)}</p>` : ""}<div id="concepts">${concepts.map((c, i) => room(c, i, { first: i === 0 })).join("\n")}</div>
 
 ${(() => {
   const wheels = products.filter((p) => p.category === "wheels");
@@ -638,6 +639,10 @@ write("studio/index.html", page({
   <h2 class="label" id="work">SERVICES</h2>
   <div>${services()}</div>
 </section>
+${site.commission && (site.commission.steps || []).length ? `<section class="paper studio-band commission-steps" aria-labelledby="how">
+  <h2 class="label" id="how">${esc(site.commission.title.toUpperCase())}</h2>
+  <ol class="steps">${site.commission.steps.map((s, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>
+</section>` : ""}
 
 <section class="ask" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">Tell us the car.</h2>
@@ -770,6 +775,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
       <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
+      ${p.leadTime ? `<p class="cfg-note product-lead">${esc(p.leadTime)}</p>` : ""}
     </div>
   </div>
 </section>
@@ -784,6 +790,16 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
   ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DESIGNED FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
+${p.engineering && p.engineering.length ? `<section class="paper concept-story product-engineering" aria-labelledby="engineering">
+  <h2 class="label" id="engineering">ENGINEERING</h2>
+  <div class="story-body">
+    ${p.engineeringIntro ? `<p class="body-lg">${esc(p.engineeringIntro)}</p>` : ""}
+  </div>
+  <dl class="specs">
+    ${p.engineering.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
+  </dl>
+  ${p.engineeringNote ? `<p class="concept-note">${esc(p.engineeringNote)}</p>` : ""}
+</section>` : ""}
 ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 
 ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">

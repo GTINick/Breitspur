@@ -11,7 +11,7 @@
   "lede": "A three piece wheel with five solid spokes and hidden hardware, designed for the R129 and a Black Series stance.",
   "availability": "interest",
   "stage": "In design",
-  "price": "",
+  "price": "From $8,500 per set",
   "buyUrl": "",
   "construction": "Three piece forged",
   "sizes": [
@@ -119,7 +119,7 @@
       "value": "5x112, 5x120"
     }
   ],
-  "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
+  "specsNote": "Planned specification.  Shown here in 19 in.  Other sizes and fitments follow interest.",
   "seenOn": "breitspur-02",
   "drawing": {
     "style": "spoke",
@@ -166,5 +166,34 @@
       "Finish",
       "Bright Silver center, polished lip"
     ]
-  ]
+  ],
+  "leadTime": "Inquiries decide which fitments are engineered first.",
+  "engineeringIntro": "Each spoke is sized for a 690 kg wheel load in hard cornering, with margin, and every window edge is chamfered front and back so no sharp corner is left to start a crack.",
+  "engineering": [
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6, machined"
+    },
+    {
+      "label": "Assembly",
+      "value": "Hidden, 40 bolts from behind"
+    },
+    {
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
+    },
+    {
+      "label": "Spokes",
+      "value": "Solid, sized to cornering load"
+    },
+    {
+      "label": "Brake clearance",
+      "value": "Reviewed for your calipers"
+    },
+    {
+      "label": "Testing",
+      "value": "Lab load tested before the first sets ship"
+    }
+  ],
+  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven."
 }
