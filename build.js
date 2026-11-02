@@ -773,7 +773,6 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     </div>
   </div>
 </section>
-${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 <section class="paper concept-story" aria-labelledby="about">
   <h2 class="label" id="about">THE ${esc(k.single ? k.single.toUpperCase() : "PIECE")}</h2>
   <div class="story-body">
@@ -785,6 +784,7 @@ ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
   ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DESIGNED FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
+${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 
 ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
   ${seenImg ? `<figure>
