@@ -87,6 +87,8 @@ for (const p of products) {
   if (!["interest", "preorder", "available"].includes(p.availability)) errors.push(`${p._file}: availability must be interest, preorder or available`);
   if (p.availability !== "interest" && !p.buyUrl) errors.push(`${p._file}: ${p.availability} products need a buyUrl`);
   if (!p.image && !p.drawing) errors.push(`${p._file}: needs an image or a drawing`);
+  // tileRoom: optional backdrop for the product's card in the shop grids (defaults to room)
+  if (p.tileRoom && !/^#[0-9a-f]{6}$/i.test(p.tileRoom)) errors.push(`${p._file}: tileRoom must be a hex like #3F4A58`);
   if (p.configurator) {
     const cfg = p.configurator;
     if (!cfg.centers || !cfg.centers.length) errors.push(`${p._file}: configurator needs at least one center color`);
@@ -298,7 +300,7 @@ const wheelArt = (p, { eager = false, big = false } = {}) => p.image
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
-    <div class="product-tile" style="--room: ${esc(p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Design sketch.  Renders to follow.</span>'}</div>
+    <div class="product-tile" style="--room: ${esc(p.tileRoom || p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Design sketch.  Renders to follow.</span>'}</div>
     <div class="product-info">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
       <h3 class="product-name">${esc(p.name)}</h3>
