@@ -1,0 +1,213 @@
+{
+  "status": "live",
+  "number": 3,
+  "slug": "kranz",
+  "code": "W03",
+  "name": "Kranz",
+  "category": "wheels",
+  "room": "#2E2C29",
+  "tileRoom": "#3F4A58",
+  "tagline": "The eleven spoke alternate for Breitspur 02.",
+  "lede": "A three piece wheel with eleven straight spokes, a flat face and a deep lip, designed as the alternate wheel for the R129.",
+  "availability": "interest",
+  "stage": "In design",
+  "price": "From $2,125 per wheel",
+  "buyUrl": "",
+  "construction": "Three piece forged",
+  "sizes": [
+    "18 in",
+    "19 in",
+    "20 in"
+  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Bright Silver",
+        "hex": "#C9CBCD"
+      },
+      {
+        "name": "Smoke Silver",
+        "hex": "#7E8084"
+      },
+      {
+        "name": "Gunmetal",
+        "hex": "#45484D"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B5A78A"
+      },
+      {
+        "name": "Bronze",
+        "hex": "#7A6550"
+      },
+      {
+        "name": "White",
+        "hex": "#EDEDEA"
+      },
+      {
+        "name": "Gloss Black",
+        "hex": "#111214"
+      },
+      {
+        "name": "Satin Black",
+        "hex": "#2A2B2D"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Bright Silver",
+      "lip": "Polished"
+    },
+    "renders": {
+      "path": "/assets/img/products/kranz",
+      "views": [
+        {
+          "key": "front",
+          "label": "Front"
+        },
+        {
+          "key": "hero",
+          "label": "Three quarter"
+        },
+        {
+          "key": "tilt",
+          "label": "Low"
+        },
+        {
+          "key": "side",
+          "label": "Side"
+        },
+        {
+          "key": "detail",
+          "label": "Detail"
+        }
+      ]
+    }
+  },
+  "story": [
+    "Kranz is German for wreath.  Eleven straight spokes ring the hub, and that ring gives the wheel its name.",
+    "Gabel is the wheel Breitspur 02 is shown on: five bold spokes and a Black Series stance.  Kranz is the other answer for the same car, closer to the wheels an owner could have ordered in the nineties.  The face stays flat, the spokes run straight out to a deep lip, and the assembly hardware is hidden.",
+    "It was designed for the R129, and like every wheel from the studio it is machined to the fitment of the car it goes on."
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Three piece"
+    },
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6"
+    },
+    {
+      "label": "Diameters",
+      "value": "18, 19, 20 in"
+    },
+    {
+      "label": "Spokes",
+      "value": "Eleven, straight"
+    },
+    {
+      "label": "Lip",
+      "value": "Polished or color matched"
+    },
+    {
+      "label": "Bolt patterns",
+      "value": "5x112, 5x120"
+    }
+  ],
+  "specsNote": "Planned specification.  Shown here in 19 in.  Other sizes and fitments follow interest.",
+  "seenOn": "breitspur-02",
+  "seenRole": "alternate",
+  "drawing": {
+    "style": "spoke",
+    "spokes": 11,
+    "bolts": 5,
+    "hub": 36,
+    "boltCircle": 21,
+    "width": [
+      5,
+      4.6
+    ]
+  },
+  "image": {
+    "image": "/assets/img/products/kranz/bright-silver-polished/front.webp",
+    "small": "/assets/img/products/kranz/bright-silver-polished/front-800.webp",
+    "width": 1600,
+    "height": 1600,
+    "alt": "Kranz eleven spoke wheel in Bright Silver with a polished lip, front view"
+  },
+  "buildSheet": [
+    [
+      "Car",
+      "1995 Mercedes SL 500 (R129)"
+    ],
+    [
+      "Wheel",
+      "Kranz, three piece"
+    ],
+    [
+      "Size",
+      "19 x 9.5 in front, 19 x 11 in rear"
+    ],
+    [
+      "Offset",
+      "ET 12 front, ET 4 rear"
+    ],
+    [
+      "Bolt pattern",
+      "5x112"
+    ],
+    [
+      "Center bore",
+      "66.6 mm"
+    ],
+    [
+      "Material",
+      "Forged 7075-T6 aluminum center"
+    ],
+    [
+      "Finish",
+      "Bright Silver center, polished lip"
+    ]
+  ],
+  "seenImage": {
+    "image": "/assets/img/products/kranz/on-breitspur-02.webp",
+    "small": "/assets/img/products/kranz/on-breitspur-02-1000.webp",
+    "width": 2284,
+    "height": 963,
+    "alt": "Breitspur 02, the silver R129 SL concept, on eleven spoke Kranz wheels, seen from above at three quarters"
+  },
+  "leadTime": "Inquiries decide which fitments are engineered first.",
+  "engineeringIntro": "The backs of the spokes are cut away where the wheel does not need metal, which takes weight out of every spoke and opens up room for the brakes.  The valve sits in the barrel behind the face, so nothing breaks the lip.",
+  "engineering": [
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6, machined"
+    },
+    {
+      "label": "Assembly",
+      "value": "Hidden, 40 bolts from behind"
+    },
+    {
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
+    },
+    {
+      "label": "Spokes",
+      "value": "Backs cut away for weight"
+    },
+    {
+      "label": "Valve",
+      "value": "In the barrel, behind the face"
+    },
+    {
+      "label": "Testing",
+      "value": "Lab load tested before the first sets ship"
+    }
+  ],
+  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven."
+}

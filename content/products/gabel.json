@@ -1,0 +1,199 @@
+{
+  "status": "live",
+  "number": 2,
+  "slug": "gabel",
+  "code": "W02",
+  "name": "Gabel",
+  "category": "wheels",
+  "room": "#2E2C29",
+  "tileRoom": "#536058",
+  "tagline": "The five spoke from Breitspur 02.",
+  "lede": "A three piece wheel with five solid spokes and hidden hardware, designed for the R129 and a Black Series stance.",
+  "availability": "interest",
+  "stage": "In design",
+  "price": "From $2,125 per wheel",
+  "buyUrl": "",
+  "construction": "Three piece forged",
+  "sizes": [
+    "18 in",
+    "19 in",
+    "20 in"
+  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Bright Silver",
+        "hex": "#C9CBCD"
+      },
+      {
+        "name": "Smoke Silver",
+        "hex": "#7E8084"
+      },
+      {
+        "name": "Gunmetal",
+        "hex": "#45484D"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B5A78A"
+      },
+      {
+        "name": "Bronze",
+        "hex": "#7A6550"
+      },
+      {
+        "name": "White",
+        "hex": "#EDEDEA"
+      },
+      {
+        "name": "Gloss Black",
+        "hex": "#111214"
+      },
+      {
+        "name": "Satin Black",
+        "hex": "#2A2B2D"
+      }
+    ],
+    "lips": [
+      "Polished",
+      "Matched"
+    ],
+    "default": {
+      "center": "Bright Silver",
+      "lip": "Polished"
+    },
+    "renders": {
+      "path": "/assets/img/products/gabel",
+      "views": [
+        {
+          "key": "front",
+          "label": "Front"
+        },
+        {
+          "key": "hero",
+          "label": "Three quarter"
+        },
+        {
+          "key": "tilt",
+          "label": "Low"
+        },
+        {
+          "key": "side",
+          "label": "Side"
+        },
+        {
+          "key": "detail",
+          "label": "Detail"
+        }
+      ]
+    }
+  },
+  "story": [
+    "Gabel is the wheel Breitspur 02 wears: five solid spokes, a flat face and a deep lip, designed for the R129 SL.",
+    "The center is machined from a forged 7075-T6 blank and bolts to a spun lip and barrel from behind, so the hardware is hidden and the face stays clean from the hub to the rim.  The spokes run almost to the edge of the rim, and every window is chamfered front and back so the wheel reads light from any angle.",
+    "The lug face is set into the center, with the lion crest on the cap and the name cut into one spoke."
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Three piece"
+    },
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6"
+    },
+    {
+      "label": "Diameters",
+      "value": "18, 19, 20 in"
+    },
+    {
+      "label": "Spokes",
+      "value": "Five, solid"
+    },
+    {
+      "label": "Lip",
+      "value": "Polished or color matched"
+    },
+    {
+      "label": "Bolt patterns",
+      "value": "5x112, 5x120"
+    }
+  ],
+  "specsNote": "Planned specification.  Shown here in 19 in.  Other sizes and fitments follow interest.",
+  "seenOn": "breitspur-02",
+  "drawing": {
+    "style": "spoke",
+    "spokes": 5,
+    "bolts": 5
+  },
+  "image": {
+    "image": "/assets/img/products/gabel/bright-silver-polished/front.webp",
+    "small": "/assets/img/products/gabel/bright-silver-polished/front-800.webp",
+    "width": 1600,
+    "height": 1600,
+    "alt": "Gabel five spoke wheel in Bright Silver with a polished lip, front view"
+  },
+  "buildSheet": [
+    [
+      "Car",
+      "1995 Mercedes SL 500 (R129)"
+    ],
+    [
+      "Wheel",
+      "Gabel, three piece"
+    ],
+    [
+      "Size",
+      "19 x 9.5 in front, 19 x 11 in rear"
+    ],
+    [
+      "Offset",
+      "ET 12 front, ET 4 rear"
+    ],
+    [
+      "Bolt pattern",
+      "5x112"
+    ],
+    [
+      "Center bore",
+      "66.6 mm"
+    ],
+    [
+      "Material",
+      "Forged 7075-T6 aluminum center"
+    ],
+    [
+      "Finish",
+      "Bright Silver center, polished lip"
+    ]
+  ],
+  "leadTime": "Inquiries decide which fitments are engineered first.",
+  "engineeringIntro": "Each spoke is sized for a 690 kg wheel load in hard cornering, with margin, and every window edge is chamfered front and back so no sharp corner is left to start a crack.",
+  "engineering": [
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6, machined"
+    },
+    {
+      "label": "Assembly",
+      "value": "Hidden, 40 bolts from behind"
+    },
+    {
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
+    },
+    {
+      "label": "Spokes",
+      "value": "Solid, sized to cornering load"
+    },
+    {
+      "label": "Brake clearance",
+      "value": "Reviewed for your calipers"
+    },
+    {
+      "label": "Testing",
+      "value": "Lab load tested before the first sets ship"
+    }
+  ],
+  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven."
+}
