@@ -8,7 +8,7 @@
   "room": "#2E2C29",
   "tileRoom": "#3F4A58",
   "tagline": "The eleven spoke alternate for Breitspur 02.",
-  "lede": "A three piece wheel with eleven straight spokes, a flat face and a deep lip, designed as the alternate wheel for the R129.",
+  "lede": "A three piece forged wheel with eleven straight spokes and a deep lip, made to order in 18 to 20 inches.",
   "availability": "interest",
   "stage": "In design",
   "price": "From $2,125 per wheel",
@@ -91,7 +91,7 @@
   "story": [
     "Kranz is German for wreath.  Eleven straight spokes ring the hub, and that ring gives the wheel its name.",
     "Gabel is the wheel Breitspur 02 is shown on: five bold spokes and a Black Series stance.  Kranz is the other answer for the same car, closer to the wheels an owner could have ordered in the nineties.  The face stays flat, the spokes run straight out to a deep lip, and the assembly hardware is hidden.",
-    "It was designed for the R129, and like every wheel from the studio it is machined to the fitment of the car it goes on."
+    "It was designed alongside Gabel for the R129, and like every wheel from the studio it is machined to the fitment of whatever car it goes on."
   ],
   "specs": [
     {
@@ -103,10 +103,6 @@
       "value": "Forged 7075-T6"
     },
     {
-      "label": "Diameters",
-      "value": "18, 19, 20 in"
-    },
-    {
       "label": "Spokes",
       "value": "Eleven, straight"
     },
@@ -115,11 +111,15 @@
       "value": "Polished or color matched"
     },
     {
-      "label": "Bolt patterns",
-      "value": "5x112, 5x120"
+      "label": "Assembly",
+      "value": "Hidden hardware"
+    },
+    {
+      "label": "Finishes",
+      "value": "Eight center colors"
     }
   ],
-  "specsNote": "Planned specification.  Shown here in 19 in.  Other sizes and fitments follow interest.",
+  "specsNote": "Shown here in 19 in.",
   "seenOn": "breitspur-02",
   "seenRole": "alternate",
   "drawing": {
@@ -209,5 +209,24 @@
       "value": "Lab load tested before the first sets ship"
     }
   ],
-  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven."
+  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven.",
+  "fitment": {
+    "summary": "Made to order in 18 to 20 in, for factory, lowered and wide body cars.",
+    "sizes": [
+      [
+        "18 in",
+        "8 to 11 in wide"
+      ],
+      [
+        "19 in",
+        "8.5 to 12 in wide"
+      ],
+      [
+        "20 in",
+        "9 to 12 in wide"
+      ]
+    ],
+    "boltPatterns": "5x112, 5x120",
+    "platforms": "Mercedes SL, E class and 190E on 5x112.  BMW 3, 5 and 6 series on 5x120."
+  }
 }

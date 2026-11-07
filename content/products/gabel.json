@@ -8,7 +8,7 @@
   "room": "#2E2C29",
   "tileRoom": "#536058",
   "tagline": "The five spoke from Breitspur 02.",
-  "lede": "A three piece wheel with five solid spokes and hidden hardware, designed for the R129 and a Black Series stance.",
+  "lede": "A three piece forged wheel with five solid spokes and hidden hardware, made to order in 18 to 20 inches.",
   "availability": "interest",
   "stage": "In design",
   "price": "From $2,125 per wheel",
@@ -89,9 +89,9 @@
     }
   },
   "story": [
-    "Gabel is the wheel Breitspur 02 wears: five solid spokes, a flat face and a deep lip, designed for the R129 SL.",
+    "Gabel debuted on Breitspur 02: five solid spokes, a flat face and a deep lip.",
     "The center is machined from a forged 7075-T6 blank and bolts to a spun lip and barrel from behind, so the hardware is hidden and the face stays clean from the hub to the rim.  The spokes run almost to the edge of the rim, and every window is chamfered front and back so the wheel reads light from any angle.",
-    "The lug face is set into the center, with the lion crest on the cap and the name cut into one spoke."
+    "The lug face is set into the center, with the lion crest on the cap and the name cut into one spoke.  It was designed around the R129, and it is made to order for any car on a five lug hub."
   ],
   "specs": [
     {
@@ -103,10 +103,6 @@
       "value": "Forged 7075-T6"
     },
     {
-      "label": "Diameters",
-      "value": "18, 19, 20 in"
-    },
-    {
       "label": "Spokes",
       "value": "Five, solid"
     },
@@ -115,11 +111,15 @@
       "value": "Polished or color matched"
     },
     {
-      "label": "Bolt patterns",
-      "value": "5x112, 5x120"
+      "label": "Assembly",
+      "value": "Hidden hardware"
+    },
+    {
+      "label": "Finishes",
+      "value": "Eight center colors"
     }
   ],
-  "specsNote": "Planned specification.  Shown here in 19 in.  Other sizes and fitments follow interest.",
+  "specsNote": "Shown here in 19 in.",
   "seenOn": "breitspur-02",
   "drawing": {
     "style": "spoke",
@@ -195,5 +195,24 @@
       "value": "Lab load tested before the first sets ship"
     }
   ],
-  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven."
+  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven.",
+  "fitment": {
+    "summary": "Made to order in 18 to 20 in, for factory, lowered and wide body cars.",
+    "sizes": [
+      [
+        "18 in",
+        "8 to 11 in wide"
+      ],
+      [
+        "19 in",
+        "8.5 to 12 in wide"
+      ],
+      [
+        "20 in",
+        "9 to 12 in wide"
+      ]
+    ],
+    "boltPatterns": "5x112, 5x120",
+    "platforms": "Mercedes SL, E class and 190E on 5x112.  BMW 3, 5 and 6 series on 5x120."
+  }
 }

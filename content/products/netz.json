@@ -7,7 +7,7 @@
   "category": "wheels",
   "room": "#2E2C29",
   "tagline": "The branching mesh wheel from Breitspur 01.",
-  "lede": "A three piece mesh wheel with fifteen branching arms and a deep polished lip.",
+  "lede": "A three piece forged mesh wheel with fifteen branching arms and a deep polished lip, made to order in 15 to 18 inches.",
   "availability": "interest",
   "stage": "In design",
   "price": "From $1,750 per wheel",
@@ -52,7 +52,7 @@
     "custom": true
   },
   "story": [
-    "Netz is German for net.  It is the first wheel from the studio, designed for Breitspur 01.",
+    "Netz is German for net.  It is the first wheel from the studio, and it debuted on Breitspur 01.",
     "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip.  The assembly hardware is hidden, so nothing interrupts the weave.",
     "It starts at 15 inches because the cars that wore mesh first, from the 2002 to the E30, need a wheel that fits without spacers."
   ],
@@ -66,30 +66,25 @@
       "value": "Forged 7075-T6"
     },
     {
-      "label": "Diameters",
-      "value": "15, 16, 17, 18 in"
+      "label": "Arms",
+      "value": "Fifteen, branching"
     },
     {
       "label": "Lip",
       "value": "Deep, polished"
     },
     {
-      "label": "Bolt patterns",
-      "value": "4x100, 5x112, 5x120"
-    },
-    {
       "label": "Assembly",
       "value": "Hidden hardware"
+    },
+    {
+      "label": "Finishes",
+      "value": "Five center colors, custom on request"
     }
   ],
-  "specsNote": "Planned specification.  Final sizes and fitments follow interest.",
+  "specsNote": "Renders are in progress.",
   "seenOn": "breitspur-01",
   "seenOnImage": false,
-  "drawing": {
-    "style": "mesh",
-    "spokes": 15,
-    "bolts": 4
-  },
   "image": null,
   "buildSheet": [
     [
@@ -125,5 +120,28 @@
       "Bright Silver center, polished lip"
     ]
   ],
-  "leadTime": "Inquiries decide which fitments are engineered first."
+  "leadTime": "Inquiries decide which fitments are engineered first.",
+  "fitment": {
+    "summary": "Made to order in 15 to 18 in, for factory, lowered and wide body cars.",
+    "sizes": [
+      [
+        "15 in",
+        "7 to 9 in wide"
+      ],
+      [
+        "16 in",
+        "7 to 9.5 in wide"
+      ],
+      [
+        "17 in",
+        "7.5 to 10 in wide"
+      ],
+      [
+        "18 in",
+        "8 to 10.5 in wide"
+      ]
+    ],
+    "boltPatterns": "4x100, 5x112, 5x120",
+    "platforms": "BMW 2002 and E30 on 4x100.  E30 M3, E36 and E46 on 5x120.  Mercedes 190E and W124 on 5x112."
+  }
 }

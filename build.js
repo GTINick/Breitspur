@@ -86,7 +86,6 @@ for (const p of products) {
   if (!shopCats.some((k) => k.slug === p.category)) errors.push(`${p._file}: category "${p.category}" is not in site.json shop.categories`);
   if (!["interest", "preorder", "available"].includes(p.availability)) errors.push(`${p._file}: availability must be interest, preorder or available`);
   if (p.availability !== "interest" && !p.buyUrl) errors.push(`${p._file}: ${p.availability} products need a buyUrl`);
-  if (!p.image && !p.drawing) errors.push(`${p._file}: needs an image or a drawing`);
   // tileRoom: optional backdrop for the product's card in the shop grids (defaults to room)
   if (p.tileRoom && !/^#[0-9a-f]{6}$/i.test(p.tileRoom)) errors.push(`${p._file}: tileRoom must be a hex like #3F4A58`);
   if (p.configurator) {
@@ -263,44 +262,15 @@ const AVAIL = { interest: "Taking inquiries", preorder: "Pre-order open", availa
 const badgeText = (p) => (p.badge !== undefined ? p.badge : p.availability === "interest" ? "Coming soon" : "");
 const badge = (p, cls = "") => (badgeText(p) ? `<span class="badge${cls ? " " + cls : ""}">${esc(badgeText(p))}</span>` : "");
 
-// A line drawing that stands in for a wheel until the render exists.  "drawing": { "style": "mesh" | "split" | "spoke", "spokes": 5, "bolts": 5 }
-// Optional for spoke wheels: "hub" (center ring radius, default 22), "boltCircle" (default 13), "width": [half angle at hub, half angle at rim] in degrees.
-const pt = (r, deg) => { const a = ((deg - 90) * Math.PI) / 180; return `${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`; };
-const wheelDrawing = (d = {}, label = "") => {
-  const style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
-  const hub = d.hub || 22, bc = d.boltCircle || 13;
-  const lines = [];
-  if (style === "mesh") {
-    for (let i = 0; i < n; i++) {
-      const a = (360 / n) * i;
-      lines.push(`<path d="M${pt(21, a)} Q${pt(52, a + 14)} ${pt(78, a + 34)}"/>`, `<path d="M${pt(21, a)} Q${pt(52, a - 14)} ${pt(78, a - 34)}"/>`);
-    }
-  } else {
-    const pairs = style === "split" ? [-5, 5] : [0];
-    for (let i = 0; i < n; i++) {
-      for (const o of pairs) {
-        const a = (360 / n) * i + o, w1 = d.width ? d.width[0] : (style === "split" ? 2.2 : 5) * 2, w2 = d.width ? d.width[1] : style === "split" ? 3.4 : 7;
-        lines.push(`<polygon points="${pt(hub, a - w1)} ${pt(78, a - w2 + o * 0.6)} ${pt(78, a + w2 + o * 0.6)} ${pt(hub, a + w1)}"/>`);
-      }
-    }
-  }
-  for (let i = 0; i < bolts; i++) {
-    const [x, y] = pt(bc, (360 / bolts) * i).split(",");
-    lines.push(`<circle cx="${x}" cy="${y}" r="2"/>`);
-  }
-  return `<svg class="wheel-drawing" viewBox="-100 -100 200 200" role="img" aria-label="${esc(label)}"><g fill="none" stroke="currentColor">
-    <circle r="97"/><circle r="91"/><circle r="80"/><circle r="${hub - 1}"/><circle r="8"/>
-    ${lines.join("")}
-  </g></svg>`;
-};
-
 const wheelArt = (p, { eager = false, big = false } = {}) => p.image
   ? `<img src="${p.image.small || p.image.image}" srcset="${p.image.small ? `${p.image.small} 1000w, ` : ""}${p.image.image} ${p.image.width}w" sizes="${big ? "(min-width: 860px) 560px, 80vw" : "(min-width: 860px) 30vw, 80vw"}" width="${p.image.width}" height="${p.image.height}" alt="${esc(p.image.alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
-  : wheelDrawing(p.drawing, `${p.name}, design sketch.  Renders to follow.`);
+  : pendingArt(p);
+// A wheel without studio renders yet: its code on the room color, no stand in drawing.
+const pendingArt = (p) => `<div class="wheel-pending" role="img" aria-label="${esc(p.name)}, renders in progress"><span class="pending-code" aria-hidden="true">${esc((p.code || two(p.number)).toUpperCase())}</span><span class="pending-note" aria-hidden="true">Renders in progress</span></div>`;
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
-    <div class="product-tile" style="--room: ${esc(p.tileRoom || p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}${p.image ? "" : '<span class="product-tile-note">Design sketch.  Renders to follow.</span>'}</div>
+    <div class="product-tile" style="--room: ${esc(p.tileRoom || p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}</div>
     <div class="product-info">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
       <h3 class="product-name">${esc(p.name)}</h3>
@@ -327,74 +297,59 @@ const nextCard = (href, linkText) => `<article class="product-card product-next"
 </article>`;
 const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 ? nextCard(href, linkText) : ""}</div>`;
 
-// "Made for one car": what is tailored per order, beside an example build sheet.
-const bespoke = (p) => {
-  const b = site.shop.bespoke;
-  if (!b) return "";
-  const rows = (p && p.buildSheet) || b.sheet || [];
-  const art = p || products[0];
-  return `<section class="paper bespoke" aria-labelledby="bespoke">
-  <h2 class="label" id="bespoke">${esc(b.label)}</h2>
+// How an order works, beside an example specification sheet.
+const orderSection = (p) => {
+  const o = site.shop.order;
+  if (!o) return "";
+  const src = p || products.find((x) => x.image && x.buildSheet) || products[0];
+  const rows = (src && src.buildSheet) || (site.shop.bespoke && site.shop.bespoke.sheet) || [];
+  return `<section class="paper bespoke order" aria-labelledby="order">
+  <h2 class="label" id="order">${esc(o.label)}</h2>
   <div class="bespoke-body">
-    <p class="serif-lead">${esc(b.lead)}</p>
-    <p class="body-lg">${esc(b.body)}</p>
+    <p class="serif-lead">${esc(o.lead)}</p>
     <div class="bespoke-grid">
-      <ol class="bespoke-items">${b.items.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
-      ${rows.length ? `<figure class="build-sheet" aria-label="Example specification">
+      <ol class="bespoke-items">${o.steps.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
+      ${rows.length ? `<figure class="build-sheet" aria-label="${esc(o.sheetCaption)}">
         <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>SPECIFICATION</span></div>
-        ${art ? `<div class="sheet-art">${wheelDrawing(art.drawing, "")}</div>` : ""}
+        ${src && src.image ? `<div class="sheet-art"><img src="${src.image.small || src.image.image}" width="${src.image.width}" height="${src.image.height}" alt="" loading="lazy" decoding="async"></div>` : ""}
         <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-        <figcaption>Example specification</figcaption>
+        <figcaption>${esc(o.sheetCaption)}</figcaption>
       </figure>` : ""}
     </div>
   </div>
 </section>`;
 };
 
-// Shaded, filled wheel for the configurator.  Colors come from CSS variables, so the page script can repaint it.
-const wheelRender = (p) => {
-  const d = p.drawing || {}, style = d.style || "spoke", n = d.spokes || (style === "mesh" ? 18 : 5), bolts = d.bolts || 5;
-  const hub = d.hub || 21, bc = d.boltCircle || 13;
-  const multi = style === "mesh";
-  const lipIn = multi ? 86 : 90, id = `wr-${p.slug}`;
-  const parts = [];
-  if (multi) {
-    for (let i = 0; i < n; i++) {
-      const a = (360 / n) * i;
-      for (const t of [14, -14]) parts.push(`M${pt(21, a)} Q${pt(52, a + t)} ${pt(80, a + t * 2.4)}`);
-    }
-  }
-  const spokes = multi
-    ? `<path class="wr-edge" d="${parts.join(" ")}" stroke-width="4.6"/><path class="wr-mesh" d="${parts.join(" ")}" stroke-width="3.2"/>`
-    : (() => {
-        const out = [], pairs = style === "split" ? [-5, 5] : [0];
-        for (let i = 0; i < n; i++) for (const o of pairs) {
-          const a = (360 / n) * i + o, w1 = d.width ? d.width[0] : (style === "split" ? 2.2 : 5) * 2, w2 = d.width ? d.width[1] : style === "split" ? 3.4 : 7;
-          out.push(`<polygon class="wr-spoke" points="${pt(hub - 1, a - w1)} ${pt(lipIn - 1, a - w2 + o * 0.6)} ${pt(lipIn - 1, a + w2 + o * 0.6)} ${pt(hub - 1, a + w1)}"/>`);
-        }
-        return out.join("");
-      })();
-  const boltHoles = Array.from({ length: bolts }, (_, i) => { const [x, y] = pt(bc, (360 / bolts) * i).split(","); return `<circle class="wr-bolt" cx="${x}" cy="${y}" r="2.3"/>`; }).join("");
-  const cfg = p.configurator, def = (cfg && cfg.default) || {};
-  const c0 = cfg ? (cfg.centers.find((c) => c.name === def.center) || cfg.centers[0]).hex : "#9a9a98";
-  const lip0 = def.lip === "Matched" ? c0 : `url(#${id}-polish)`;
-  return `<svg class="wheel-render" viewBox="-100 -100 200 200" style="--center: ${c0}; --lip: ${lip0}" role="img" aria-label="${esc(p.name)} preview">
-  <defs>
-    <linearGradient id="${id}-polish" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#F4F3EF"/><stop offset="0.28" stop-color="#9C9B97"/><stop offset="0.5" stop-color="#E9E8E3"/><stop offset="0.72" stop-color="#7E7D79"/><stop offset="1" stop-color="#D9D8D3"/>
-    </linearGradient>
-    <radialGradient id="${id}-sheen" cx="0.34" cy="0.28" r="0.75">
-      <stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.55" stop-color="#fff" stop-opacity="0.03"/><stop offset="1" stop-color="#000" stop-opacity="0.18"/>
-    </radialGradient>
-  </defs>
-  <circle r="${lipIn}" class="wr-barrel"/>
-  ${multi ? `<circle r="${(80 + lipIn) / 2}" class="wr-ring" stroke-width="${lipIn - 80}"/>` : ""}
-  ${spokes}
-  <circle r="${hub}" class="wr-hub"/>${boltHoles}<circle r="8" class="wr-cap"/>
-  <circle r="${(lipIn + 97) / 2}" class="wr-lip" stroke-width="${97 - lipIn}"/>
-  <circle r="97" class="wr-line"/><circle r="${lipIn}" class="wr-line"/>
-  <circle r="97" fill="url(#${id}-sheen)" pointer-events="none"/>
-</svg>`;
+// Sizes and fitment.  With a product: its diameters and widths, bolt patterns and popular cars.  Without: the general rules, for the shop page.
+const fitmentSection = (p) => {
+  const f = site.shop.fitment;
+  if (!f) return "";
+  const pf = (p && p.fitment) || {};
+  const facts = [
+    ...(pf.boltPatterns ? [{ label: "Bolt patterns", value: pf.boltPatterns }] : []),
+    ...f.facts.filter((x) => !(pf.boltPatterns && x.label === "Your car not listed")),
+  ].slice(0, 6);
+  return `<section class="paper fitment" aria-labelledby="fit">
+  <h2 class="label" id="fit">${esc(f.label)}</h2>
+  <div class="fit-body">
+    <p class="serif-lead">${esc(f.lead)}</p>
+    <p class="body-lg">${esc(f.body)}</p>
+    ${pf.sizes && pf.sizes.length ? `<ul class="fit-sizes" aria-label="Diameters and widths">${pf.sizes.map(([d, w]) => `<li><span class="fit-dia">${esc(d)}</span><span class="fit-w">${esc(w)}</span></li>`).join("")}</ul>` : ""}
+    <ol class="fit-stances">${f.stances.map((s) => `<li><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>
+    <dl class="specs fit-facts">${facts.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}</dl>
+    ${pf.platforms ? `<p class="fit-platforms"><span class="label">POPULAR CARS</span><span>${esc(pf.platforms)}  Not on the list?  <a class="text-link" href="#interest">Ask about yours</a>.</span></p>` : ""}
+    ${pf.sizes ? `<p class="concept-note fit-note">Planned size range.  Final widths for your car are confirmed in the fitment review.</p>` : ""}
+  </div>
+</section>`;
+};
+
+// Common questions, as native disclosure rows.
+const faqSection = () => {
+  const q = site.shop.faq || [];
+  return q.length ? `<section class="paper faq" aria-labelledby="faq">
+  <h2 class="label" id="faq">QUESTIONS</h2>
+  <div class="faq-list">${q.map((x) => `<details><summary><span>${esc(x.q)}</span></summary><p>${esc(x.a)}</p></details>`).join("")}</div>
+</section>` : "";
 };
 
 // Rendered configurator: the front view of the wheel, cut out on the room
@@ -454,7 +409,8 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <div class="field"><label for="pi-name">Name</label><input id="pi-name" name="name" type="text" autocomplete="name" required></div>
   <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
   <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
-  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Size</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Diameter</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
+  ${p.category === "wheels" && site.shop.stances ? `<div class="field"><label for="pi-stance">How it sits</label><select id="pi-stance" name="stance">${options(site.shop.stances)}</select></div>` : ""}
   ${(() => {
     // Every product posts the same fields (center, lip), so the Netlify list stays one clean table.
     const cfg = p.configurator;
@@ -699,8 +655,6 @@ write("privacy/index.html", page({
 // Shop (built only when enabled)
 if (site.shop.enabled) {
   const shopRoom = "#2E2C29";
-  const steps = site.shop.process || [];
-  const stepsBlock = steps.length ? `<ol class="steps">${steps.map((s, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>` : "";
 
   // Shop index: one band per category.  Live categories list their products, "soon" categories show as in development.
   write("shop/index.html", page({
@@ -729,12 +683,9 @@ ${(() => {
 </section>` : "";
 })()}
 
-${bespoke()}
-
-${steps.length ? `<section class="paper" aria-labelledby="how">
-  <h2 class="label" id="how">HOW RELEASES WORK</h2>
-  ${stepsBlock}
-</section>` : ""}
+${fitmentSection(null)}
+${orderSection(null)}
+${faqSection()}
 
 <section class="ask" aria-labelledby="ask">
   <div>
@@ -767,7 +718,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
   <p class="crumbs label"><a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a></p>
   <div class="product-hero-grid">
-    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : p.configurator && !p.image ? wheelRender(p) : wheelArt(p, { eager: true, big: true })}${p.image ? "" : `<p class="product-tile-note">${p.configurator ? "Preview.  Colors on screen are a guide." : "Design sketch.  Renders to follow."}</p>`}</div>
+    <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : wheelArt(p, { eager: true, big: true })}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
       <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
@@ -775,7 +726,7 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
       <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
-      ${p.leadTime ? `<p class="cfg-note product-lead">${esc(p.leadTime)}</p>` : ""}
+      ${(p.fitment && p.fitment.summary) || p.leadTime ? `<p class="cfg-note product-lead">${esc((p.fitment && p.fitment.summary) || p.leadTime)}  <a class="text-link" href="#fit">Sizes and fitment</a></p>` : ""}
     </div>
   </div>
 </section>
@@ -788,8 +739,10 @@ ${steps.length ? `<section class="paper" aria-labelledby="how">
     ${p.specs.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}
   </dl>` : ""}
   ${p.specsNote ? `<p class="concept-note">${esc(p.specsNote)}</p>` : ""}
-  ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DESIGNED FOR</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
+  ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DEBUTED ON</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
+${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
+${p.category === "wheels" ? fitmentSection(p) : ""}
 ${p.engineering && p.engineering.length ? `<section class="paper concept-story product-engineering" aria-labelledby="engineering">
   <h2 class="label" id="engineering">ENGINEERING</h2>
   <div class="story-body">
@@ -800,27 +753,25 @@ ${p.engineering && p.engineering.length ? `<section class="paper concept-story p
   </dl>
   ${p.engineeringNote ? `<p class="concept-note">${esc(p.engineeringNote)}</p>` : ""}
 </section>` : ""}
-${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 
 ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}" style="--room: ${esc(concept.room)}" aria-labelledby="seen">
   ${seenImg ? `<figure>
     <img src="${seenImg.small}" srcset="${seenImg.small} 1000w, ${seenImg.image} ${seenImg.width}w" sizes="(min-width: 860px) 60vw, 90vw" width="${seenImg.width}" height="${seenImg.height}" alt="${esc(seenImg.alt)}" loading="lazy" decoding="async">
   </figure>` : ""}
   <div>
-    <h2 class="label" id="seen">${p.seenRole === "alternate" ? "THE ALTERNATE FOR" : "AS SEEN ON"}</h2>
+    <h2 class="label" id="seen">${p.seenRole === "alternate" ? "THE ALTERNATE FOR" : "DEBUTED ON"}</h2>
     <p class="seen-name">${esc(concept.name)}</p>
     <p class="muted">${esc(concept.subtitle)}</p>
     <p><a class="text-link" href="/concepts/${concept.slug}/">View the concept</a></p>
   </div>
 </section>` : ""}
 
-${p.category === "wheels" ? bespoke(p) : ""}
+${p.category === "wheels" ? orderSection(p) + faqSection() : ""}
 
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
-    <h2 class="serif-xl" id="ask">Inquire.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you want.  Your answers decide which fitments we engineer first, and you hear about pricing before anyone else.</p>
-    ${stepsBlock}
+    <h2 class="serif-xl" id="ask">Start your set.</h2>
+    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and how it sits.  Your answers decide which sizes we engineer first, and you get pricing for your exact set before anyone else.</p>
   </div>
   ${interestForm(p)}
 </section>` : ""}

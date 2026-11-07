@@ -495,3 +495,51 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 .commission-steps .steps { grid-column: span 9; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .product-engineering { padding-top: 0; }
 @media (max-width: 860px) { .commission-steps .steps { grid-template-columns: 1fr; } }
+
+/* ---------- Wheel pages: fitment, ordering, questions ---------- */
+
+/* A wheel with no studio renders yet: its code, set like a plate number, on the room color. */
+.wheel-pending { position: relative; aspect-ratio: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; border: 1px solid var(--rule-dark); }
+.pending-code { font-family: var(--serif); font-size: clamp(64px, 9vw, 140px); line-height: 1; color: var(--cream); letter-spacing: 0.02em; }
+.pending-note { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream-faint); }
+.product-tile .wheel-pending { position: absolute; inset: 0; aspect-ratio: auto; border: 0; }
+.product-tile .pending-code { font-size: clamp(56px, 6vw, 96px); }
+.concept-product-art .wheel-pending, .concept-wheel-art .wheel-pending { border-radius: 50%; }
+.concept-product-art .pending-code, .concept-wheel-art .pending-code { font-size: clamp(36px, 4vw, 56px); }
+
+/* Sizes and fitment */
+.fit-body > .body-lg { margin: 28px 0 0; }
+.fit-sizes { list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); column-gap: 24px; row-gap: 24px; }
+.fit-sizes li { border-top: 1px solid var(--ink); padding-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.fit-dia { font-family: var(--serif); font-size: clamp(40px, 4.4vw, 64px); line-height: 1; }
+.fit-w { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--paper-text); }
+.fit-stances { list-style: none; margin: 64px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.fit-stances li { border-top: 1px solid var(--ink); padding-top: 18px; }
+.fit-stances h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.15; }
+.fit-stances p { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: var(--paper-text); }
+.fit-facts { margin-top: 64px; }
+.fit-platforms { margin: 40px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; align-items: baseline; font-size: 15px; line-height: 1.6; color: var(--paper-text); }
+.fit-platforms .label { color: var(--ink); }
+.fit-platforms > span:last-child { grid-column: span 2; }
+.fit-note { margin-top: 24px; }
+
+/* The order section reuses the bespoke layout; the sheet shows the wheel's own render. */
+.order .bespoke-grid { margin-top: 48px; }
+.sheet-art img { display: block; width: 100%; height: auto; }
+
+/* Questions */
+.faq-list { border-top: 1px solid var(--ink); }
+.faq-list details { border-bottom: 1px solid rgba(30, 29, 27, 0.2); }
+.faq-list summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 24px 0; font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); line-height: 1.2; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; font-family: var(--sans); font-size: 22px; line-height: 1; color: var(--paper-text); transition: transform 0.2s; }
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+.faq-list summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.faq-list details p { margin: 0 0 28px; max-width: 620px; font-size: 16px; line-height: 1.65; color: var(--paper-text); }
+
+@media (max-width: 860px) {
+  .fit-sizes { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  .fit-stances { grid-template-columns: 1fr; gap: 28px; margin-top: 48px; }
+  .fit-platforms { grid-template-columns: 1fr; row-gap: 10px; }
+  .fit-platforms > span:last-child { grid-column: auto; }
+}
