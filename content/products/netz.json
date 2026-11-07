@@ -7,7 +7,7 @@
   "category": "wheels",
   "room": "#2E2C29",
   "tagline": "The branching mesh wheel from Breitspur 01.",
-  "lede": "A three piece forged mesh wheel with fifteen branching arms and a deep polished lip, made to order in 15 to 18 inches.",
+  "lede": "A three piece forged mesh wheel with fifteen branching arms and a deep polished lip, made to order in your size.",
   "availability": "interest",
   "stage": "In design",
   "price": "From $1,750 per wheel",
@@ -122,26 +122,6 @@
   ],
   "leadTime": "Inquiries decide which fitments are engineered first.",
   "fitment": {
-    "summary": "Made to order in 15 to 18 in, for factory, lowered and wide body cars.",
-    "sizes": [
-      [
-        "15 in",
-        "7 to 9 in wide"
-      ],
-      [
-        "16 in",
-        "7 to 9.5 in wide"
-      ],
-      [
-        "17 in",
-        "7.5 to 10 in wide"
-      ],
-      [
-        "18 in",
-        "8 to 10.5 in wide"
-      ]
-    ],
-    "boltPatterns": "4x100, 5x112, 5x120",
-    "platforms": "BMW 2002 and E30 on 4x100.  E30 M3, E36 and E46 on 5x120.  Mercedes 190E and W124 on 5x112."
+    "range": "15 to 18 in"
   }
 }

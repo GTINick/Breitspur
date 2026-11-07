@@ -277,7 +277,7 @@ const productCard = (p) => `<article class="product-card">
       <p class="product-tag">${esc(p.tagline)}</p>
       <ul class="product-facts">
         ${p.construction ? `<li>${esc(p.construction.toUpperCase())}</li>` : ""}
-        ${p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
+        ${p.category === "wheels" ? `<li>MADE TO ORDER</li>` : p.sizes && p.sizes.length ? `<li>${esc(p.sizes.join(" / ").toUpperCase())}</li>` : ""}
         ${p.price ? `<li>${esc(p.price.toUpperCase())}</li>` : ""}
       </ul>
     </div>
@@ -297,50 +297,11 @@ const nextCard = (href, linkText) => `<article class="product-card product-next"
 </article>`;
 const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 ? nextCard(href, linkText) : ""}</div>`;
 
-// How an order works, beside an example specification sheet.
-const orderSection = (p) => {
-  const o = site.shop.order;
-  if (!o) return "";
-  const src = p || products.find((x) => x.image && x.buildSheet) || products[0];
-  const rows = (src && src.buildSheet) || (site.shop.bespoke && site.shop.bespoke.sheet) || [];
-  return `<section class="paper bespoke order" aria-labelledby="order">
-  <h2 class="label" id="order">${esc(o.label)}</h2>
-  <div class="bespoke-body">
-    <p class="serif-lead">${esc(o.lead)}</p>
-    <div class="bespoke-grid">
-      <ol class="bespoke-items">${o.steps.map((it, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(it.title)}</h3><p>${esc(it.body)}</p></li>`).join("")}</ol>
-      ${rows.length ? `<figure class="build-sheet" aria-label="${esc(o.sheetCaption)}">
-        <div class="sheet-head"><span class="sheet-brand">${crest}BREITSPUR</span><span>SPECIFICATION</span></div>
-        ${src && src.image ? `<div class="sheet-art"><img src="${src.image.small || src.image.image}" width="${src.image.width}" height="${src.image.height}" alt="" loading="lazy" decoding="async"></div>` : ""}
-        <dl>${rows.map(([k, v]) => `<div><dt>${esc(k.toUpperCase())}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-        <figcaption>${esc(o.sheetCaption)}</figcaption>
-      </figure>` : ""}
-    </div>
-  </div>
-</section>`;
-};
-
-// Sizes and fitment.  With a product: its diameters and widths, bolt patterns and popular cars.  Without: the general rules, for the shop page.
-const fitmentSection = (p) => {
-  const f = site.shop.fitment;
-  if (!f) return "";
-  const pf = (p && p.fitment) || {};
-  const facts = [
-    ...(pf.boltPatterns ? [{ label: "Bolt patterns", value: pf.boltPatterns }] : []),
-    ...f.facts.filter((x) => !(pf.boltPatterns && x.label === "Your car not listed")),
-  ].slice(0, 6);
-  return `<section class="paper fitment" aria-labelledby="fit">
-  <h2 class="label" id="fit">${esc(f.label)}</h2>
-  <div class="fit-body">
-    <p class="serif-lead">${esc(f.lead)}</p>
-    <p class="body-lg">${esc(f.body)}</p>
-    ${pf.sizes && pf.sizes.length ? `<ul class="fit-sizes" aria-label="Diameters and widths">${pf.sizes.map(([d, w]) => `<li><span class="fit-dia">${esc(d)}</span><span class="fit-w">${esc(w)}</span></li>`).join("")}</ul>` : ""}
-    <ol class="fit-stances">${f.stances.map((s) => `<li><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>
-    <dl class="specs fit-facts">${facts.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}</dl>
-    ${pf.platforms ? `<p class="fit-platforms"><span class="label">POPULAR CARS</span><span>${esc(pf.platforms)}  Not on the list?  <a class="text-link" href="#interest">Ask about yours</a>.</span></p>` : ""}
-    ${pf.sizes ? `<p class="concept-note fit-note">Planned size range.  Final widths for your car are confirmed in the fitment review.</p>` : ""}
-  </div>
-</section>`;
+// Short collapsed rows under the Inquire button: sizes, ordering, shipping.
+const heroDetails = (p) => {
+  const d = site.shop.heroDetails || [];
+  const range = (p.fitment && p.fitment.range) || "";
+  return d.length ? `<div class="hero-details">${d.map((x) => `<details><summary>${esc(x.title)}</summary><p>${esc((range ? x.body.replace("{range}", range) : x.body.replace("Most cars run {range}.  ", "")))}</p></details>`).join("")}</div>` : "";
 };
 
 // Common questions, as native disclosure rows.
@@ -409,8 +370,7 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <div class="field"><label for="pi-name">Name</label><input id="pi-name" name="name" type="text" autocomplete="name" required></div>
   <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
   <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
-  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Diameter</label><select id="pi-size" name="size">${options(p.sizes, "Not sure yet")}</select></div>` : ""}
-  ${p.category === "wheels" && site.shop.stances ? `<div class="field"><label for="pi-stance">How it sits</label><select id="pi-stance" name="stance">${options(site.shop.stances)}</select></div>` : ""}
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Diameter</label><select id="pi-size" name="size">${options(p.category === "wheels" ? [...p.sizes, "Another size"] : p.sizes, "Not sure yet")}</select></div>` : ""}
   ${(() => {
     // Every product posts the same fields (center, lip), so the Netlify list stays one clean table.
     const cfg = p.configurator;
@@ -422,11 +382,7 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   ${cfg && cfg.lips && cfg.lips.length === 1 ? `<input type="hidden" name="lip" value="${esc(cfg.lips[0])}">` : ""}
   ${cfg && cfg.lips && cfg.lips.length > 1 ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : cfg && cfg.lips && cfg.lips.length === 1 ? "" : '<input type="hidden" name="lip" value="">'}`;
   })()}
-  ${p.category === "wheels" ? `<div class="field"><label for="pi-qty">Quantity</label><select id="pi-qty" name="quantity">${options(["Set of four", "Staggered set of four", "Pair"])}</select></div>` : ""}
-  ${site.shop.budgets && site.shop.budgets.length ? `<div class="field"><label for="pi-budget">Budget${p.category === "wheels" ? ", per wheel" : ""}</label><select id="pi-budget" name="budget">${options(site.shop.budgets, "Rather not say")}</select></div>` : ""}
-  ${p.category === "wheels" ? `<div class="field"><label for="pi-brakes">Brakes</label><input id="pi-brakes" name="brakes" type="text" placeholder="Factory, or the kit you run"></div>
-  <div class="field"><label for="pi-current">Current wheels and tires</label><input id="pi-current" name="current-setup" type="text" placeholder="For example 15x7 ET20, 205/50"></div>` : ""}
-  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Fitment questions, brake clearance, stance"></textarea></div>
+  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Sizes you have in mind, your brakes, anything we should know"></textarea></div>
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
   <p class="field-wide"><button class="btn btn-solid" type="submit">Inquire</button></p>
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
@@ -683,8 +639,6 @@ ${(() => {
 </section>` : "";
 })()}
 
-${fitmentSection(null)}
-${orderSection(null)}
 ${faqSection()}
 
 <section class="ask" aria-labelledby="ask">
@@ -726,7 +680,8 @@ ${faqSection()}
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
       <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
-      ${(p.fitment && p.fitment.summary) || p.leadTime ? `<p class="cfg-note product-lead">${esc((p.fitment && p.fitment.summary) || p.leadTime)}  <a class="text-link" href="#fit">Sizes and fitment</a></p>` : ""}
+      <p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>
+      ${p.category === "wheels" ? heroDetails(p) : ""}
     </div>
   </div>
 </section>
@@ -742,7 +697,6 @@ ${faqSection()}
   ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DEBUTED ON</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
 ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
-${p.category === "wheels" ? fitmentSection(p) : ""}
 ${p.engineering && p.engineering.length ? `<section class="paper concept-story product-engineering" aria-labelledby="engineering">
   <h2 class="label" id="engineering">ENGINEERING</h2>
   <div class="story-body">
@@ -766,12 +720,12 @@ ${concept && seenImg ? `<section class="seen-on${seenImg ? "" : " seen-on-text"}
   </div>
 </section>` : ""}
 
-${p.category === "wheels" ? orderSection(p) + faqSection() : ""}
+${p.category === "wheels" ? faqSection() : ""}
 
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Start your set.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and how it sits.  Your answers decide which sizes we engineer first, and you get pricing for your exact set before anyone else.</p>
+    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you, and you get pricing for your exact set before anyone else.</p>
   </div>
   ${interestForm(p)}
 </section>` : ""}

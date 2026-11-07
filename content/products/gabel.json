@@ -8,13 +8,14 @@
   "room": "#2E2C29",
   "tileRoom": "#536058",
   "tagline": "The five spoke from Breitspur 02.",
-  "lede": "A three piece forged wheel with five solid spokes and hidden hardware, made to order in 18 to 20 inches.",
+  "lede": "A three piece forged wheel with five solid spokes and hidden hardware, made to order in your size.",
   "availability": "interest",
   "stage": "In design",
   "price": "From $2,125 per wheel",
   "buyUrl": "",
   "construction": "Three piece forged",
   "sizes": [
+    "17 in",
     "18 in",
     "19 in",
     "20 in"
@@ -197,22 +198,6 @@
   ],
   "engineeringNote": "Design targets.  Weights and test results are published as each size is proven.",
   "fitment": {
-    "summary": "Made to order in 18 to 20 in, for factory, lowered and wide body cars.",
-    "sizes": [
-      [
-        "18 in",
-        "8 to 11 in wide"
-      ],
-      [
-        "19 in",
-        "8.5 to 12 in wide"
-      ],
-      [
-        "20 in",
-        "9 to 12 in wide"
-      ]
-    ],
-    "boltPatterns": "5x112, 5x120",
-    "platforms": "Mercedes SL, E class and 190E on 5x112.  BMW 3, 5 and 6 series on 5x120."
+    "range": "17 to 20 in"
   }
 }

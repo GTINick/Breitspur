@@ -66,7 +66,7 @@
         "title": "Wheels",
         "single": "wheel",
         "status": "live",
-        "body": "Each wheel debuts on a car in the collection, then is made to order for the car you drive, in the size it needs."
+        "body": "Each wheel debuts on a car in the collection, then is made to order in the size your car needs."
       },
       {
         "slug": "carbon",
@@ -160,109 +160,33 @@
         ]
       ]
     },
-    "fitment": {
-      "label": "SIZES AND FITMENT",
-      "lead": "Made in your size, for the car you drive.",
-      "body": "There is no catalog size.  Every set is machined to order, so you choose the diameter, and we set the width and offset for each corner of your car.",
-      "stances": [
-        {
-          "title": "Factory body",
-          "body": "Sized to fill the original arches and sit flush with the fender, on factory or lowered suspension."
-        },
-        {
-          "title": "Lowered",
-          "body": "Width and offset set for your ride height and camber, for a tight, even fender line."
-        },
-        {
-          "title": "Wide body",
-          "body": "Wider rears and staggered sets, sized to the flares you run or plan to fit."
-        }
-      ],
-      "facts": [
-        {
-          "label": "Widths",
-          "value": "Half inch steps"
-        },
-        {
-          "label": "Offset",
-          "value": "Set for each corner"
-        },
-        {
-          "label": "Center bore",
-          "value": "Machined to your hub"
-        },
-        {
-          "label": "Square or staggered",
-          "value": "Either"
-        },
-        {
-          "label": "Brake clearance",
-          "value": "Checked against your calipers"
-        },
-        {
-          "label": "Your car not listed",
-          "value": "Ask us"
-        }
-      ]
-    },
-    "order": {
-      "label": "HOW TO ORDER",
-      "lead": "From inquiry to your car in four steps.",
-      "steps": [
-        {
-          "title": "Inquire",
-          "body": "Tell us the wheel, your car and how it sits.  It commits you to nothing."
-        },
-        {
-          "title": "Fitment",
-          "body": "You send your ride height, brakes and current wheel and tire sizes.  We set width and offset for each corner and review them with you."
-        },
-        {
-          "title": "Your specification",
-          "body": "You get a specification sheet and a price for your exact set.  Nothing is cut until you sign it off with your installer."
-        },
-        {
-          "title": "Machined and shipped",
-          "body": "Each center is machined from a forged blank, then assembled, finished and shipped to you."
-        }
-      ],
-      "sheetCaption": "Example specification"
-    },
     "faq": [
       {
-        "q": "Will these fit my car if it is not a wide body?",
-        "a": "Yes.  Width and offset are set for your car, so a set can sit flush on factory arches just as well as it fills a wide body."
-      },
-      {
-        "q": "Can I run a staggered set?",
-        "a": "Yes.  Front and rear are specified separately, so you can run a square set or wider rears."
-      },
-      {
-        "q": "What do you need from me?",
-        "a": "Your car, its ride height and suspension, your brakes, and your current wheel and tire sizes.  For wide bodies and big brake kits we ask for a few measurements and walk you through taking them."
-      },
-      {
-        "q": "Will they clear my brakes?",
-        "a": "We check clearance against your calipers before anything is cut.  The final fitment call stays with you and your installer."
+        "q": "Will they fit my car?",
+        "a": "Every set is machined to order, in the diameter, width and offset your car needs.  Tell us what you drive and we work out the rest."
       },
       {
         "q": "How is a set priced?",
-        "a": "Per wheel, by size and finish.  Each wheel page shows where pricing starts, and you get a price for your exact specification before you commit to anything."
+        "a": "Per wheel, by size and finish.  Each wheel shows where pricing starts, and you get a price for your exact set before you commit to anything."
       },
       {
         "q": "When can I order?",
-        "a": "Nothing is on sale yet.  Inquiries decide which sizes we engineer first, and everyone who inquires hears about build slots and lead times before orders open."
-      },
-      {
-        "q": "Can I have a color that is not listed?",
-        "a": "Ask.  Custom center colors are made on request.  We match from a paint code or a reference, and we do not send out physical swatches."
+        "a": "Nothing is on sale yet.  Inquiries decide which sizes we make first, and everyone who inquires hears about build slots and lead times before orders open."
       }
     ],
-    "stances": [
-      "Factory body",
-      "Lowered",
-      "Wide body or flares",
-      "Not sure yet"
+    "heroDetails": [
+      {
+        "title": "Sizes",
+        "body": "Most cars run {range}.  Width, offset and bolt pattern are machined to your car, square or staggered.  Tell us what you drive and we work out the rest."
+      },
+      {
+        "title": "How ordering works",
+        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price for your set.  Once you approve it, your set is machined, assembled and shipped."
+      },
+      {
+        "title": "Shipping",
+        "body": "Every set ships assembled and finished, packed to protect the lip, to you or straight to your installer.  Shipping cost and timing are confirmed with your specification."
+      }
     ]
   },
   "privacy": {
