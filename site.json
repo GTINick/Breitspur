@@ -160,28 +160,19 @@
         ]
       ]
     },
-    "faq": [
-      {
-        "q": "Will they fit my car?",
-        "a": "Every set is machined to order, in the diameter, width and offset your car needs.  Tell us what you drive and we work out the rest."
-      },
-      {
-        "q": "How is a set priced?",
-        "a": "Per wheel, by size and finish.  Each wheel shows where pricing starts, and you get a price for your exact set before you commit to anything."
-      },
-      {
-        "q": "When can I order?",
-        "a": "Nothing is on sale yet.  Inquiries decide which sizes we make first, and everyone who inquires hears about build slots and lead times before orders open."
-      }
-    ],
+    "faq": [],
     "heroDetails": [
       {
         "title": "Sizes",
-        "body": "Most cars run {range}.  Width, offset and bolt pattern are machined to your car, square or staggered.  Tell us what you drive and we work out the rest."
+        "body": "Most cars run {range}.  Width, offset and bolt pattern are machined to your car, square or staggered."
+      },
+      {
+        "title": "Pricing",
+        "body": "Priced per wheel by size and finish, from {price} for a set of four.  You get a price for your exact set before you commit to anything."
       },
       {
         "title": "How ordering works",
-        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price for your set.  Once you approve it, your set is machined, assembled and shipped."
+        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price.  Once you approve it, your set is machined, assembled and shipped.  Orders are not open yet, and everyone who inquires hears about build slots and lead times first."
       },
       {
         "title": "Shipping",

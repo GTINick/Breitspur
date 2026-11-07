@@ -297,11 +297,14 @@ const nextCard = (href, linkText) => `<article class="product-card product-next"
 </article>`;
 const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 ? nextCard(href, linkText) : ""}</div>`;
 
-// Short collapsed rows under the Inquire button: sizes, ordering, shipping.
+// A set of four, from the per wheel price: "From $2,125 per wheel" gives "$8,500".
+const setOf4 = (p) => { const m = /\$([\d,]+)/.exec(p.price || ""); return m ? "$" + (Number(m[1].replace(/,/g, "")) * 4).toLocaleString("en-US") : ""; };
+const setPrice = (p, t) => (setOf4(p) ? t.replace("{price}", setOf4(p)) : t.replace(/, from \{price\} for a set of four/, ""));
+// Short collapsed rows under the Inquire button: sizes, pricing, ordering, shipping.
 const heroDetails = (p) => {
   const d = site.shop.heroDetails || [];
   const range = (p.fitment && p.fitment.range) || "";
-  return d.length ? `<div class="hero-details">${d.map((x) => `<details><summary>${esc(x.title)}</summary><p>${esc((range ? x.body.replace("{range}", range) : x.body.replace("Most cars run {range}.  ", "")))}</p></details>`).join("")}</div>` : "";
+  return d.length ? `<div class="hero-details">${d.map((x) => `<details><summary>${esc(x.title)}</summary><p>${esc(setPrice(p, range ? x.body.replace("{range}", range) : x.body.replace("Most cars run {range}.  ", "")))}</p></details>`).join("")}</div>` : "";
 };
 
 // Common questions, as native disclosure rows.
@@ -679,7 +682,7 @@ ${faqSection()}
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
-      <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
+      <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}${p.category === "wheels" && setOf4(p) ? `<span class="product-set">${setOf4(p)} a set of four</span>` : ""}</span>` : ""}</p>
       <p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>
       ${p.category === "wheels" ? heroDetails(p) : ""}
     </div>
@@ -725,7 +728,7 @@ ${p.category === "wheels" ? faqSection() : ""}
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Start your set.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you, and you get pricing for your exact set before anyone else.</p>
+    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you and send a price for your exact set.</p>
   </div>
   ${interestForm(p)}
 </section>` : ""}
