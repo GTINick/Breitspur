@@ -682,7 +682,7 @@ ${faqSection()}
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
-      <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}${p.category === "wheels" && setOf4(p) ? `<span class="product-set">${setOf4(p)} a set of four</span>` : ""}</span>` : ""}</p>
+      <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
       <p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>
       ${p.category === "wheels" ? heroDetails(p) : ""}
     </div>
