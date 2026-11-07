@@ -91,8 +91,7 @@
   },
   "story": [
     "Gabel debuted on Breitspur 02: five solid spokes, a flat face and a deep lip.",
-    "The center is machined from a forged 7075-T6 blank and bolts to a spun lip and barrel from behind, so the hardware is hidden and the face stays clean from the hub to the rim.  The spokes run almost to the edge of the rim, and every window is chamfered front and back so the wheel reads light from any angle.",
-    "The lug face is set into the center, with the lion crest on the cap and the name cut into one spoke.  It was designed around the R129, and it is made to order for any car on a five lug hub."
+    "The spokes run almost to the edge of the rim, and every window is chamfered front and back, so the wheel reads light from any angle.  The lion crest sits on the cap, and the name is cut into one spoke."
   ],
   "specs": [
     {
@@ -101,23 +100,23 @@
     },
     {
       "label": "Center",
-      "value": "Forged 7075-T6"
+      "value": "Forged 7075-T6 aluminum"
     },
     {
-      "label": "Spokes",
-      "value": "Five, solid"
-    },
-    {
-      "label": "Lip",
-      "value": "Polished or color matched"
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
     },
     {
       "label": "Assembly",
       "value": "Hidden hardware"
     },
     {
-      "label": "Finishes",
-      "value": "Eight center colors"
+      "label": "Sizes",
+      "value": "17 to 20 in"
+    },
+    {
+      "label": "Width and offset",
+      "value": "Made to order"
     }
   ],
   "specsNote": "Shown here in 19 in.",
@@ -169,34 +168,6 @@
     ]
   ],
   "leadTime": "Inquiries decide which fitments are engineered first.",
-  "engineeringIntro": "Each spoke is sized for a 690 kg wheel load in hard cornering, with margin, and every window edge is chamfered front and back so no sharp corner is left to start a crack.",
-  "engineering": [
-    {
-      "label": "Center",
-      "value": "Forged 7075-T6, machined"
-    },
-    {
-      "label": "Assembly",
-      "value": "Hidden, 40 bolts from behind"
-    },
-    {
-      "label": "Lip and barrel",
-      "value": "Spun aluminum"
-    },
-    {
-      "label": "Spokes",
-      "value": "Solid, sized to cornering load"
-    },
-    {
-      "label": "Brake clearance",
-      "value": "Reviewed for your calipers"
-    },
-    {
-      "label": "Testing",
-      "value": "Lab load tested before the first sets ship"
-    }
-  ],
-  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven.",
   "fitment": {
     "range": "17 to 20 in"
   }

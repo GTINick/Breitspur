@@ -53,8 +53,7 @@
   },
   "story": [
     "Netz is German for net.  It is the first wheel from the studio, and it debuted on Breitspur 01.",
-    "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip.  The assembly hardware is hidden, so nothing interrupts the weave.",
-    "It starts at 15 inches because the cars that wore mesh first, from the 2002 to the E30, need a wheel that fits without spacers."
+    "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip."
   ],
   "specs": [
     {
@@ -63,23 +62,23 @@
     },
     {
       "label": "Center",
-      "value": "Forged 7075-T6"
+      "value": "Forged 7075-T6 aluminum"
     },
     {
-      "label": "Arms",
-      "value": "Fifteen, branching"
-    },
-    {
-      "label": "Lip",
-      "value": "Deep, polished"
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
     },
     {
       "label": "Assembly",
       "value": "Hidden hardware"
     },
     {
-      "label": "Finishes",
-      "value": "Five center colors, custom on request"
+      "label": "Sizes",
+      "value": "15 to 18 in"
+    },
+    {
+      "label": "Width and offset",
+      "value": "Made to order"
     }
   ],
   "specsNote": "Renders are in progress.",

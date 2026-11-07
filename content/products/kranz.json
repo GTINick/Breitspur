@@ -91,8 +91,7 @@
   },
   "story": [
     "Kranz is German for wreath.  Eleven straight spokes ring the hub, and that ring gives the wheel its name.",
-    "Gabel is the wheel Breitspur 02 is shown on: five bold spokes and a Black Series stance.  Kranz is the other answer for the same car, closer to the wheels an owner could have ordered in the nineties.  The face stays flat, the spokes run straight out to a deep lip, and the assembly hardware is hidden.",
-    "It was designed alongside Gabel for the R129, and like every wheel from the studio it is machined to the fitment of whatever car it goes on."
+    "It was designed alongside Gabel for Breitspur 02, closer to the wheels an owner could have ordered in the nineties: a flat face, straight spokes and a deep lip."
   ],
   "specs": [
     {
@@ -101,23 +100,23 @@
     },
     {
       "label": "Center",
-      "value": "Forged 7075-T6"
+      "value": "Forged 7075-T6 aluminum"
     },
     {
-      "label": "Spokes",
-      "value": "Eleven, straight"
-    },
-    {
-      "label": "Lip",
-      "value": "Polished or color matched"
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
     },
     {
       "label": "Assembly",
       "value": "Hidden hardware"
     },
     {
-      "label": "Finishes",
-      "value": "Eight center colors"
+      "label": "Sizes",
+      "value": "17 to 20 in"
+    },
+    {
+      "label": "Width and offset",
+      "value": "Made to order"
     }
   ],
   "specsNote": "Shown here in 19 in.",
@@ -183,34 +182,6 @@
     "alt": "Breitspur 02, the silver R129 SL concept, on eleven spoke Kranz wheels, seen from above at three quarters"
   },
   "leadTime": "Inquiries decide which fitments are engineered first.",
-  "engineeringIntro": "The backs of the spokes are cut away where the wheel does not need metal, which takes weight out of every spoke and opens up room for the brakes.  The valve sits in the barrel behind the face, so nothing breaks the lip.",
-  "engineering": [
-    {
-      "label": "Center",
-      "value": "Forged 7075-T6, machined"
-    },
-    {
-      "label": "Assembly",
-      "value": "Hidden, 40 bolts from behind"
-    },
-    {
-      "label": "Lip and barrel",
-      "value": "Spun aluminum"
-    },
-    {
-      "label": "Spokes",
-      "value": "Backs cut away for weight"
-    },
-    {
-      "label": "Valve",
-      "value": "In the barrel, behind the face"
-    },
-    {
-      "label": "Testing",
-      "value": "Lab load tested before the first sets ship"
-    }
-  ],
-  "engineeringNote": "Design targets.  Weights and test results are published as each size is proven.",
   "fitment": {
     "range": "17 to 20 in"
   }
