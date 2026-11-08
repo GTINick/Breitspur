@@ -1,0 +1,148 @@
+{
+  "status": "live",
+  "number": 1,
+  "slug": "netz",
+  "code": "W01",
+  "name": "Netz",
+  "category": "wheels",
+  "room": "#2E2C29",
+  "tagline": "The branching mesh wheel from Breitspur 01.",
+  "lede": "A three piece forged mesh wheel with fifteen branching arms and a deep polished lip, made to order in your size.",
+  "availability": "interest",
+  "stage": "In design",
+  "price": "From $1,750 per wheel",
+  "buyUrl": "",
+  "construction": "Three piece forged",
+  "sizes": [
+    "15 in",
+    "16 in",
+    "17 in",
+    "18 in"
+  ],
+  "configurator": {
+    "centers": [
+      {
+        "name": "Bright Silver",
+        "hex": "#CED1D5"
+      },
+      {
+        "name": "Smoke Silver",
+        "hex": "#8B8E92"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B8975A"
+      },
+      {
+        "name": "Gloss Black",
+        "hex": "#101113"
+      },
+      {
+        "name": "Satin Black",
+        "hex": "#2B2C2E"
+      }
+    ],
+    "lips": [
+      "Polished"
+    ],
+    "default": {
+      "center": "Bright Silver",
+      "lip": "Polished"
+    },
+    "custom": true,
+    "renders": {
+      "path": "/assets/img/products/netz",
+      "views": [
+        {
+          "key": "front",
+          "label": "Front"
+        },
+        {
+          "key": "hero",
+          "label": "Three quarter"
+        },
+        {
+          "key": "tilt",
+          "label": "Low"
+        },
+        {
+          "key": "side",
+          "label": "Side"
+        },
+        {
+          "key": "detail",
+          "label": "Detail"
+        }
+      ]
+    }
+  },
+  "story": [
+    "Netz is German for net, and it is the first wheel from the studio.",
+    "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip."
+  ],
+  "specs": [
+    {
+      "label": "Construction",
+      "value": "Three piece, hidden hardware"
+    },
+    {
+      "label": "Center",
+      "value": "Forged 7075-T6 aluminum"
+    },
+    {
+      "label": "Lip and barrel",
+      "value": "Spun aluminum"
+    },
+    {
+      "label": "Weight",
+      "value": "About 17.9 lb front, 18.6 lb rear, in 15 in"
+    }
+  ],
+  "seenOn": "breitspur-01",
+  "seenOnImage": false,
+  "image": {
+    "image": "/assets/img/products/netz/bright-silver-polished/front.webp",
+    "small": "/assets/img/products/netz/bright-silver-polished/front-800.webp",
+    "width": 1600,
+    "height": 1600,
+    "alt": "Netz mesh wheel in Bright Silver with a polished lip, front view"
+  },
+  "buildSheet": [
+    [
+      "Car",
+      "1972 BMW 2002"
+    ],
+    [
+      "Wheel",
+      "Netz, three piece"
+    ],
+    [
+      "Size",
+      "15 x 7 in front, 15 x 8 in rear"
+    ],
+    [
+      "Offset",
+      "ET 20 front, ET 7 rear"
+    ],
+    [
+      "Bolt pattern",
+      "4x100"
+    ],
+    [
+      "Center bore",
+      "57.1 mm"
+    ],
+    [
+      "Material",
+      "Forged 7075-T6 aluminum center"
+    ],
+    [
+      "Finish",
+      "Bright Silver center, polished lip"
+    ]
+  ],
+  "leadTime": "Inquiries decide which fitments are engineered first.",
+  "fitment": {
+    "range": "15 to 18 in"
+  }
+}
