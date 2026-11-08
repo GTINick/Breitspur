@@ -513,6 +513,17 @@ ${(() => {
 </section>`;
 })()}
 
+${c.film ? `<section class="concept-film" aria-label="${esc(c.film.alt)}">
+  <div class="film-frame">
+    <video preload="none" playsinline width="${c.film.width}" height="${c.film.height}" poster="${c.film.poster}">
+      <source src="${c.film.small}" type="video/mp4" media="(max-width: 860px)">
+      <source src="${c.film.video}" type="video/mp4">
+    </video>
+    <button class="film-play" type="button" aria-label="Play the film, ${esc(c.film.duration)}"><span class="film-play-icon" aria-hidden="true"></span><span class="film-play-label">Play the film<span>${esc(c.film.duration)}</span></span></button>
+  </div>
+  <p class="film-caption"><span class="label">THE FILM</span><span>${esc(c.film.title)}, ${esc(c.film.duration)}</span></p>
+</section>
+<script>document.querySelectorAll(".film-frame").forEach(function (f) { var v = f.querySelector("video"), b = f.querySelector(".film-play"); b.addEventListener("click", function () { v.controls = true; f.classList.add("is-playing"); v.play(); }); });</script>` : ""}
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}
 </section>` : ""}
@@ -785,7 +796,7 @@ const version = (rel) => {
 };
 const walk = (d) => fs.readdirSync(d).flatMap((f) => { const a = path.join(d, f); return fs.statSync(a).isDirectory() ? walk(a) : [a]; });
 for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
-  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css|js)/g, (m) => {
+  const html = fs.readFileSync(file, "utf8").replace(/\/assets\/(?!fonts\/)[A-Za-z0-9_\-./]+\.(?:webp|jpg|jpeg|png|svg|css|js|mp4|webm)/g, (m) => {
     const v = version(m.slice(1));
     return v ? `${m}?v=${v}` : m;
   });

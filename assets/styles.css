@@ -535,3 +535,26 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 .concept-badge { padding: 144px var(--gutter) 0; display: flex; justify-content: center; }
 .concept-badge img { width: clamp(180px, 18vw, 280px); height: auto; }
 .gallery + .concept-badge + .ask { margin-top: 24px; }
+
+/* Concept film: click to play, with sound.  Poster first, controls after. */
+.concept-film { padding: 96px var(--gutter) 0; }
+.film-frame { position: relative; background: #000; }
+.film-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
+.film-play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-start; gap: 20px; padding: 40px; border: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 45%); color: var(--cream); cursor: pointer; }
+.film-play:hover .film-play-icon { background: rgba(237, 231, 218, 0.14); }
+.film-play-icon { transition: background 0.2s; flex: none; }
+.film-play:focus-visible { outline: 2px solid var(--cream); outline-offset: -6px; }
+.film-play-icon { width: 76px; height: 76px; border: 1px solid var(--cream); border-radius: 50%; position: relative; }
+.film-play-icon::after { content: ""; position: absolute; left: 31px; top: 25px; border-style: solid; border-width: 13px 0 13px 20px; border-color: transparent transparent transparent var(--cream); }
+.film-play-label { display: flex; flex-direction: column; gap: 6px; text-align: left; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; }
+.film-play-label span { color: var(--cream-dim); letter-spacing: 0.16em; }
+.is-playing .film-play { display: none; }
+.film-caption { margin: 16px 0 0; display: flex; justify-content: space-between; gap: 24px; font-size: 13px; color: var(--cream-dim); }
+.concept-film + .gallery { padding-top: 24px; }
+@media (max-width: 860px) {
+  .concept-film { padding-top: 64px; }
+  .film-play { padding: 16px; gap: 14px; }
+  .film-play-label { display: none; }
+  .film-play-icon { width: 56px; height: 56px; }
+  .film-play-icon::after { left: 22px; top: 17px; border-width: 11px 0 11px 16px; }
+}

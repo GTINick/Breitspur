@@ -82,5 +82,16 @@
       "wide": true
     }
   ],
-  "note": "Breitspur 01 is a design concept, rendered rather than built."
+  "note": "Breitspur 01 is a design concept, rendered rather than built.",
+  "film": {
+    "video": "/assets/video/breitspur-01/film-1080.mp4",
+    "small": "/assets/video/breitspur-01/film-720.mp4",
+    "poster": "/assets/video/breitspur-01/poster.webp",
+    "posterSmall": "/assets/video/breitspur-01/poster-1000.webp",
+    "width": 1920,
+    "height": 1080,
+    "duration": "0:30",
+    "title": "The 01",
+    "alt": "A short film of Breitspur 01 in the studio garage"
+  }
 }
