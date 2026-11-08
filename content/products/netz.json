@@ -49,7 +49,32 @@
       "center": "Bright Silver",
       "lip": "Polished"
     },
-    "custom": true
+    "custom": true,
+    "renders": {
+      "path": "/assets/img/products/netz",
+      "views": [
+        {
+          "key": "front",
+          "label": "Front"
+        },
+        {
+          "key": "hero",
+          "label": "Three quarter"
+        },
+        {
+          "key": "tilt",
+          "label": "Low"
+        },
+        {
+          "key": "side",
+          "label": "Side"
+        },
+        {
+          "key": "detail",
+          "label": "Detail"
+        }
+      ]
+    }
   },
   "story": [
     "Netz is German for net.  It is the first wheel from the studio, and it debuted on Breitspur 01.",
@@ -81,10 +106,16 @@
       "value": "Made to order"
     }
   ],
-  "specsNote": "Renders are in progress.",
+  "specsNote": "Shown here in 15 in.",
   "seenOn": "breitspur-01",
   "seenOnImage": false,
-  "image": null,
+  "image": {
+    "image": "/assets/img/products/netz/bright-silver-polished/front.webp",
+    "small": "/assets/img/products/netz/bright-silver-polished/front-800.webp",
+    "width": 1600,
+    "height": 1600,
+    "alt": "Netz mesh wheel in Bright Silver with a polished lip, front view"
+  },
   "buildSheet": [
     [
       "Car",
