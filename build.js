@@ -516,6 +516,7 @@ ${(() => {
 ${c.gallery && c.gallery.length ? `<section class="gallery" aria-label="${esc(c.name)} gallery">
   ${c.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} 1000w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}" loading="lazy" decoding="async"></figure>`).join("")}
 </section>` : ""}
+${c.badge ? `<section class="concept-badge" aria-label="${esc(c.badge.alt)}"><img src="${c.badge.image}" width="${c.badge.width}" height="${c.badge.height}" alt="${esc(c.badge.alt)}" loading="lazy" decoding="async"></section>` : ""}
 
 <section class="ask ask-cta" aria-labelledby="ask">
   <h2 class="serif-xl" id="ask">What should your car have been?</h2>

@@ -530,3 +530,8 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 .hero-details summary:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 .hero-details p { margin: 0 0 20px; font-size: 15px; line-height: 1.65; color: var(--cream-dim); }
 .product-set { display: block; margin-top: 6px; color: var(--cream-faint); }
+
+/* A concept's badge: one mark, centered, with room to breathe after the gallery. */
+.concept-badge { padding: 144px var(--gutter) 0; display: flex; justify-content: center; }
+.concept-badge img { width: clamp(180px, 18vw, 280px); height: auto; }
+.gallery + .concept-badge + .ask { margin-top: 24px; }
