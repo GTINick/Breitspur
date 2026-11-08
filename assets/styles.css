@@ -569,3 +569,6 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 .product-tile-photo { padding: 0; overflow: hidden; }
 .product-tile-photo img { width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 860px) { .product-gallery .tall { grid-row: auto; } .product-gallery .tall img { height: auto; } }
+/* Product names can be two words: let them break between words, never inside one. */
+.product-title { text-wrap: balance; white-space: normal; overflow-wrap: normal; }
+.product-title-long { font-size: clamp(56px, 6.6vw, 112px); line-height: 0.92; }

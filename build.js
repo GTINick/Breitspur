@@ -699,7 +699,7 @@ ${faqSection()}
     <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : wheelArt(p, { eager: true, big: true })}</div>
     <div class="product-hero-text">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
-      <h1 class="product-title" id="product-name">${esc(p.name)}</h1>
+      <h1 class="product-title${p.name.length > 8 ? " product-title-long" : ""}" id="product-name">${esc(p.name)}</h1>
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
@@ -834,6 +834,8 @@ write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${url("/sitemap.xml")}\n`
 const redirects = [
   ...concepts.filter((c) => c.status === "soon").map((c) => `/concepts/${c.slug}/*  /#concepts  302`),
   ...(site.shop.enabled ? [] : ["/shop/*  /  302", "/shop  /  302"]),
+  // Renamed products keep their old address working.
+  "/shop/apparel/wappen/*  /shop/apparel/embossed-hoodie/  301",
   // Category URLs with no page of their own land on that category in the shop.
   ...(site.shop.enabled ? site.shop.categories.filter((k) => k.status === "live").flatMap((k) => [`/shop/${k.slug}  /shop/#${k.slug}  301`, `/shop/${k.slug}/  /shop/#${k.slug}  301`]) : []),
 ];

@@ -1,13 +1,13 @@
 {
   "status": "live",
   "number": 4,
-  "slug": "wappen",
+  "slug": "embossed-hoodie",
   "code": "A01",
-  "name": "Wappen",
+  "name": "Embossed Hoodie",
   "category": "apparel",
   "room": "#2E2C29",
   "tileRoom": "#E9E5DE",
-  "tagline": "The Breitspur Performance hoodie, crest embossed tone on tone.",
+  "tagline": "The Breitspur Performance crest, embossed tone on tone.",
   "lede": "The lion crest and wordmark are pressed into the fabric, not printed, so the logo reads in the light and disappears in the shade.",
   "availability": "interest",
   "price": "",
@@ -23,46 +23,46 @@
     "Black"
   ],
   "image": {
-    "image": "/assets/img/products/wappen/flat.webp",
-    "small": "/assets/img/products/wappen/flat-800.webp",
+    "image": "/assets/img/products/embossed-hoodie/flat.webp",
+    "small": "/assets/img/products/embossed-hoodie/flat-800.webp",
     "width": 1600,
     "height": 2143,
-    "alt": "The Wappen hoodie laid flat, with the Breitspur Performance crest and wordmark embossed on the chest"
+    "alt": "The Embossed Hoodie laid flat, with the Breitspur Performance crest and wordmark embossed on the chest"
   },
   "gallery": [
     {
-      "image": "/assets/img/products/wappen/detail.webp",
-      "small": "/assets/img/products/wappen/detail-1000.webp",
+      "image": "/assets/img/products/embossed-hoodie/detail.webp",
+      "small": "/assets/img/products/embossed-hoodie/detail-1000.webp",
       "width": 2000,
       "height": 1493,
       "alt": "Close up of the embossed lion crest and Breitspur wordmark, raised from the fleece",
       "wide": true
     },
     {
-      "image": "/assets/img/products/wappen/worn.webp",
-      "small": "/assets/img/products/wappen/worn-800.webp",
+      "image": "/assets/img/products/embossed-hoodie/worn.webp",
+      "small": "/assets/img/products/embossed-hoodie/worn-800.webp",
       "width": 1600,
       "height": 2143,
-      "alt": "The Wappen hoodie worn at sunset, in front of a silver R129 SL on Breitspur five spoke wheels",
+      "alt": "The Embossed Hoodie worn at sunset, in front of a silver R129 SL on Breitspur five spoke wheels",
       "tall": true
     },
     {
-      "image": "/assets/img/products/wappen/cuff.webp",
-      "small": "/assets/img/products/wappen/cuff-1000.webp",
+      "image": "/assets/img/products/embossed-hoodie/cuff.webp",
+      "small": "/assets/img/products/embossed-hoodie/cuff-1000.webp",
       "width": 2000,
       "height": 1493,
       "alt": "The ribbed cuff and its stitched seam"
     },
     {
-      "image": "/assets/img/products/wappen/pocket.webp",
-      "small": "/assets/img/products/wappen/pocket-1000.webp",
+      "image": "/assets/img/products/embossed-hoodie/pocket.webp",
+      "small": "/assets/img/products/embossed-hoodie/pocket-1000.webp",
       "width": 2000,
       "height": 1493,
       "alt": "The kangaroo pocket with its double needle stitching and the ribbed hem"
     }
   ],
   "story": [
-    "Wappen is German for coat of arms.",
+    "Pressed into the fabric, not printed.",
     "The crest and the Breitspur Performance wordmark are embossed into the chest in the same color as the hoodie.  There is no ink to crack or fade, only the shape of the mark."
   ],
   "specs": [
