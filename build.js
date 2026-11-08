@@ -130,10 +130,10 @@ const url = (p) => site.domain.replace(/\/$/, "") + p;
 // ---------- layout ----------
 const nav = [
   ...(site.shop.enabled ? [["/shop/wheels/", "Wheels", "wheels"]] : []),
-  ["/#concepts", "Concepts", "concepts"],
-  ...(site.shop.enabled ? [["/shop/", "Shop", "shop"]] : []),
+  ["/concepts/", "Concepts", "concepts"],
+  ...(site.shop.enabled && products.some((p) => p.category === "apparel") ? [["/shop/apparel/", "Apparel", "apparel"]] : []),
   ["/studio/", "Studio", "studio"],
-  ["/inquire/", "Inquire", "inquire"],
+  ["/commission/", "Commission", "commission"],
 ];
 
 const page = ({ title, description, path: p, room = "#2E2C29", active = "", body, image = "/assets/img/og.jpg", noindex = false, scripts = [] }) => `<!doctype html>
@@ -162,7 +162,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ""}<link rel="preload" 
 <header class="masthead">
   <a class="brand" href="/" aria-label="${esc(site.name)} home">${crest}<span class="brand-word">BREITSPUR</span></a>
   <nav aria-label="Main">
-    <ul>${nav.map(([h, l, k]) => `<li><a href="${h}"${k === "inquire" ? ' class="nav-cta"' : ""}${k === active ? ' aria-current="page"' : ""}>${l}</a></li>`).join("")}</ul>
+    <ul>${nav.map(([h, l, k]) => `<li><a href="${h}"${k === "commission" ? ' class="nav-cta"' : ""}${k === active ? ' aria-current="page"' : ""}>${l}</a></li>`).join("")}</ul>
   </nav>
 </header>
 <main id="main">
@@ -170,14 +170,24 @@ ${body}
 </main>
 <footer class="foot">
   <div class="foot-brand">${crest}<span>${esc(site.name.toUpperCase())}</span></div>
-  <p class="foot-tag">${esc(site.tagline)}</p>
-  <ul class="foot-links">
-    <li>${esc(site.location.toUpperCase())}</li>
-    ${site.social.instagram ? `<li><a href="${esc(site.social.instagram)}" rel="me">INSTAGRAM</a></li>` : site.contactSoon ? `<li class="foot-soon-item">INSTAGRAM COMING SOON</li>` : ""}
-    ${site.email ? `<li><a href="mailto:${esc(site.email)}">${esc(site.email.toUpperCase())}</a></li>` : site.contactSoon ? `<li class="foot-soon-item">EMAIL COMING SOON</li>` : ""}
-    <li><a href="/privacy/">PRIVACY</a></li>
-  </ul>
-  ${site.shop.enabled ? "" : `<p class="foot-soon">${esc(site.shop.teaser.toUpperCase())}</p>`}
+  <div class="foot-tag-col"><p class="foot-tag">${esc(site.tagline)}</p><p class="foot-place">${esc(site.location.toUpperCase())}</p></div>
+  <nav class="foot-nav" aria-label="Footer">
+    <ul>${nav.map(([h, l]) => `<li><a href="${h}">${l.toUpperCase()}</a></li>`).join("")}</ul>
+    <ul>
+      ${site.email ? `<li><a href="mailto:${esc(site.email)}">${esc(site.email.toUpperCase())}</a></li>` : ""}
+      ${site.social.instagram ? `<li><a href="${esc(site.social.instagram)}" rel="me">INSTAGRAM</a></li>` : ""}
+      <li><a href="/privacy/">PRIVACY</a></li>
+    </ul>
+  </nav>
+  <form class="foot-signup" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="shop-updates">
+    <input type="hidden" name="subject" value="Footer signup (%{submissionId})">
+    <input type="hidden" name="interests[]" value="Everything">
+    <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+    <label for="foot-email" class="label">HEAR FIRST</label>
+    <div class="foot-signup-row"><input id="foot-email" name="email" type="email" autocomplete="email" placeholder="Your email" required><button class="btn btn-light" type="submit">Join</button></div>
+    <p class="foot-signup-note">New concepts, wheels and drops.  A few emails a year.</p>
+  </form>
 </footer>
 ${scripts.map((src) => `<script src="${src}" defer></script>`).join("\n")}
 </body>
@@ -219,6 +229,9 @@ const room = (c, i, { first = false, linked = true } = {}) => {
   })() : ""}
 </section>`;
 };
+
+// The way on from a page that ends: a short row of next steps.
+const nextLinks = (items) => `<nav class="next-links" aria-label="Keep exploring">${items.map(([h, l, primary]) => primary ? `<a class="btn btn-light" href="${h}">${esc(l)}</a>` : `<a class="text-link" href="${h}">${esc(l)}</a>`).join("")}</nav>`;
 
 const form = (id) => `<form class="inquiry" name="inquiry" method="POST" action="/inquire/thanks/" data-netlify="true" netlify-honeypot="company">
   <input type="hidden" name="form-name" value="inquiry">
@@ -477,7 +490,7 @@ ${(() => {
   <h2 class="serif-xl" id="pitch">${esc(site.home.pitch.title)}</h2>
   <div>
     <p class="body-lg muted">${esc(site.home.pitch.body)}</p>
-    <p class="ask-links"><a class="btn btn-light" href="/studio/#work">${esc(site.home.pitch.cta)}</a></p>
+    <p class="ask-links"><a class="btn btn-light" href="/commission/">${esc(site.home.pitch.cta)}</a></p>
   </div>
 </section>
 
@@ -488,6 +501,33 @@ ${(() => {
   </div>
   ${notifyForm("hs")}
 </section>`,
+}));
+
+// Concepts index: every car, each with its wheel.
+write("concepts/index.html", page({
+  title: `Concepts | ${site.name}`,
+  description: "The concept cars from Breitspur, each with the wheel it debuted.",
+  path: "/concepts/",
+  room: firstRoom,
+  active: "concepts",
+  body: `<section class="room room-first page-hero" style="--room: ${esc(firstRoom)}">
+  <h1 class="room-name">Concepts</h1>
+  <p class="room-lede">${esc(site.manifesto.lead)}</p>
+</section>
+<section class="concept-index" aria-label="The concepts">
+  ${live.map((c) => {
+    const w = site.shop.enabled ? products.find((p) => p.category === "wheels" && p.seenOn === c.slug && p.seenRole !== "alternate") : null;
+    const img = c.profile;
+    return `<article class="concept-card">
+    <a class="concept-card-art" href="/concepts/${c.slug}/" style="--room: ${esc(c.room)}" aria-label="${esc(c.name)}, ${esc(c.subtitle)}">${img ? `<img src="${img.small}" srcset="${img.small} 1200w, ${img.image} ${img.width}w" sizes="(min-width: 861px) 46vw, 92vw" width="${img.width}" height="${img.height}" alt="${esc(img.alt)}" loading="lazy" decoding="async">` : ""}</a>
+    <p class="product-code">PLATE ${two(c.number)}</p>
+    <h2 class="product-name"><a href="/concepts/${c.slug}/">${esc(c.name)}</a></h2>
+    <p class="product-tag">${esc(c.subtitle)}</p>
+    ${w ? `<p class="concept-card-wheel">${w.seenOnImage === false ? "Debuted with" : "Wears"} <a class="text-link" href="${productHref(w)}">${esc(w.name)}</a></p>` : ""}
+  </article>`;
+  }).join("")}
+</section>
+${nextLinks([["/commission/", "Commission a concept", true], ["/shop/wheels/", "Explore the wheels"]])}`,
 }));
 
 // Concept pages
@@ -517,7 +557,7 @@ ${(() => {
   // Wheels for this car.  "seenRole": "alternate" marks a second wheel; the car is shown on the other one.
   const ws = products.filter((p) => p.seenOn === c.slug).sort((a, b) => (a.seenRole === "alternate") - (b.seenRole === "alternate") || a.number - b.number);
   if (!ws.length) return "";
-  const cta = (p) => `<a class="btn btn-light" href="${productHref(p)}">${p.availability === "interest" ? "Inquire" : `View ${esc(p.name)}`}</a>`;
+  const cta = (p) => `<a class="btn btn-light" href="${productHref(p)}">View ${esc(p.name)}</a>`;
   if (ws.length === 1) { const p = ws[0]; return `<section class="concept-product" aria-label="${esc(p.name)}">
   <div class="concept-product-art">${wheelArt(p)}</div>
   <div>
@@ -559,7 +599,7 @@ ${c.badge ? `<section class="concept-badge" aria-label="${esc(c.badge.alt)}"><im
   <h2 class="serif-xl" id="ask">What should your car have been?</h2>
   <div>
     <p class="body-lg muted">We define commissioned concepts for private owners, shops and makers.</p>
-    <p class="ask-links"><a class="btn btn-light" href="/inquire/">Commission a concept</a>${live.length > 1 ? `<a class="text-link" href="/concepts/${next.slug}/">Next: ${esc(next.name)}</a>` : ""}</p>
+    <p class="ask-links"><a class="btn btn-light" href="/commission/">Commission a concept</a>${live.length > 1 ? `<a class="text-link" href="/concepts/${next.slug}/">Next: ${esc(next.name)}</a>` : ""}</p>
   </div>
 </section>`,
   }));
@@ -588,6 +628,21 @@ write("studio/index.html", page({
   </div>
 </section>
 
+${nextLinks([["/commission/", "Commission a concept", true], ["/concepts/", "See the concepts"], ["/shop/wheels/", "Explore the wheels"]])}`,
+}));
+
+// Commission: services and prices beside the form, in one place.
+write("commission/index.html", page({
+  title: `Commission | ${site.name}`,
+  description: "Commission a concept of your car, production CAD for parts, or design review.  Services and starting prices.",
+  path: "/commission/",
+  room: firstRoom,
+  active: "commission",
+  body: `<section class="room room-first page-hero" style="--room: ${esc(firstRoom)}">
+  <h1 class="room-name room-name-long">Commission</h1>
+  <p class="room-lede">${esc(site.home.pitch.title)}  ${esc(site.home.pitch.body)}</p>
+</section>
+
 <section class="paper studio-band" aria-labelledby="work">
   <h2 class="label" id="work">SERVICES</h2>
   <div>${services()}</div>
@@ -597,26 +652,14 @@ ${site.commission && (site.commission.steps || []).length ? `<section class="pap
   <ol class="steps">${site.commission.steps.map((s, i) => `<li><span class="step-num">${two(i + 1)}</span><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>
 </section>` : ""}
 
-<section class="ask" aria-labelledby="ask">
-  <h2 class="serif-xl" id="ask">Tell us the car.</h2>
-  ${form("studio")}
-</section>`,
-}));
-
-// Inquire + thanks
-write("inquire/index.html", page({
-  title: `Inquire | ${site.name}`,
-  description: "Commission a concept of your car, or bring the studio in on your project.",
-  path: "/inquire/",
-  room: firstRoom,
-  active: "inquire",
-  body: `<section class="ask ask-page">
+<section class="ask" id="start" aria-labelledby="ask">
   <div>
-    <h1 class="serif-xl">Tell us the car.</h1>
+    <h2 class="serif-xl" id="ask">Tell us the car.</h2>
     <p class="body-lg muted">Commissions, consulting, or an idea of your own.  The designer reads every inquiry.</p>
   </div>
-  ${form("inquire")}
-</section>`,
+  ${form("commission")}
+</section>
+${nextLinks([["/concepts/", "See the concepts"], ["/shop/wheels/", "Explore the wheels"]])}`,
 }));
 write("inquire/thanks/index.html", page({
   title: `Thank you | ${site.name}`,
@@ -628,7 +671,7 @@ write("inquire/thanks/index.html", page({
   <div>
     <h1 class="serif-xl">Received.</h1>
     <p class="body-lg muted">Thank you.  We read every inquiry and will reply by email.</p>
-    <p><a class="btn btn-light" href="/">Back to the collection</a></p>
+    <p class="ask-links"><a class="btn btn-light" href="/concepts/">See the concepts</a><a class="text-link" href="/shop/wheels/">Explore the wheels</a></p>
   </div>
 </section>`,
 }));
@@ -653,44 +696,32 @@ write("privacy/index.html", page({
 if (site.shop.enabled) {
   const shopRoom = "#2E2C29";
 
-  // Shop index: one band per category.  Live categories list their products, "soon" categories show as in development.
-  write("shop/index.html", page({
-    title: `Shop | ${site.name}`,
-    description: site.shop.intro || "Wheels and parts from Breitspur.",
-    path: "/shop/",
-    room: shopRoom,
-    active: "shop",
-    body: `<section class="room room-first page-hero" style="--room: ${shopRoom}">
-  <h1 class="room-name">The<br>shop</h1>
-  <p class="room-lede">${esc(site.shop.intro || "")}</p>
-  <p class="shop-to-wheels"><a class="text-link" href="/shop/wheels/">Shop the wheels</a></p>
+  // Apparel: the studio's own pieces.
+  {
+    const apparel = products.filter((p) => p.category === "apparel");
+    const k = shopCats.find((c) => c.slug === "apparel") || {};
+    if (apparel.length) write("shop/apparel/index.html", page({
+      title: `Apparel | ${site.name}`,
+      description: k.body || "Apparel from Breitspur.",
+      path: "/shop/apparel/",
+      room: shopRoom,
+      active: "apparel",
+      body: `<section class="room room-first page-hero" style="--room: ${shopRoom}">
+  <h1 class="room-name">Apparel</h1>
+  <p class="room-lede">${esc(site.shop.apparelIntro || k.body || "")}</p>
 </section>
-
-${shopCats.filter((k) => k.slug !== "wheels" && k.status === "live" && products.some((p) => p.category === k.slug)).map((k) => `<section class="shop-cat" id="${k.slug}" aria-labelledby="cat-${k.slug}">
-  <div class="shop-cat-head">
-    <h2 class="serif-xl" id="cat-${k.slug}">${esc(k.title)}</h2>
-    <div class="shop-cat-intro"><p class="body-lg muted">${esc(k.body || "")}</p></div>
-  </div>
-  ${productRow(products.filter((p) => p.category === k.slug), "#ask", "More are in development.  Leave your car below and hear first.")}
-</section>`).join("\n")}
-${(() => {
-  const later = shopCats.filter((k) => k.slug !== "wheels" && !(k.status === "live" && products.some((p) => p.category === k.slug)));
-  return later.length ? `<section class="shop-later" aria-labelledby="later">
-  <h2 class="label" id="later">IN DEVELOPMENT</h2>
-  <ul>${later.map((k) => `<li id="${k.slug}"><h3 class="shop-soon-title">${esc(k.title)}</h3><p class="muted">${esc(k.body || "")}</p></li>`).join("")}</ul>
-</section>` : "";
-})()}
-
-${faqSection()}
-
+<section class="shop-cat wheels-index" aria-label="Apparel">
+  <div class="product-grid">${apparel.map(productCard).join("")}</div>
+</section>
 <section class="ask" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Hear first.</h2>
-    <p class="body-lg muted">Leave your email and your car, and we will write when the right piece for it is ready.</p>
+    <p class="body-lg muted">New pieces arrive in small runs.  Leave your email and you hear first when the next one drops.</p>
   </div>
   ${notifyForm()}
 </section>`,
-  }));
+    }));
+  }
 
   // Wheels: the main product line, with a page of its own.
   {
@@ -714,6 +745,13 @@ ${w.facts && w.facts.length ? `<section class="paper wheels-facts" aria-labelled
   <div class="story-body"><p class="serif-lead">${esc(w.lead || "")}</p></div>
   <dl class="specs">${w.facts.map((s) => `<div><dt>${esc(s.label.toUpperCase())}</dt><dd>${esc(s.value)}</dd></div>`).join("")}</dl>
 </section>` : ""}
+${(() => {
+  const later = shopCats.filter((k) => !["wheels", "apparel"].includes(k.slug) && !(k.status === "live" && products.some((p) => p.category === k.slug)));
+  return later.length ? `<section class="shop-later" aria-labelledby="later">
+  <h2 class="label" id="later">ALSO IN DEVELOPMENT</h2>
+  <ul>${later.map((k) => `<li id="${k.slug}"><h3 class="shop-soon-title">${esc(k.title)}</h3><p class="muted">${esc(k.body || "")}</p></li>`).join("")}</ul>
+</section>` : "";
+})()}
 <section class="ask" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Hear first.</h2>
@@ -740,11 +778,11 @@ ${w.facts && w.facts.length ? `<section class="paper wheels-facts" aria-labelled
       description: `${p.tagline}  ${p.lede || ""}`.trim(),
       path: productHref(p),
       room: pRoom,
-      active: p.category === "wheels" ? "wheels" : "shop",
+      active: p.category === "wheels" ? "wheels" : p.category,
       image: p.image ? p.image.image : "/assets/img/og.jpg",
       scripts: p.configurator ? ["/assets/configurator.js"] : [],
       body: `<section class="room room-first product-hero" style="--room: ${esc(pRoom)}" aria-labelledby="product-name"${p.configurator ? ` data-config data-polish="wr-${p.slug}-polish"` : ""}>
-  <p class="crumbs label">${p.category === "wheels" ? `<a href="/shop/wheels/">WHEELS</a>` : `<a href="/shop/">SHOP</a>  /  <a href="/shop/#${k.slug}">${esc(k.title.toUpperCase())}</a>`}</p>
+  <p class="crumbs label">${p.category === "wheels" ? `<a href="/shop/wheels/">WHEELS</a>` : `<a href="/shop/${k.slug}/">${esc(k.title.toUpperCase())}</a>`}</p>
   <div class="product-hero-grid">
     <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : wheelArt(p, { eager: true, big: true })}</div>
     <div class="product-hero-text">
@@ -807,10 +845,14 @@ ${p.availability === "interest" ? `<section class="ask" id="interest" aria-label
   ${interestForm(p)}
 </section>` : ""}
 
-${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
-  <div class="shop-cat-head"><h2 class="label" id="more">MORE FROM THE SHOP</h2></div>
-  <div class="product-grid">${products.filter((o) => o !== p).slice(0, 3).map(productCard).join("")}</div>
-</section>` : ""}`,
+${(() => {
+  // Wheel pages show the other wheels; other pieces show the wheels.
+  const more = p.category === "wheels" ? products.filter((o) => o.category === "wheels" && o !== p) : products.filter((o) => o.category === "wheels");
+  return more.length ? `<section class="shop-cat" aria-labelledby="more">
+  <div class="shop-cat-head"><h2 class="label" id="more">${p.category === "wheels" ? "MORE WHEELS" : "THE WHEELS"}</h2></div>
+  <div class="product-grid">${more.slice(0, 3).map(productCard).join("")}</div>
+</section>` : "";
+})()}`,
     }));
   }
 
@@ -824,7 +866,7 @@ ${products.length > 1 ? `<section class="shop-cat" aria-labelledby="more">
   <div>
     <h1 class="serif-xl">You are on the list.</h1>
     <p class="body-lg muted">Thank you.  We read every one.  You will hear from us by email when there is real news: pricing, fitment and build slots.</p>
-    <p class="ask-links"><a class="btn btn-light" href="/shop/">Back to the shop</a><a class="text-link" href="/">The collection</a></p>
+    <p class="ask-links"><a class="btn btn-light" href="/shop/wheels/">Explore the wheels</a><a class="text-link" href="/concepts/">See the concepts</a></p>
   </div>
 </section>`,
   }));
@@ -872,7 +914,7 @@ for (const file of walk(OUT).filter((f) => f.endsWith(".html"))) {
 }
 
 // SEO files
-const pages = ["/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/inquire/", "/privacy/", ...(site.shop.enabled ? ["/shop/", "/shop/wheels/", ...products.map(productHref)] : [])];
+const pages = ["/", "/concepts/", ...live.map((c) => `/concepts/${c.slug}/`), "/studio/", "/commission/", "/privacy/", ...(site.shop.enabled ? ["/shop/wheels/", ...(products.some((p) => p.category === "apparel") ? ["/shop/apparel/"] : []), ...products.map(productHref)] : [])];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((p) => `  <url><loc>${url(p)}</loc></url>`).join("\n")}
@@ -886,8 +928,10 @@ const redirects = [
   ...(site.shop.enabled ? [] : ["/shop/*  /  302", "/shop  /  302"]),
   // Renamed products keep their old address working.
   "/shop/apparel/wappen/*  /shop/apparel/embossed-hoodie/  301",
-  // Category URLs with no page of their own land on that category in the shop.
-  ...(site.shop.enabled ? site.shop.categories.filter((k) => k.status === "live" && k.slug !== "wheels").flatMap((k) => [`/shop/${k.slug}  /shop/#${k.slug}  301`, `/shop/${k.slug}/  /shop/#${k.slug}  301`]) : []),
+  // The shop is split into Wheels and Apparel; the old inquiry page is now Commission.
+  ...(site.shop.enabled ? ["/shop  /shop/wheels/  301", "/shop/  /shop/wheels/  301"] : []),
+  "/inquire  /commission/  301",
+  "/inquire/  /commission/  301",
 ];
 write("_redirects", redirects.join("\n") + "\n");
 

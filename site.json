@@ -208,7 +208,8 @@
           "value": "From $1,750 per wheel"
         }
       ]
-    }
+    },
+    "apparelIntro": "Studio pieces, made in small runs with the same attention to detail as our cars."
   },
   "privacy": {
     "updated": "October 31, 2026",
@@ -247,7 +248,7 @@
     "intro": "Breitspur means wide track.  Every great car starts with how it sits on its wheels, so every concept here debuts a wheel and the parts to build it.",
     "pitch": {
       "title": "What should your car have been?",
-      "body": "Send us your car and we work out the version it should have been: stance, wheels, flares and color.  Concepts for private owners, shops and makers.",
+      "body": "Send us your car and we design its definitive version: stance, wheels, flares and color.  Concepts for private owners, shops and makers.",
       "cta": "Start with your car"
     },
     "signup": {
@@ -260,7 +261,6 @@
     "I was ten when I started counting down the days until I could drive.  My mother's father owned a body shop and spent his days bringing exotic cars back to life.  My father's father was an engineer who took everything apart to see how it worked.  My dad and I talked about cars constantly.",
     "I trained as a car designer, started at Volvo, and still lead industrial design today.  Breitspur is where I design cars again, and it starts with the thing that matters most: stance.  When a car sits right, everything else follows."
   ],
-  "contactSoon": true,
   "commission": {
     "title": "How a commission works",
     "steps": [
