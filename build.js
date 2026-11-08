@@ -374,7 +374,7 @@ const cfgControls = (p) => {
 const options = (list, extra) => [...list, ...(extra ? [extra] : [])].map((o) => `<option>${esc(o)}</option>`).join("");
 
 // One Netlify form for every product, so all interest lands in one list you can export as CSV.
-const interestForm = (p) => `<form class="inquiry" name="product-interest" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+const interestForm = (p) => p.category === "apparel" ? apparelForm(p) : `<form class="inquiry" name="product-interest" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
   <input type="hidden" name="form-name" value="product-interest">
   <input type="hidden" name="subject" value="Interest: ${esc(p.name)} (%{submissionId})">
   <input type="hidden" name="product" value="${esc(p.name)}">
@@ -398,6 +398,19 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
   <p class="field-wide"><button class="btn btn-solid" type="submit">${p.category === "wheels" ? "Inquire" : "Notify me"}</button></p>
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
+</form>`;
+
+// Apparel: just what we need to hold a size for someone.  Same Netlify form, so every signup lands in one list.
+const apparelForm = (p) => `<form class="inquiry" name="product-interest" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
+  <input type="hidden" name="form-name" value="product-interest">
+  <input type="hidden" name="subject" value="Interest: ${esc(p.name)} (%{submissionId})">
+  <input type="hidden" name="product" value="${esc(p.name)}">
+  <input type="hidden" name="center" value="${esc((p.finishes || [])[0] || "")}">
+  <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+  <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Size</label><select id="pi-size" name="size" required><option value="" selected disabled>Choose a size</option>${options(p.sizes)}</select></div>` : ""}
+  <p class="field-wide"><button class="btn btn-solid" type="submit">Notify me</button></p>
+  <p class="form-fine field-wide">We will email you when the ${esc(p.name)} is ready to order.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
 </form>`;
 
 const notifyForm = (id = "su") => `<form class="inquiry" name="shop-updates" method="POST" action="/shop/thanks/" data-netlify="true" netlify-honeypot="company">
