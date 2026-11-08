@@ -748,13 +748,13 @@ ${w.facts && w.facts.length ? `<section class="paper wheels-facts" aria-labelled
   <div class="product-hero-grid">
     <div class="product-hero-art">${p.configurator && p.configurator.renders ? wheelPhoto(p) : wheelArt(p, { eager: true, big: true })}</div>
     <div class="product-hero-text">
-      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}  /  ${esc(k.title.toUpperCase())}${badge(p, "badge-inline")}</p>
+      <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}${badge(p, "badge-inline")}</p>
       <h1 class="product-title${p.name.length > 8 ? " product-title-long" : ""}" id="product-name">${esc(p.name)}</h1>
       <p class="room-lede">${esc(p.tagline)}</p>
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
       <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
-      ${p.category === "wheels" ? `<p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>` : ""}
+      ${p.category === "wheels" ? `<p class="cfg-note product-lead">Made to order${p.fitment && p.fitment.range ? ` in ${esc(p.fitment.range)}` : ""}, with the width, offset and bolt pattern machined for your car.</p>` : ""}
       ${p.category === "wheels" ? heroDetails(p) : ""}
     </div>
   </div>

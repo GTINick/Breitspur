@@ -77,13 +77,13 @@
     }
   },
   "story": [
-    "Netz is German for net.  It is the first wheel from the studio, and it debuted on Breitspur 01.",
+    "Netz is German for net, and it is the first wheel from the studio.",
     "Classic mesh wheels cross straight spokes.  Netz branches them instead: fifteen arms leave the hub, split as they reach the rim and pass over and under their neighbors before meeting a deep polished lip."
   ],
   "specs": [
     {
       "label": "Construction",
-      "value": "Three piece"
+      "value": "Three piece, hidden hardware"
     },
     {
       "label": "Center",
@@ -92,21 +92,8 @@
     {
       "label": "Lip and barrel",
       "value": "Spun aluminum"
-    },
-    {
-      "label": "Assembly",
-      "value": "Hidden hardware"
-    },
-    {
-      "label": "Sizes",
-      "value": "15 to 18 in"
-    },
-    {
-      "label": "Width and offset",
-      "value": "Made to order"
     }
   ],
-  "specsNote": "Shown here in 15 in.",
   "seenOn": "breitspur-01",
   "seenOnImage": false,
   "image": {

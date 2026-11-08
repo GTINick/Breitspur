@@ -170,20 +170,12 @@
     "faq": [],
     "heroDetails": [
       {
-        "title": "Sizes",
-        "body": "Most cars run {range}.  Width, offset and bolt pattern are machined to your car, square or staggered."
-      },
-      {
-        "title": "Pricing",
-        "body": "Priced per wheel by size and finish, from {price} for a set of four.  You get a price for your exact set before you commit to anything."
-      },
-      {
         "title": "How ordering works",
-        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price.  Once you approve it, your set is machined, assembled and shipped.  Orders open soon, and everyone who inquires hears about build slots and lead times first."
+        "body": "Inquire with your car.  We set the size and fitment with you and send a price for your exact set.  Once you approve it, your set is machined, assembled and shipped."
       },
       {
         "title": "Shipping",
-        "body": "Every set ships assembled and finished, packed to protect the lip, to you or straight to your installer.  Shipping cost and timing are confirmed with your specification."
+        "body": "Every set ships assembled and finished, to you or straight to your installer.  Cost and timing come with your price."
       }
     ],
     "wheelsPage": {

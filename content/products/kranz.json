@@ -96,7 +96,7 @@
   "specs": [
     {
       "label": "Construction",
-      "value": "Three piece"
+      "value": "Three piece, hidden hardware"
     },
     {
       "label": "Center",
@@ -105,21 +105,8 @@
     {
       "label": "Lip and barrel",
       "value": "Spun aluminum"
-    },
-    {
-      "label": "Assembly",
-      "value": "Hidden hardware"
-    },
-    {
-      "label": "Sizes",
-      "value": "17 to 20 in"
-    },
-    {
-      "label": "Width and offset",
-      "value": "Made to order"
     }
   ],
-  "specsNote": "Shown here in 19 in.",
   "seenOn": "breitspur-02",
   "seenRole": "alternate",
   "drawing": {
