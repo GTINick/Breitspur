@@ -561,8 +561,11 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 
 /* Apparel and other non wheel products: a simple photo pair on the room color. */
 .product-gallery { background: var(--room); }
-.product-gallery img { width: 100%; height: auto; aspect-ratio: 1600 / 2143; object-fit: cover; }
-.product-gallery .wide img { aspect-ratio: auto; }
+.product-gallery img { width: 100%; height: auto; }
+/* A tall photo beside two landscape ones: it spans both rows and crops to their combined height. */
+.product-gallery .tall { grid-row: span 2; }
+.product-gallery .tall img { height: 100%; object-fit: cover; }
 .gallery-note { margin-top: 12px; font-size: 13px; color: var(--cream-dim); }
 .product-tile-photo { padding: 0; overflow: hidden; }
 .product-tile-photo img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) { .product-gallery .tall { grid-row: auto; } .product-gallery .tall img { height: auto; } }

@@ -31,21 +31,34 @@
   },
   "gallery": [
     {
-      "image": "/assets/img/products/wappen/worn.webp",
-      "small": "/assets/img/products/wappen/worn-800.webp",
-      "width": 1600,
-      "height": 2143,
-      "alt": "The Wappen hoodie worn, in front of a silver Mercedes SL",
-      "note": "Placeholder photo.  The car in this shot is wrong and will be reshot."
-    },
-    {
       "image": "/assets/img/products/wappen/detail.webp",
       "small": "/assets/img/products/wappen/detail-1000.webp",
       "width": 2000,
       "height": 1493,
-      "alt": "Close up of the embossed lion crest and Breitspur wordmark",
-      "wide": false,
-      "position": "45% 50%"
+      "alt": "Close up of the embossed lion crest and Breitspur wordmark, raised from the fleece",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/products/wappen/worn.webp",
+      "small": "/assets/img/products/wappen/worn-800.webp",
+      "width": 1600,
+      "height": 2143,
+      "alt": "The Wappen hoodie worn at sunset, in front of a silver R129 SL on Breitspur five spoke wheels",
+      "tall": true
+    },
+    {
+      "image": "/assets/img/products/wappen/cuff.webp",
+      "small": "/assets/img/products/wappen/cuff-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "The ribbed cuff and its stitched seam"
+    },
+    {
+      "image": "/assets/img/products/wappen/pocket.webp",
+      "small": "/assets/img/products/wappen/pocket-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "The kangaroo pocket with its double needle stitching and the ribbed hem"
     }
   ],
   "story": [

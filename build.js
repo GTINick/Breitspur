@@ -722,7 +722,7 @@ ${faqSection()}
 </section>
 ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
 ${!p.configurator && p.gallery && p.gallery.length ? `<section class="gallery product-gallery" style="--room: ${esc(pRoom)}" aria-label="${esc(p.name)} photos">
-  ${p.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} ${g.width > g.height ? 1000 : 800}w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}"${g.position ? ` style="object-position: ${esc(g.position)}"` : ""} loading="lazy" decoding="async">${g.note ? `<figcaption class="gallery-note">${esc(g.note)}</figcaption>` : ""}</figure>`).join("")}
+  ${p.gallery.map((g) => `<figure class="${g.wide ? "wide" : g.tall ? "tall" : ""}"><img src="${g.small}" srcset="${g.small} ${g.width > g.height ? 1000 : 800}w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}"${g.position ? ` style="object-position: ${esc(g.position)}"` : ""} loading="lazy" decoding="async">${g.note ? `<figcaption class="gallery-note">${esc(g.note)}</figcaption>` : ""}</figure>`).join("")}
 </section>` : ""}
 ${p.engineering && p.engineering.length ? `<section class="paper concept-story product-engineering" aria-labelledby="engineering">
   <h2 class="label" id="engineering">ENGINEERING</h2>
