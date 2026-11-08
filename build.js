@@ -596,7 +596,7 @@ write("inquire/index.html", page({
   body: `<section class="ask ask-page">
   <div>
     <h1 class="serif-xl">Tell us the car.</h1>
-    <p class="body-lg muted">Commissions, consulting, or something we have not thought of yet.  Every inquiry is read by the designer.</p>
+    <p class="body-lg muted">Commissions, consulting, or an idea of your own.  The designer reads every inquiry.</p>
   </div>
   ${form("inquire")}
 </section>`,
@@ -668,7 +668,7 @@ ${faqSection()}
 <section class="ask" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">Hear first.</h2>
-    <p class="body-lg muted">Not sure which piece yet?  Leave your email and your car.  We will write when something fits.</p>
+    <p class="body-lg muted">Leave your email and your car, and we will write when the right piece for it is ready.</p>
   </div>
   ${notifyForm()}
 </section>`,
@@ -752,7 +752,7 @@ ${p.category === "wheels" ? faqSection() : ""}
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
     <h2 class="serif-xl" id="ask">${p.category === "wheels" ? "Start your set." : "Hear first."}</h2>
-    <p class="body-lg muted">${p.category === "wheels" ? `${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you and send a price for your exact set.` : `${esc(p.name)} is not on sale yet.  Leave your size and you hear first when the first run is ready.`}</p>
+    <p class="body-lg muted">${p.category === "wheels" ? `${esc(p.name)} opens for orders soon.  Tell us your car and the size you have in mind, and we work out the fitment together and send a price for your exact set.` : `The first run of the ${esc(p.name)} is coming.  Leave your size and you are first in line when it lands.`}</p>
   </div>
   ${interestForm(p)}
 </section>` : ""}

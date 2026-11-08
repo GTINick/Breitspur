@@ -48,7 +48,7 @@
       "title": "Production CAD",
       "price": "Quoted per project",
       "time": "",
-      "body": "For owners, shops and makers who want parts, not pictures.  We model manufacturable surfaces for flares, splitters, ducktails and full kits, and review existing designs that fight the body line.",
+      "body": "For owners, shops and makers ready to build.  We model manufacturable surfaces for flares, splitters, ducktails and full kits, and refine existing designs so they flow with the body line.",
       "details": [
         "Production surfaces for custom body parts",
         "Design review for shops and makers",
@@ -59,7 +59,7 @@
   "shop": {
     "enabled": true,
     "teaser": "Wheels, parts and apparel to follow.",
-    "intro": "Wheels, parts and apparel designed by the studio.  Nothing is on sale yet.  Inquire about a piece and you hear about pricing first.",
+    "intro": "Wheels, parts and apparel designed by the studio, with the same attention to detail as our cars.  Inquire about a piece and you hear about pricing and build slots first.",
     "categories": [
       {
         "slug": "wheels",
@@ -99,7 +99,7 @@
     "process": [
       {
         "title": "Tell us the car",
-        "body": "Tell us your car, size and finish.  It commits you to nothing."
+        "body": "Tell us your car, size and finish, and we take it from there."
       },
       {
         "title": "Fitment",
@@ -113,7 +113,7 @@
     "bespoke": {
       "label": "MADE FOR ONE CAR",
       "lead": "Machined for one car at a time.",
-      "body": "There is no warehouse and no catalog size.  Each center starts as a forged 7075-T6 blank and is machined to the fitment of the car it is going on.",
+      "body": "Every set is made to order.  Each center starts as a forged 7075-T6 blank and is machined to the fitment of the car it is going on.",
       "items": [
         {
           "title": "Width and offset",
@@ -121,7 +121,7 @@
         },
         {
           "title": "Bolt pattern and center bore",
-          "body": "Machined to your hub, so the wheel centers itself without adapters or rings."
+          "body": "Machined to your hub, so the wheel centers itself precisely."
         },
         {
           "title": "Brake clearance",
@@ -179,7 +179,7 @@
       },
       {
         "title": "How ordering works",
-        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price.  Once you approve it, your set is machined, assembled and shipped.  Orders are not open yet, and everyone who inquires hears about build slots and lead times first."
+        "body": "Inquire with your car.  We work out the size and fitment with you, then send a specification and a price.  Once you approve it, your set is machined, assembled and shipped.  Orders open soon, and everyone who inquires hears about build slots and lead times first."
       },
       {
         "title": "Shipping",
@@ -229,7 +229,7 @@
     },
     "signup": {
       "title": "Hear first.",
-      "body": "Nothing is on sale yet.  Leave your email and your car, and you hear first when wheels open and new concepts debut."
+      "body": "Wheels open soon and new concepts are on the way.  Leave your email and your car, and you hear first."
     },
     "oneLiner": "A design studio for German cars, with the wheels and parts to build them."
   },
