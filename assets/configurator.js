@@ -43,12 +43,13 @@
   // The front view in the hero and every angle in the gallery below follow the choice.
   function showPhoto(center, lip) {
     var base = photo.getAttribute("data-renders") + "/" + slug(center) + "-" + slug(lip) + "/";
+    var ver = photo.getAttribute("data-v") ? "?v=" + photo.getAttribute("data-v") : "";
     var imgs = [photo.querySelector(".wheel-photo-main")].concat([].slice.call(document.querySelectorAll(".wheel-angle")));
     var lipText = lip === "Matched" ? "color matched" : lip.toLowerCase();
     for (var i = 0; i < imgs.length; i++) {
       var im = imgs[i], v = im.getAttribute("data-view");
-      im.src = base + v + "-800.webp";
-      im.srcset = base + v + "-800.webp 800w, " + base + v + ".webp 1600w";
+      im.src = base + v + "-800.webp" + ver;
+      im.srcset = base + v + "-800.webp" + ver + " 800w, " + base + v + ".webp" + ver + " 1600w";
       im.alt = photo.getAttribute("data-name") + " in " + center + " with a " + lipText + " lip, " + im.getAttribute("data-label").toLowerCase() + " view";
     }
   }

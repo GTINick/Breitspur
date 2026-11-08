@@ -332,7 +332,16 @@ const renderImg = (p, view, sizes, extra) => {
   const cfg = p.configurator, { c0, l0 } = cfgStart(p);
   return `<img class="${extra.cls}" src="${renderSrc(cfg, c0, l0, view.key, "-800")}" srcset="${renderSrc(cfg, c0, l0, view.key, "-800")} 800w, ${renderSrc(cfg, c0, l0, view.key)} 1600w" sizes="${sizes}" width="1600" height="1600" alt="${esc(renderAlt(p, c0, l0, view.label))}" data-view="${esc(view.key)}" data-label="${esc(view.label)}"${extra.eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 };
-const wheelPhoto = (p) => `<div class="wheel-photo" data-renders="${esc(p.configurator.renders.path)}" data-name="${esc(p.name)}">
+// One hash over every render of a wheel: configurator.js adds it as ?v= to the images it swaps in,
+// so a re-render shows up despite the year-long asset cache (the build versions links in the HTML itself).
+const rendersVersion = (dir) => {
+  const h = require("crypto").createHash("md5");
+  const walkR = (d) => fs.readdirSync(d).sort().flatMap((f) => { const a = path.join(d, f); return fs.statSync(a).isDirectory() ? walkR(a) : [a]; });
+  const root = path.join(ROOT, dir.replace(/^\//, ""));
+  if (fs.existsSync(root)) for (const f of walkR(root)) h.update(f.slice(root.length)).update(fs.readFileSync(f));
+  return h.digest("hex").slice(0, 10);
+};
+const wheelPhoto = (p) => `<div class="wheel-photo" data-renders="${esc(p.configurator.renders.path)}" data-v="${rendersVersion(p.configurator.renders.path)}" data-name="${esc(p.name)}">
   ${renderImg(p, p.configurator.renders.views[0], "(min-width: 860px) 560px, 90vw", { cls: "wheel-photo-main", eager: true })}
 </div>`;
 const wheelGallery = (p, room) => `<section class="wheel-gallery" style="--room: ${esc(room)}" aria-label="${esc(p.name)} from every angle">
