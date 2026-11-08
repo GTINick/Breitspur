@@ -834,6 +834,8 @@ write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${url("/sitemap.xml")}\n`
 const redirects = [
   ...concepts.filter((c) => c.status === "soon").map((c) => `/concepts/${c.slug}/*  /#concepts  302`),
   ...(site.shop.enabled ? [] : ["/shop/*  /  302", "/shop  /  302"]),
+  // Category URLs with no page of their own land on that category in the shop.
+  ...(site.shop.enabled ? site.shop.categories.filter((k) => k.status === "live").flatMap((k) => [`/shop/${k.slug}  /shop/#${k.slug}  301`, `/shop/${k.slug}/  /shop/#${k.slug}  301`]) : []),
 ];
 write("_redirects", redirects.join("\n") + "\n");
 
