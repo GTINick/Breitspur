@@ -59,7 +59,7 @@
   "shop": {
     "enabled": true,
     "teaser": "Wheels, parts and apparel to follow.",
-    "intro": "Wheels, parts and apparel designed by the studio, with the same attention to detail as our cars.  Inquire about a piece and you hear about pricing and build slots first.",
+    "intro": "Apparel and parts from the studio, made with the same attention to detail as our cars.",
     "categories": [
       {
         "slug": "wheels",
@@ -185,7 +185,38 @@
         "title": "Shipping",
         "body": "Every set ships assembled and finished, packed to protect the lip, to you or straight to your installer.  Shipping cost and timing are confirmed with your specification."
       }
-    ]
+    ],
+    "wheelsPage": {
+      "intro": "Forged three piece wheels, each designed with a concept car and made to order in the size your car needs.",
+      "factsLabel": "MADE TO ORDER",
+      "lead": "Every set is machined for the car it goes on.",
+      "facts": [
+        {
+          "label": "Construction",
+          "value": "Three piece forged"
+        },
+        {
+          "label": "Center",
+          "value": "Forged 7075-T6 aluminum"
+        },
+        {
+          "label": "Sizes",
+          "value": "15 to 20 in"
+        },
+        {
+          "label": "Width and offset",
+          "value": "Set for your car"
+        },
+        {
+          "label": "Finishes",
+          "value": "Studio colors, polished or matched lips"
+        },
+        {
+          "label": "Pricing",
+          "value": "From $1,750 per wheel"
+        }
+      ]
+    }
   },
   "privacy": {
     "updated": "October 31, 2026",
@@ -231,7 +262,7 @@
       "title": "Hear first.",
       "body": "Wheels open soon and new concepts are on the way.  Leave your email and your car, and you hear first."
     },
-    "oneLiner": "A design studio for German cars, with the wheels and parts to build them."
+    "oneLiner": "Forged wheels, designed with the cars they debut on and made to order for yours."
   },
   "story": [
     "I was ten when I started counting down the days until I could drive.  My mother's father owned a body shop and spent his days bringing exotic cars back to life.  My father's father was an engineer who took everything apart to see how it worked.  My dad and I talked about cars constantly.",

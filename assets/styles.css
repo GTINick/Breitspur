@@ -572,3 +572,17 @@ h1, h2, h3, .serif-lead { text-wrap: balance; }
 /* Product names can be two words: let them break between words, never inside one. */
 .product-title { text-wrap: balance; white-space: normal; overflow-wrap: normal; }
 .product-title-long { font-size: clamp(56px, 6.6vw, 112px); line-height: 0.92; }
+
+/* Inquire sits at the end of the menu as a small outlined button. */
+.masthead nav a.nav-cta { padding: 9px 16px; border: 1px solid currentColor; }
+.masthead nav a.nav-cta[aria-current="page"] { text-decoration: none; background: var(--cream); color: var(--room, #2E2C29); }
+/* The wheel each car wears, under it on the homepage. */
+.room-wheel { margin: 40px 0 0; text-align: center; font-size: 15px; color: var(--cream-dim); }
+.room-wheel + .room-cta { margin-top: 20px; }
+.shop-to-wheels { margin: 24px 0 0; font-size: 15px; }
+.wheels-index { padding-top: 96px; padding-bottom: 112px; }
+@media (max-width: 860px) {
+  .masthead ul { gap: 4px 16px; align-items: center; }
+  .masthead nav a.nav-cta { padding: 6px 10px; }
+  .wheels-index { padding-top: 64px; padding-bottom: 72px; }
+}
