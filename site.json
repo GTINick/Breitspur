@@ -59,7 +59,7 @@
   "shop": {
     "enabled": true,
     "teaser": "Wheels, parts and apparel to follow.",
-    "intro": "Wheels and parts designed by the studio.  Nothing is on sale yet.  Inquire about a piece and you hear about pricing and build slots first.",
+    "intro": "Wheels, parts and apparel designed by the studio.  Nothing is on sale yet.  Inquire about a piece and you hear about pricing first.",
     "categories": [
       {
         "slug": "wheels",
@@ -81,6 +81,13 @@
         "single": "kit",
         "status": "soon",
         "body": "Flares and full kits, surfaced to follow the original lines."
+      },
+      {
+        "slug": "apparel",
+        "title": "Apparel",
+        "single": "piece",
+        "status": "live",
+        "body": "Studio pieces, made in small runs."
       }
     ],
     "budgets": [

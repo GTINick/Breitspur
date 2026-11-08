@@ -270,7 +270,7 @@ const pendingArt = (p) => `<div class="wheel-pending" role="img" aria-label="${e
 
 const productCard = (p) => `<article class="product-card">
   <a href="${productHref(p)}" class="product-link" aria-label="${esc(p.name)}, ${esc(p.tagline)}">
-    <div class="product-tile" style="--room: ${esc(p.tileRoom || p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}</div>
+    <div class="product-tile${p.category === "wheels" ? "" : " product-tile-photo"}" style="--room: ${esc(p.tileRoom || p.room || "#2E2C29")}">${badge(p, "badge-tile")}${wheelArt(p)}</div>
     <div class="product-info">
       <p class="product-code">${esc((p.code || two(p.number)).toUpperCase())}</p>
       <h3 class="product-name">${esc(p.name)}</h3>
@@ -295,7 +295,7 @@ const nextCard = (href, linkText) => `<article class="product-card product-next"
     </div>
   </a>
 </article>`;
-const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 ? nextCard(href, linkText) : ""}</div>`;
+const productRow = (items, href, linkText) => `<div class="product-grid">${items.map(productCard).join("")}${items.length % 3 && items.every((p) => p.category === "wheels") ? nextCard(href, linkText) : ""}</div>`;
 
 // A set of four, from the per wheel price: "From $2,125 per wheel" gives "$8,500".
 const setOf4 = (p) => { const m = /\$([\d,]+)/.exec(p.price || ""); return m ? "$" + (Number(m[1].replace(/,/g, "")) * 4).toLocaleString("en-US") : ""; };
@@ -372,8 +372,8 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
   <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
   <div class="field"><label for="pi-name">Name</label><input id="pi-name" name="name" type="text" autocomplete="name" required></div>
   <div class="field"><label for="pi-email">Email</label><input id="pi-email" name="email" type="email" autocomplete="email" required></div>
-  <div class="field field-wide"><label for="pi-car">Your car</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model" required></div>
-  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">Diameter</label><select id="pi-size" name="size">${options(p.category === "wheels" ? [...p.sizes, "Another size"] : p.sizes, "Not sure yet")}</select></div>` : ""}
+  <div class="field field-wide"><label for="pi-car">Your car${p.category === "wheels" ? "" : ' <span class="opt">(optional)</span>'}</label><input id="pi-car" name="car" type="text" placeholder="Year, make, model"${p.category === "wheels" ? " required" : ""}></div>
+  ${p.sizes && p.sizes.length ? `<div class="field"><label for="pi-size">${p.category === "wheels" ? "Diameter" : "Size"}</label><select id="pi-size" name="size">${options(p.category === "wheels" ? [...p.sizes, "Another size"] : p.sizes, "Not sure yet")}</select></div>` : ""}
   ${(() => {
     // Every product posts the same fields (center, lip), so the Netlify list stays one clean table.
     const cfg = p.configurator;
@@ -381,13 +381,13 @@ const interestForm = (p) => `<form class="inquiry" name="product-interest" metho
     const def = cfg && cfg.default ? cfg.default : {};
     const sel = (list, pick, extra) => [...list, extra].map((o) => `<option${o === pick ? " selected" : ""}>${esc(o)}</option>`).join("");
     const list = cfg && cfg.custom ? [...centers, "Custom color"] : centers;
-    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : "Finish"}</label><select id="pi-center" name="center">${sel(list, def.center, "No preference")}</select></div>${cfg && cfg.custom ? `<div class="field field-wide" data-custom-field hidden><label for="pi-custom">Your custom color</label><input id="pi-custom" name="custom-color" type="text" placeholder="Paint code, or describe it"></div>` : ""}` : '<input type="hidden" name="center" value="">'}
+    return `${centers.length ? `<div class="field"><label for="pi-center">${cfg ? "Center color" : p.category === "apparel" ? "Color" : "Finish"}</label><select id="pi-center" name="center">${sel(list, def.center, "No preference")}</select></div>${cfg && cfg.custom ? `<div class="field field-wide" data-custom-field hidden><label for="pi-custom">Your custom color</label><input id="pi-custom" name="custom-color" type="text" placeholder="Paint code, or describe it"></div>` : ""}` : '<input type="hidden" name="center" value="">'}
   ${cfg && cfg.lips && cfg.lips.length === 1 ? `<input type="hidden" name="lip" value="${esc(cfg.lips[0])}">` : ""}
   ${cfg && cfg.lips && cfg.lips.length > 1 ? `<div class="field"><label for="pi-lip">Lip</label><select id="pi-lip" name="lip">${sel(cfg.lips, def.lip, "No preference")}</select></div>` : cfg && cfg.lips && cfg.lips.length === 1 ? "" : '<input type="hidden" name="lip" value="">'}`;
   })()}
-  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="Sizes you have in mind, your brakes, anything we should know"></textarea></div>
+  <div class="field field-wide"><label for="pi-notes">Anything else</label><textarea id="pi-notes" name="notes" rows="3" placeholder="${p.category === "wheels" ? "Sizes you have in mind, your brakes, anything we should know" : "Anything we should know"}"></textarea></div>
   <label class="check field-wide"><input type="checkbox" name="studio-news" value="yes"> Also send occasional studio news, like new concepts and new products.</label>
-  <p class="field-wide"><button class="btn btn-solid" type="submit">Inquire</button></p>
+  <p class="field-wide"><button class="btn btn-solid" type="submit">${p.category === "wheels" ? "Inquire" : "Notify me"}</button></p>
   <p class="form-fine field-wide">We will only email you about ${esc(p.name)}: progress, pricing and when orders open.  Unsubscribe any time.  <a href="/privacy/">Privacy</a></p>
 </form>`;
 
@@ -674,7 +674,7 @@ ${faqSection()}
     const seenImg = concept ? p.seenImage || (p.seenOnImage !== false ? (concept.gallery && concept.gallery[0]) || concept.profile : null) : null;
     const pRoom = p.room || shopRoom;
     const cta = p.availability === "interest"
-      ? `<a class="btn btn-solid" href="#interest">Inquire</a>`
+      ? `<a class="btn btn-solid" href="#interest">${p.category === "wheels" ? "Inquire" : "Notify me"}</a>`
       : `<a class="btn btn-solid" href="${esc(p.buyUrl)}">${p.availability === "preorder" ? "Pre-order" : "Buy"}${p.price ? `, ${esc(p.price)}` : ""}</a>`;
     write(`shop/${p.category}/${p.slug}/index.html`, page({
       title: `${p.name}: ${p.tagline} | ${site.name}`,
@@ -695,7 +695,7 @@ ${faqSection()}
       ${p.lede && !p.configurator ? `<p class="product-lede">${esc(p.lede)}</p>` : ""}
       ${cfgControls(p)}
       <p class="product-cta">${cta}${p.price ? `<span class="product-price">${esc(p.price)}</span>` : ""}</p>
-      <p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>
+      ${p.category === "wheels" ? `<p class="cfg-note product-lead">Made to order in your size.  Custom widths and offsets.</p>` : ""}
       ${p.category === "wheels" ? heroDetails(p) : ""}
     </div>
   </div>
@@ -712,6 +712,9 @@ ${faqSection()}
   ${concept && !seenImg ? `<p class="drawn-for"><span class="label">DEBUTED ON</span><a class="text-link" href="/concepts/${concept.slug}/">${esc(concept.name)}, ${esc(concept.subtitle.charAt(0).toLowerCase() + concept.subtitle.slice(1))}</a></p>` : ""}
 </section>
 ${p.configurator && p.configurator.renders ? wheelGallery(p, pRoom) : ""}
+${!p.configurator && p.gallery && p.gallery.length ? `<section class="gallery product-gallery" style="--room: ${esc(pRoom)}" aria-label="${esc(p.name)} photos">
+  ${p.gallery.map((g) => `<figure class="${g.wide ? "wide" : ""}"><img src="${g.small}" srcset="${g.small} ${g.width > g.height ? 1000 : 800}w, ${g.image} ${g.width}w" sizes="${g.wide ? "90vw" : "(min-width: 860px) 45vw, 90vw"}" width="${g.width}" height="${g.height}" alt="${esc(g.alt)}"${g.position ? ` style="object-position: ${esc(g.position)}"` : ""} loading="lazy" decoding="async">${g.note ? `<figcaption class="gallery-note">${esc(g.note)}</figcaption>` : ""}</figure>`).join("")}
+</section>` : ""}
 ${p.engineering && p.engineering.length ? `<section class="paper concept-story product-engineering" aria-labelledby="engineering">
   <h2 class="label" id="engineering">ENGINEERING</h2>
   <div class="story-body">
@@ -739,8 +742,8 @@ ${p.category === "wheels" ? faqSection() : ""}
 
 ${p.availability === "interest" ? `<section class="ask" id="interest" aria-labelledby="ask">
   <div>
-    <h2 class="serif-xl" id="ask">Start your set.</h2>
-    <p class="body-lg muted">${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you and send a price for your exact set.</p>
+    <h2 class="serif-xl" id="ask">${p.category === "wheels" ? "Start your set." : "Hear first."}</h2>
+    <p class="body-lg muted">${p.category === "wheels" ? `${esc(p.name)} is not on sale yet.  Tell us your car and the size you have in mind.  We work out the fitment with you and send a price for your exact set.` : `${esc(p.name)} is not on sale yet.  Leave your size and you hear first when the first run is ready.`}</p>
   </div>
   ${interestForm(p)}
 </section>` : ""}

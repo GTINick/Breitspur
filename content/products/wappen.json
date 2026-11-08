@@ -1,0 +1,69 @@
+{
+  "status": "live",
+  "number": 4,
+  "slug": "wappen",
+  "code": "A01",
+  "name": "Wappen",
+  "category": "apparel",
+  "room": "#2E2C29",
+  "tileRoom": "#E9E5DE",
+  "tagline": "The Breitspur Performance hoodie, crest embossed tone on tone.",
+  "lede": "The lion crest and wordmark are pressed into the fabric, not printed, so the logo reads in the light and disappears in the shade.",
+  "availability": "interest",
+  "price": "",
+  "buyUrl": "",
+  "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+  ],
+  "finishes": [
+    "Black"
+  ],
+  "image": {
+    "image": "/assets/img/products/wappen/flat.webp",
+    "small": "/assets/img/products/wappen/flat-800.webp",
+    "width": 1600,
+    "height": 2143,
+    "alt": "The Wappen hoodie laid flat, with the Breitspur Performance crest and wordmark embossed on the chest"
+  },
+  "gallery": [
+    {
+      "image": "/assets/img/products/wappen/worn.webp",
+      "small": "/assets/img/products/wappen/worn-800.webp",
+      "width": 1600,
+      "height": 2143,
+      "alt": "The Wappen hoodie worn, in front of a silver Mercedes SL",
+      "note": "Placeholder photo.  The car in this shot is wrong and will be reshot."
+    },
+    {
+      "image": "/assets/img/products/wappen/detail.webp",
+      "small": "/assets/img/products/wappen/detail-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "Close up of the embossed lion crest and Breitspur wordmark",
+      "wide": false,
+      "position": "45% 50%"
+    }
+  ],
+  "story": [
+    "Wappen is German for coat of arms.",
+    "The crest and the Breitspur Performance wordmark are embossed into the chest in the same color as the hoodie.  There is no ink to crack or fade, only the shape of the mark."
+  ],
+  "specs": [
+    {
+      "label": "Logo",
+      "value": "Embossed, tone on tone"
+    },
+    {
+      "label": "Color",
+      "value": "Black"
+    },
+    {
+      "label": "Sizes",
+      "value": "S to XXL"
+    }
+  ]
+}
