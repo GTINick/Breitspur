@@ -11,7 +11,7 @@ The build stops with a clear message if a concept is missing something it needs,
 
 ## Add a concept
 
-1. Copy `content/concepts/breitspur-03.json` and rename it.
+1. Copy `content/concepts/breitspur-04.json` (a draft) and rename it.
 2. Set `status`:
    * `draft`: hidden everywhere.
    * `soon`: shows on the homepage as "Unveiling soon", no page yet.
