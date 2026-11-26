@@ -47,6 +47,29 @@
     "shadow": false,
     "alt": "Breitspur 03, a dark green Volkswagen Golf Mk II concept with squared widened arches, a black grille and four lamps low in the front bumper, seen head on against a slate gray background"
   },
-  "gallery": [],
+  "gallery": [
+    {
+      "image": "/assets/img/concepts/breitspur-03/forest-road.webp",
+      "small": "/assets/img/concepts/breitspur-03/forest-road-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Breitspur 03 in deep green carving a wet two lane road through an evergreen forest, three piece wheels and low bumper lamps glowing in the rain",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-03/rainier.webp",
+      "small": "/assets/img/concepts/breitspur-03/rainier-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Breitspur 03 rolling out beneath the Mt. Rainier National Park entrance arch on a rain soaked mountain road"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-03/wheel.webp",
+      "small": "/assets/img/concepts/breitspur-03/wheel-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Close detail of the front arch: the squared flare over a Breitspur 17 inch three piece wheel with BREITSPUR engraved on the face and the crest on the center"
+    }
+  ],
   "note": "Breitspur 03 is a design concept, rendered rather than built."
 }
