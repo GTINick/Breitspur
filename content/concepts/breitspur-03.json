@@ -1,19 +1,75 @@
 {
-  "status": "draft",
+  "status": "live",
   "number": 3,
   "slug": "breitspur-03",
   "name": "Breitspur 03",
-  "subtitle": "The 1M CS that never was",
-  "base": "BMW 1M Coupe",
-  "room": "#5A3A2C",
-  "counterfactual": "BMW built the 1M.  They never built the CS.",
-  "summary": "A refined, quick road car rather than a track car: bigger round arches, carbon, and solid Inka orange.",
-  "story": [],
-  "specs": [
-    { "label": "Base", "value": "BMW 1M Coupe" },
-    { "label": "Color", "value": "Solid Inka style orange" }
+  "subtitle": "The Golf R that never was",
+  "base": "Volkswagen Golf Mk II",
+  "room": "#3B3E47",
+  "counterfactual": "Volkswagen built the Rallye and the Limited.  They never built a Golf R.",
+  "summary": "The R32 before the R32: the Corrado VR6, syncro all wheel drive and squared factory flares on the purest hot hatch shape.",
+  "story": [
+    "In 1989 Volkswagen came close twice.  The Rallye Golf brought syncro and boxed arches, and the hand built Golf Limited brought a 16 valve G60.  Breitspur 03 is the car both of them were pointing at: the R32 before the R32.",
+    "The Corrado's VR6 goes in with syncro all wheel drive underneath.  The arches are squared off and pressed into the steel like a factory stamping, the bumper carries its lamps low and wide, and the car sits on Breitspur's own 17 inch three piece wheels with hidden hardware.",
+    "It wears deep green over black trim, a color that lets the shape do the talking."
   ],
-  "profile": null,
-  "gallery": [],
-  "note": ""
+  "specs": [
+    {
+      "label": "Base",
+      "value": "Volkswagen Golf Mk II, three door"
+    },
+    {
+      "label": "Engine",
+      "value": "Corrado VR6"
+    },
+    {
+      "label": "Drivetrain",
+      "value": "syncro all wheel drive"
+    },
+    {
+      "label": "Bodywork",
+      "value": "Squared factory style flares"
+    },
+    {
+      "label": "Wheels",
+      "value": "Breitspur 17 inch three piece"
+    },
+    {
+      "label": "Color",
+      "value": "Deep green, black trim"
+    }
+  ],
+  "profile": {
+    "image": "/assets/img/concepts/breitspur-03/front.webp",
+    "small": "/assets/img/concepts/breitspur-03/front-1200.webp",
+    "width": 2400,
+    "height": 1599,
+    "shadow": false,
+    "alt": "Breitspur 03, a dark green Volkswagen Golf Mk II concept with squared widened arches, a black grille and four lamps low in the front bumper, seen head on against a slate gray background"
+  },
+  "gallery": [
+    {
+      "image": "/assets/img/concepts/breitspur-03/forest-road.webp",
+      "small": "/assets/img/concepts/breitspur-03/forest-road-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Breitspur 03 in deep green carving a wet two lane road through an evergreen forest, three piece wheels and low bumper lamps glowing in the rain",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-03/rainier.webp",
+      "small": "/assets/img/concepts/breitspur-03/rainier-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Breitspur 03 rolling out beneath the Mt. Rainier National Park entrance arch on a rain soaked mountain road"
+    },
+    {
+      "image": "/assets/img/concepts/breitspur-03/wheel.webp",
+      "small": "/assets/img/concepts/breitspur-03/wheel-1000.webp",
+      "width": 2000,
+      "height": 1332,
+      "alt": "Close detail of the front arch: the squared flare over a Breitspur 17 inch three piece wheel with BREITSPUR engraved on the face and the crest on the center"
+    }
+  ],
+  "note": "Breitspur 03 is a design concept, rendered rather than built."
 }
