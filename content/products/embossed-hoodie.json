@@ -1,0 +1,82 @@
+{
+  "status": "live",
+  "number": 4,
+  "slug": "embossed-hoodie",
+  "code": "A01",
+  "name": "Embossed Hoodie",
+  "category": "apparel",
+  "room": "#2E2C29",
+  "tileRoom": "#E9E5DE",
+  "tagline": "The Breitspur Performance crest, embossed tone on tone.",
+  "lede": "The lion crest and wordmark are pressed deep into heavyweight fleece.  Catch it in the light and the whole mark rises off the chest.",
+  "availability": "interest",
+  "price": "$130",
+  "buyUrl": "",
+  "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+  ],
+  "finishes": [
+    "Black"
+  ],
+  "image": {
+    "image": "/assets/img/products/embossed-hoodie/flat.webp",
+    "small": "/assets/img/products/embossed-hoodie/flat-800.webp",
+    "width": 1600,
+    "height": 2143,
+    "alt": "The Embossed Hoodie laid flat, with the Breitspur Performance crest and wordmark embossed on the chest"
+  },
+  "gallery": [
+    {
+      "image": "/assets/img/products/embossed-hoodie/detail.webp",
+      "small": "/assets/img/products/embossed-hoodie/detail-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "Close up of the embossed lion crest and Breitspur wordmark, raised from the fleece",
+      "wide": true
+    },
+    {
+      "image": "/assets/img/products/embossed-hoodie/worn.webp",
+      "small": "/assets/img/products/embossed-hoodie/worn-800.webp",
+      "width": 1600,
+      "height": 2143,
+      "alt": "The Embossed Hoodie worn at sunset, in front of a silver R129 SL on Breitspur five spoke wheels",
+      "tall": true
+    },
+    {
+      "image": "/assets/img/products/embossed-hoodie/cuff.webp",
+      "small": "/assets/img/products/embossed-hoodie/cuff-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "The ribbed cuff and its stitched seam"
+    },
+    {
+      "image": "/assets/img/products/embossed-hoodie/pocket.webp",
+      "small": "/assets/img/products/embossed-hoodie/pocket-1000.webp",
+      "width": 2000,
+      "height": 1493,
+      "alt": "The kangaroo pocket with its double needle stitching and the ribbed hem"
+    }
+  ],
+  "story": [
+    "A logo you can feel.",
+    "We embossed the crest and the Breitspur Performance wordmark straight into the chest, in the same black as the hoodie.  Run a hand over it and you feel every line of the lion.  It is the same attention to detail we put into our cars, made to wear every day."
+  ],
+  "specs": [
+    {
+      "label": "Logo",
+      "value": "Embossed, tone on tone"
+    },
+    {
+      "label": "Color",
+      "value": "Black"
+    },
+    {
+      "label": "Sizes",
+      "value": "S to XXL"
+    }
+  ]
+}
